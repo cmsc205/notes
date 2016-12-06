@@ -28,7 +28,7 @@ install.packages(c("ggplot2", "dplyr", "tidyr", "lubridate", "readr", "stingr", 
 
 ### R Programming Skills
 
--Introduction to R (mainly overview of data structures)
+- Introduction to R (mainly overview of data structures)
   + Intro to basics (arithmetic, variable assignment, etc.)
   + Vectors (creating, naming, subsetting)
   + Matrices (creating, calculations
@@ -64,12 +64,18 @@ install.packages(c("ggplot2", "dplyr", "tidyr", "lubridate", "readr", "stingr", 
   + Tidying data
   + Preparing data for analysis 
 
+- Exploratory Data Analysis in R: Case Study
+  + Data cleaning and summarizing with dplyr
+  + Data visualization with ggplot2 
+  + 
+  
 - Data Manipulation in R with dplyr
   + Introduction to dplyr and tbls
   + Select and mutate
   + Filter and arrange
   + Summarise and the pipe operator 
   + Group_by and working with databases 
+  
 - Joining Data in R with dplyr
   + Mutating joins
   + Filtering joins and set operations 
@@ -94,5 +100,3 @@ install.packages(c("ggplot2", "dplyr", "tidyr", "lubridate", "readr", "stingr", 
   + Embedding Code
   + Compiling Reports
 
-
-- 
