@@ -1,0 +1,44 @@
+---
+title: "Data-Scientific Programming"
+author: "CMSC 205"
+date: "Winter 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## What is Data Science?
+
+One [answer](http://bulletin.imstat.org/2014/10/ims-presidential-address-let-us-own-data-science/) from former Institute of Mathematical Statistics president Bin Yu
+
+![](fig/bin_yu-VD.png)
+
+## What is Data Science?
+
+Another view from Drew Conway
+
+![](fig/Data_Science_VD.png)
+
+## Data Pipeline
+
+How does one answer a scientific question with data? Leek & Peng in Nature (2015) illustrate the [data pipeline](http://www.nature.com/news/statistics-p-values-are-just-the-tip-of-the-iceberg-1.17412#/pipe)
+
+1. Data collection
+2. Data cleaning
+3. Exploratory data analysis
+4. Statistical modelling
+5. Inference (form conclusions and communicate them)
+
+Intro stats classes focus a bit on 3, 4, and 5 partially. This class will try to cover all aspects of the pipeline.
+
+## Advice
+
+- Look at your data
+- Don't thrash
+- Do the most braindead thing first, take it end to end, then iterate/improve.
+- "You actually don’t know what you are doing until after you have done it."
+- Think of the marginal return of your efforts.
+
+*From Albert Kim's presentation on teaching data science to undergrads*
