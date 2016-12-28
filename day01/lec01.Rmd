@@ -42,3 +42,36 @@ Intro stats classes focus a bit on 3, 4, and 5 partially. This class will try to
 - Think of the marginal return of your efforts.
 
 *From Albert Kim's presentation on teaching data science to undergrads*
+
+# Introduction to R
+
+## RStudio
+
+### On the server
+
+- Go to http://rstudio.lawrence.edu/
+- Log in using your LU credentials
+- Note: Rstudio server can only be accessed on campus
+
+### On your machine
+
+- Follow the instructions on the website to install
+
+# Building Blocks
+
+
+## Variables
+
+R won't remember what you do unless you assign it a name...
+
+Definition: A variable is a name that refers to a value
+
+## Expressions
+
+R as calculator stuff...
+
+Definition: An expression is a combination of values, variables, and operators
+
+## Comments
+
+## R Markdown
