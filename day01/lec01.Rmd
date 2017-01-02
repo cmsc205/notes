@@ -21,17 +21,15 @@ Another view from Drew Conway
 
 ![](fig/Data_Science_VD.png)
 
-## Data Pipeline
+## 
 
-How does one answer a scientific question with data? Leek & Peng in Nature (2015) illustrate the [data pipeline](http://www.nature.com/news/statistics-p-values-are-just-the-tip-of-the-iceberg-1.17412#/pipe)
+![](fig/data-science-process.png)
 
-1. Data collection
-2. Data cleaning
-3. Exploratory data analysis
-4. Statistical modelling
-5. Inference (form conclusions and communicate them)
+## Data Science Project
 
-Intro stats classes focus a bit on 3, 4, and 5 partially. This class will try to cover all aspects of the pipeline.
+![](fig/data-science.png)
+
+Source: *R for Data Science*, Grolemund and Wickham
 
 ## Advice
 
@@ -42,3 +40,36 @@ Intro stats classes focus a bit on 3, 4, and 5 partially. This class will try to
 - Think of the marginal return of your efforts.
 
 *From Albert Kim's presentation on teaching data science to undergrads*
+
+# Introduction to R
+
+## RStudio
+
+### On the server
+
+- Go to http://rstudio.lawrence.edu/
+- Log in using your LU credentials
+- Note: Rstudio server can only be accessed on campus
+
+### On your machine
+
+- Follow the instructions on the website to install
+
+# Building Blocks
+
+
+## Variables
+
+R won't remember what you do unless you assign it a name...
+
+Definition: A variable is a name that refers to a value
+
+## Expressions
+
+R as calculator stuff...
+
+Definition: An expression is a combination of values, variables, and operators
+
+## Comments
+
+## R Markdown
