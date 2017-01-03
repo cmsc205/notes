@@ -1,0 +1,160 @@
+---
+title: "Introduction to R"
+output:
+  html_notebook: default
+  html_document: default
+---
+
+## Overview of R Markdown Notebooks
+
+In this course we will often work with R markdown notebooks in class. When you execute code within the notebook, the results appear beneath the code. An alternative to the R markdown notebook is an R markdown file.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd/Cntrl+Shift+Enter*. 
+
+```{r}
+1:10
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd/Cntrl+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+
+
+## Your First R session
+
+While you are learning the R language, remember that you are learning a new language; thus, we will start rather simply with small analysis tasks and build up to more complicated tasks. Also, you will not remember everything immediately---that's OK, it's a natural part of learning a language! 
+
+### Installing and loading R packages
+
+R does not enable all of its functionality when you open it. To enable additional functionality we need to load *R packages*. In this class we will often use the `tidyverse` R package to enable better tools for plotting, data manipulation, etc. Below is an example of installation and loading:
+
+```{r message=FALSE}
+# You only need to install a package once
+install.packages("tidyverse")
+
+# You will need to load the package in each R markdown notebook
+library(tidyverse)
+```
+
+
+### Loading data and assignment
+
+Data science focuses on **data**, so we need to start with a data set. There are multiple ways to load data sets (and we'll learn more about them later), but we often need to load a `.csv` (comma seperated value) file.
+
+Today, we'll look at a data set containing over 5,000 movies scraped from IMDB.
+
+```{r}
+# Load the data and assign it a name
+movies <- read.csv("https://github.com/cmsc205/data/raw/master/movie_metadata.csv", as.is = TRUE)
+```
+
+
+### Data frames
+
+The `movies` object is our first example of a data frame, which is essentially a list of vectors. We can get a first glimpse of our data set in a few ways:
+
+```{r}
+# Printing the first 6 rows
+# Note that missing values are denoted by NA
+head(movies)
+```
+
+```{r}
+# Printing the last 6 rows
+tail(movies)
+```
+
+```{r}
+# Looking at the number of rows and columns
+dim(movies)
+```
+
+```{r}
+# Looking at the structure
+str(movies)
+```
+
+```{r}
+# looking at the summary
+summary(movies)
+```
+
+
+#### Variable types
+
+The `str` function revealed the structure of the `movies` data frame, which included the number of rows and columns, as well as a glimpse at each **variable** (i.e. column) and the first few cases.
+
+In R, there are a few basic variable types (modes):
+
+* Integer 
+* Numeric (double, real)
+* Character  
+* Factor 
+* Logical
+
+There are other modes, but for now that this list will suffice.
+
+#### Operators and expressions
+
+As a data scientist you will want to **do** something with your data. So we need start adding things to your toolkit.
+
+To begin, we can think of R as an over-powered calculator
+
+```{r}
+# Addition
+3 + 5
+
+# Subtraction
+2 - 5
+```
+
+If you don't want to lose a quantity, then you should assign it a name.
+
+```{r}
+# Assign a name
+x <- 3 + 5
+
+# Multiplication
+y <- x * 10
+
+# Division
+y/x
+
+# Exponentiation
+x^4
+```
+
+R obeys the familiar order of operations
+
+```{r}
+# Order of operations
+1 + 2 * 3 * 4 * 5 / 6^3 + 7 + 8
+
+1 + 2 * ((3 * 4 * 5 / 6)^3) + 7 + 8
+```
+
+But this is a data science class, so we need to bring back the data! For example, we may want to calculate the net profit in millions
+
+```{r}
+movies$net <- (movies$gross - movies$budget) / 1e6
+summary(movies$net)
+```
+
+
+
+#### Syntax: Function application
+
+We have already used functions in R---for example, `summary` is a function---so you have seen the syntax, but we need to make sure we understand what's happening.
+
+The basic pattern is
+
+```{r eval=FALSE}
+object_name <- function_name(arguments)
+```
+
+Since we often have a data set of interest, many of our functions will take the form
+
+```{r eval=FALSE}
+object_name <- function_name(data, arguments)
+```
+

@@ -33,6 +33,7 @@ Source: *R for Data Science*, Grolemund and Wickham
 
 ## Advice
 
+- You are going to get frustrated, you're learning a new language
 - Look at your data
 - Don't thrash
 - Do the most braindead thing first, take it end to end, then iterate/improve.
@@ -41,7 +42,7 @@ Source: *R for Data Science*, Grolemund and Wickham
 
 *From Albert Kim's presentation on teaching data science to undergrads*
 
-# Introduction to R
+# R and R Studio
 
 ## RStudio
 
@@ -55,21 +56,4 @@ Source: *R for Data Science*, Grolemund and Wickham
 
 - Follow the instructions on the website to install
 
-# Building Blocks
-
-
-## Variables
-
-R won't remember what you do unless you assign it a name...
-
-Definition: A variable is a name that refers to a value
-
-## Expressions
-
-R as calculator stuff...
-
-Definition: An expression is a combination of values, variables, and operators
-
-## Comments
-
-## R Markdown
+# Demo
