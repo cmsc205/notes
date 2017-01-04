@@ -28,10 +28,12 @@ While you are learning the R language, remember that you are learning a new lang
 
 R does not enable all of its functionality when you open it. To enable additional functionality we need to load *R packages*. In this class we will often use the `tidyverse` R package to enable better tools for plotting, data manipulation, etc. Below is an example of installation and loading:
 
-```{r message=FALSE}
+```{r message=FALSE, eval=FALSE}
 # You only need to install a package once
 install.packages("tidyverse")
+```
 
+```{r}
 # You will need to load the package in each R markdown notebook
 library(tidyverse)
 ```
@@ -73,6 +75,12 @@ dim(movies)
 # Looking at the structure
 str(movies)
 ```
+
+```{r}
+# Getting a glimpse of the structure
+glimpse(movies)
+```
+
 
 ```{r}
 # looking at the summary

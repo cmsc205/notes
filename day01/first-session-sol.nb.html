@@ -142,7 +142,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("first-session.Rmd");
+  window.initializeSourceEmbed("first-session-sol.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
@@ -184,13 +184,6 @@ $(document).ready(function () {
 <!-- rnb-output-begin eyJkYXRhIjoiIFsxXSAgMSAgMiAgMyAgNCAgNSAgNiAgNyAgOCAgOSAxMFxuIn0= -->
 <pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBtZXNzYWdlczpcbjE6IEluIHNjYW4oZmlsZSA9IGZpbGUsIHdoYXQgPSB3aGF0LCBzZXAgPSBzZXAsIHF1b3RlID0gcXVvdGUsIGRlYyA9IGRlYywgIDpcbiAgRU9GIHdpdGhpbiBxdW90ZWQgc3RyaW5nXG4yOiBJbiBzY2FuKGZpbGUgPSBmaWxlLCB3aGF0ID0gd2hhdCwgc2VwID0gc2VwLCBxdW90ZSA9IHF1b3RlLCBkZWMgPSBkZWMsICA6XG4gIEVPRiB3aXRoaW4gcXVvdGVkIHN0cmluZ1xuIn0= -->
-<pre><code>Warning messages:
-1: In scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  :
-  EOF within quoted string
-2: In scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  :
-  EOF within quoted string</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Cmd/Cntrl+Option+I</em>.</p>
@@ -204,21 +197,14 @@ $(document).ready(function () {
 <p>R does not enable all of its functionality when you open it. To enable additional functionality we need to load <em>R packages</em>. In this class we will often use the <code>tidyverse</code> R package to enable better tools for plotting, data manipulation, etc. Below is an example of installation and loading:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBZb3Ugb25seSBuZWVkIHRvIGluc3RhbGwgYSBwYWNrYWdlIG9uY2Vcbmluc3RhbGwucGFja2FnZXMoXCJ0aWR5dmVyc2VcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgWW91IG9ubHkgbmVlZCB0byBpbnN0YWxsIGEgcGFja2FnZSBvbmNlIiwiaW5zdGFsbC5wYWNrYWdlcyhcInRpZHl2ZXJzZVwiKSJdfQ== -->
 <pre class="r"><code># You only need to install a package once
 install.packages(&quot;tidyverse&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidHJ5aW5nIFVSTCAnaHR0cHM6Ly9jcmFuLnJzdHVkaW8uY29tL2Jpbi9tYWNvc3gvbWF2ZXJpY2tzL2NvbnRyaWIvMy4zL3RpZHl2ZXJzZV8xLjAuMC50Z3onXG5Db250ZW50IHR5cGUgJ3Vua25vd24nIGxlbmd0aCAxODg5MiBieXRlcyAoMTggS0IpXG49PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuZG93bmxvYWRlZCAxOCBLQlxuIn0= -->
-<pre><code>trying URL 'https://cran.rstudio.com/bin/macosx/mavericks/contrib/3.3/tidyverse_1.0.0.tgz'
-Content type 'unknown' length 18892 bytes (18 KB)
-==================================================
-downloaded 18 KB</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5UaGUgZG93bmxvYWRlZCBiaW5hcnkgcGFja2FnZXMgYXJlIGluXG5cdC92YXIvZm9sZGVycy9fay9sNDY2MGMwbjZtZGRwZ3Z5NTNmYzZqZmpfX2NocnIvVC8vUnRtcGFGRDZ5WS9kb3dubG9hZGVkX3BhY2thZ2VzXG4ifQ== -->
-<pre><code>
-The downloaded binary packages are in
-    /var/folders/_k/l4660c0n6mddpgvy53fc6jfj__chrr/T//RtmpaFD6yY/downloaded_packages</code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBZb3Ugd2lsbCBuZWVkIHRvIGxvYWQgdGhlIHBhY2thZ2UgaW4gZWFjaCBSIG1hcmtkb3duIG5vdGVib29rXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
 <pre class="r"><code># You will need to load the package in each R markdown notebook
 library(tidyverse)</code></pre>
@@ -325,91 +311,107 @@ str(movies)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHZXR0aW5nIGEgZ2xpbXBzZSBvZiB0aGUgc3RydWN0dXJlXG5nbGltcHNlKG1vdmllcylcbmBgYCJ9 -->
+<pre class="r"><code># Getting a glimpse of the structure
+glimpse(movies)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiT2JzZXJ2YXRpb25zOiA1LDA0M1xuVmFyaWFibGVzOiAyOFxuJCBjb2xvciAgICAgICAgICAgICAgICAgICAgIDxjaHI+IFwiQ29sb3JcIiwgXCJDb2xvclwiLCBcIkNvbG9yXCIsIFwiQ28uLi5cbiQgZGlyZWN0b3JfbmFtZSAgICAgICAgICAgICA8Y2hyPiBcIkphbWVzIENhbWVyb25cIiwgXCJHb3JlIFZlcmJpbnMuLi5cbiQgbnVtX2NyaXRpY19mb3JfcmV2aWV3cyAgICA8aW50PiA3MjMsIDMwMiwgNjAyLCA4MTMsIE5BLCA0NjIsIDMuLi5cbiQgZHVyYXRpb24gICAgICAgICAgICAgICAgICA8aW50PiAxNzgsIDE2OSwgMTQ4LCAxNjQsIE5BLCAxMzIsIDEuLi5cbiQgZGlyZWN0b3JfZmFjZWJvb2tfbGlrZXMgICA8aW50PiAwLCA1NjMsIDAsIDIyMDAwLCAxMzEsIDQ3NSwgMCwuLi5cbiQgYWN0b3JfM19mYWNlYm9va19saWtlcyAgICA8aW50PiA4NTUsIDEwMDAsIDE2MSwgMjMwMDAsIE5BLCA1MzAuLi5cbiQgYWN0b3JfMl9uYW1lICAgICAgICAgICAgICA8Y2hyPiBcIkpvZWwgRGF2aWQgTW9vcmVcIiwgXCJPcmxhbmRvIEIuLi5cbiQgYWN0b3JfMV9mYWNlYm9va19saWtlcyAgICA8aW50PiAxMDAwLCA0MDAwMCwgMTEwMDAsIDI3MDAwLCAxMzEuLi5cbiQgZ3Jvc3MgICAgICAgICAgICAgICAgICAgICA8aW50PiA3NjA1MDU4NDcsIDMwOTQwNDE1MiwgMjAwMDc0MTcuLi5cbiQgZ2VucmVzICAgICAgICAgICAgICAgICAgICA8Y2hyPiBcIkFjdGlvbnxBZHZlbnR1cmV8RmFudGFzeXxTY2ktLi4uXG4kIGFjdG9yXzFfbmFtZSAgICAgICAgICAgICAgPGNocj4gXCJDQ0ggUG91bmRlclwiLCBcIkpvaG5ueSBEZXBwXCIsIC4uLlxuJCBtb3ZpZV90aXRsZSAgICAgICAgICAgICAgIDxjaHI+IFwiQXZhdGFywqBcIiwgXCJQaXJhdGVzIG9mIHRoZSBDYXIuLi5cbiQgbnVtX3ZvdGVkX3VzZXJzICAgICAgICAgICA8aW50PiA4ODYyMDQsIDQ3MTIyMCwgMjc1ODY4LCAxMTQ0MzMuLi5cbiQgY2FzdF90b3RhbF9mYWNlYm9va19saWtlcyA8aW50PiA0ODM0LCA0ODM1MCwgMTE3MDAsIDEwNjc1OSwgMTQuLi5cbiQgYWN0b3JfM19uYW1lICAgICAgICAgICAgICA8Y2hyPiBcIldlcyBTdHVkaVwiLCBcIkphY2sgRGF2ZW5wb3J0XCIsLi4uXG4kIGZhY2VudW1iZXJfaW5fcG9zdGVyICAgICAgPGludD4gMCwgMCwgMSwgMCwgMCwgMSwgMCwgMSwgNCwgMywgLi4uXG4kIHBsb3Rfa2V5d29yZHMgICAgICAgICAgICAgPGNocj4gXCJhdmF0YXJ8ZnV0dXJlfG1hcmluZXxuYXRpdmV8cC4uLlxuJCBtb3ZpZV9pbWRiX2xpbmsgICAgICAgICAgIDxjaHI+IFwiaHR0cDovL3d3dy5pbWRiLmNvbS90aXRsZS90dDAuLi5cbiQgbnVtX3VzZXJfZm9yX3Jldmlld3MgICAgICA8aW50PiAzMDU0LCAxMjM4LCA5OTQsIDI3MDEsIE5BLCA3MzguLi5cbiQgbGFuZ3VhZ2UgICAgICAgICAgICAgICAgICA8Y2hyPiBcIkVuZ2xpc2hcIiwgXCJFbmdsaXNoXCIsIFwiRW5nbGlzaC4uLlxuJCBjb3VudHJ5ICAgICAgICAgICAgICAgICAgIDxjaHI+IFwiVVNBXCIsIFwiVVNBXCIsIFwiVUtcIiwgXCJVU0FcIiwgXCJcIiwuLi5cbiQgY29udGVudF9yYXRpbmcgICAgICAgICAgICA8Y2hyPiBcIlBHLTEzXCIsIFwiUEctMTNcIiwgXCJQRy0xM1wiLCBcIlBHLi4uXG4kIGJ1ZGdldCAgICAgICAgICAgICAgICAgICAgPGRibD4gMjM3MDAwMDAwLCAzMDAwMDAwMDAsIDI0NTAwMDAwLi4uXG4kIHRpdGxlX3llYXIgICAgICAgICAgICAgICAgPGludD4gMjAwOSwgMjAwNywgMjAxNSwgMjAxMiwgTkEsIDIwLi4uXG4kIGFjdG9yXzJfZmFjZWJvb2tfbGlrZXMgICAgPGludD4gOTM2LCA1MDAwLCAzOTMsIDIzMDAwLCAxMiwgNjMyLi4uXG4kIGltZGJfc2NvcmUgICAgICAgICAgICAgICAgPGRibD4gNy45LCA3LjEsIDYuOCwgOC41LCA3LjEsIDYuNiwgLi4uXG4kIGFzcGVjdF9yYXRpbyAgICAgICAgICAgICAgPGRibD4gMS43OCwgMi4zNSwgMi4zNSwgMi4zNSwgTkEsIDIuLi4uXG4kIG1vdmllX2ZhY2Vib29rX2xpa2VzICAgICAgPGludD4gMzMwMDAsIDAsIDg1MDAwLCAxNjQwMDAsIDAsIDI0Li4uXG4ifQ== -->
+<pre><code>Observations: 5,043
+Variables: 28
+$ color                     &lt;chr&gt; &quot;Color&quot;, &quot;Color&quot;, &quot;Color&quot;, &quot;Co...
+$ director_name             &lt;chr&gt; &quot;James Cameron&quot;, &quot;Gore Verbins...
+$ num_critic_for_reviews    &lt;int&gt; 723, 302, 602, 813, NA, 462, 3...
+$ duration                  &lt;int&gt; 178, 169, 148, 164, NA, 132, 1...
+$ director_facebook_likes   &lt;int&gt; 0, 563, 0, 22000, 131, 475, 0,...
+$ actor_3_facebook_likes    &lt;int&gt; 855, 1000, 161, 23000, NA, 530...
+$ actor_2_name              &lt;chr&gt; &quot;Joel David Moore&quot;, &quot;Orlando B...
+$ actor_1_facebook_likes    &lt;int&gt; 1000, 40000, 11000, 27000, 131...
+$ gross                     &lt;int&gt; 760505847, 309404152, 20007417...
+$ genres                    &lt;chr&gt; &quot;Action|Adventure|Fantasy|Sci-...
+$ actor_1_name              &lt;chr&gt; &quot;CCH Pounder&quot;, &quot;Johnny Depp&quot;, ...
+$ movie_title               &lt;chr&gt; &quot;Avatar &quot;, &quot;Pirates of the Car...
+$ num_voted_users           &lt;int&gt; 886204, 471220, 275868, 114433...
+$ cast_total_facebook_likes &lt;int&gt; 4834, 48350, 11700, 106759, 14...
+$ actor_3_name              &lt;chr&gt; &quot;Wes Studi&quot;, &quot;Jack Davenport&quot;,...
+$ facenumber_in_poster      &lt;int&gt; 0, 0, 1, 0, 0, 1, 0, 1, 4, 3, ...
+$ plot_keywords             &lt;chr&gt; &quot;avatar|future|marine|native|p...
+$ movie_imdb_link           &lt;chr&gt; &quot;http://www.imdb.com/title/tt0...
+$ num_user_for_reviews      &lt;int&gt; 3054, 1238, 994, 2701, NA, 738...
+$ language                  &lt;chr&gt; &quot;English&quot;, &quot;English&quot;, &quot;English...
+$ country                   &lt;chr&gt; &quot;USA&quot;, &quot;USA&quot;, &quot;UK&quot;, &quot;USA&quot;, &quot;&quot;,...
+$ content_rating            &lt;chr&gt; &quot;PG-13&quot;, &quot;PG-13&quot;, &quot;PG-13&quot;, &quot;PG...
+$ budget                    &lt;dbl&gt; 237000000, 300000000, 24500000...
+$ title_year                &lt;int&gt; 2009, 2007, 2015, 2012, NA, 20...
+$ actor_2_facebook_likes    &lt;int&gt; 936, 5000, 393, 23000, 12, 632...
+$ imdb_score                &lt;dbl&gt; 7.9, 7.1, 6.8, 8.5, 7.1, 6.6, ...
+$ aspect_ratio              &lt;dbl&gt; 1.78, 2.35, 2.35, 2.35, NA, 2....
+$ movie_facebook_likes      &lt;int&gt; 33000, 0, 85000, 164000, 0, 24...</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBsb29raW5nIGF0IHRoZSBzdW1tYXJ5XG5zdW1tYXJ5KG1vdmllcylcbmBgYCJ9 -->
 <pre class="r"><code># looking at the summary
 summary(movies)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgIGNvbG9yICAgICAgICAgICBkaXJlY3Rvcl9uYW1lICAgICBcbiBMZW5ndGg6NTA0MyAgICAgICAgTGVuZ3RoOjUwNDMgICAgICAgXG4gQ2xhc3MgOmNoYXJhY3RlciAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbnVtX2NyaXRpY19mb3JfcmV2aWV3cyAgICBkdXJhdGlvbiAgICBcbiBNaW4uICAgOiAgMS4wICAgICAgICAgIE1pbi4gICA6ICA3LjAgIFxuIDFzdCBRdS46IDUwLjAgICAgICAgICAgMXN0IFF1LjogOTMuMCAgXG4gTWVkaWFuIDoxMTAuMCAgICAgICAgICBNZWRpYW4gOjEwMy4wICBcbiBNZWFuICAgOjE0MC4yICAgICAgICAgIE1lYW4gICA6MTA3LjIgIFxuIDNyZCBRdS46MTk1LjAgICAgICAgICAgM3JkIFF1LjoxMTguMCAgXG4gTWF4LiAgIDo4MTMuMCAgICAgICAgICBNYXguICAgOjUxMS4wICBcbiBOQSdzICAgOjUwICAgICAgICAgICAgIE5BJ3MgICA6MTUgICAgIFxuIGRpcmVjdG9yX2ZhY2Vib29rX2xpa2VzIGFjdG9yXzNfZmFjZWJvb2tfbGlrZXNcbiBNaW4uICAgOiAgICAwLjAgICAgICAgICBNaW4uICAgOiAgICAwLjAgICAgICAgXG4gMXN0IFF1LjogICAgNy4wICAgICAgICAgMXN0IFF1LjogIDEzMy4wICAgICAgIFxuIE1lZGlhbiA6ICAgNDkuMCAgICAgICAgIE1lZGlhbiA6ICAzNzEuNSAgICAgICBcbiBNZWFuICAgOiAgNjg2LjUgICAgICAgICBNZWFuICAgOiAgNjQ1LjAgICAgICAgXG4gM3JkIFF1LjogIDE5NC41ICAgICAgICAgM3JkIFF1LjogIDYzNi4wICAgICAgIFxuIE1heC4gICA6MjMwMDAuMCAgICAgICAgIE1heC4gICA6MjMwMDAuMCAgICAgICBcbiBOQSdzICAgOjEwNCAgICAgICAgICAgICBOQSdzICAgOjIzICAgICAgICAgICAgXG4gYWN0b3JfMl9uYW1lICAgICAgIGFjdG9yXzFfZmFjZWJvb2tfbGlrZXNcbiBMZW5ndGg6NTA0MyAgICAgICAgTWluLiAgIDogICAgIDAgICAgICAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOiAgIDYxNCAgICAgICAgXG4gTW9kZSAgOmNoYXJhY3RlciAgIE1lZGlhbiA6ICAgOTg4ICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDogIDY1NjAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOiAxMTAwMCAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgIE1heC4gICA6NjQwMDAwICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo3ICAgICAgICAgICAgIFxuICAgICBncm9zcyAgICAgICAgICAgICAgZ2VucmVzICAgICAgICAgXG4gTWluLiAgIDogICAgICAxNjIgICBMZW5ndGg6NTA0MyAgICAgICBcbiAxc3QgUXUuOiAgNTM0MDk4OCAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1lZGlhbiA6IDI1NTE3NTAwICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gTWVhbiAgIDogNDg0Njg0MDggICAgICAgICAgICAgICAgICAgICBcbiAzcmQgUXUuOiA2MjMwOTQzOCAgICAgICAgICAgICAgICAgICAgIFxuIE1heC4gICA6NzYwNTA1ODQ3ICAgICAgICAgICAgICAgICAgICAgXG4gTkEncyAgIDo4ODQgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBhY3Rvcl8xX25hbWUgICAgICAgbW92aWVfdGl0bGUgICAgICAgIG51bV92b3RlZF91c2VycyAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIExlbmd0aDo1MDQzICAgICAgICBNaW4uICAgOiAgICAgIDUgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjogICA4NTk0ICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgIE1lZGlhbiA6ICAzNDM1OSAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBNZWFuICAgOiAgODM2NjggIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjogIDk2MzA5ICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1heC4gICA6MTY4OTc2NCAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNhc3RfdG90YWxfZmFjZWJvb2tfbGlrZXMgYWN0b3JfM19uYW1lICAgICAgXG4gTWluLiAgIDogICAgIDAgICAgICAgICAgICBMZW5ndGg6NTA0MyAgICAgICBcbiAxc3QgUXUuOiAgMTQxMSAgICAgICAgICAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1lZGlhbiA6ICAzMDkwICAgICAgICAgICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gTWVhbiAgIDogIDk2OTkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAzcmQgUXUuOiAxMzc1NiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIE1heC4gICA6NjU2NzMwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBmYWNlbnVtYmVyX2luX3Bvc3RlciBwbG90X2tleXdvcmRzICAgICBcbiBNaW4uICAgOiAwLjAwMCAgICAgICBMZW5ndGg6NTA0MyAgICAgICBcbiAxc3QgUXUuOiAwLjAwMCAgICAgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNZWRpYW4gOiAxLjAwMCAgICAgICBNb2RlICA6Y2hhcmFjdGVyICBcbiBNZWFuICAgOiAxLjM3MSAgICAgICAgICAgICAgICAgICAgICAgICBcbiAzcmQgUXUuOiAyLjAwMCAgICAgICAgICAgICAgICAgICAgICAgICBcbiBNYXguICAgOjQzLjAwMCAgICAgICAgICAgICAgICAgICAgICAgICBcbiBOQSdzICAgOjEzICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtb3ZpZV9pbWRiX2xpbmsgICAgbnVtX3VzZXJfZm9yX3Jldmlld3NcbiBMZW5ndGg6NTA0MyAgICAgICAgTWluLiAgIDogICAxLjAgICAgICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjogIDY1LjAgICAgICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTWVkaWFuIDogMTU2LjAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDogMjcyLjggICAgICBcbiAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjogMzI2LjAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDo1MDYwLjAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgTkEncyAgIDoyMSAgICAgICAgICBcbiAgIGxhbmd1YWdlICAgICAgICAgICBjb3VudHJ5ICAgICAgICAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIExlbmd0aDo1MDQzICAgICAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNvbnRlbnRfcmF0aW5nICAgICAgICAgYnVkZ2V0ICAgICAgICAgICAgdGl0bGVfeWVhciAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIE1pbi4gICA6Mi4xODBlKzAyICAgTWluLiAgIDoxOTE2ICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1Ljo2LjAwMGUrMDYgICAxc3QgUXUuOjE5OTkgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIuMDAwZSswNyAgIE1lZGlhbiA6MjAwNSAgXG4gICAgICAgICAgICAgICAgICAgIE1lYW4gICA6My45NzVlKzA3ICAgTWVhbiAgIDoyMDAyICBcbiAgICAgICAgICAgICAgICAgICAgM3JkIFF1Ljo0LjUwMGUrMDcgICAzcmQgUXUuOjIwMTEgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjEuMjIyZSsxMCAgIE1heC4gICA6MjAxNiAgXG4gICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6NDkyICAgICAgICAgTkEncyAgIDoxMDggICBcbiBhY3Rvcl8yX2ZhY2Vib29rX2xpa2VzICAgaW1kYl9zY29yZSAgICAgYXNwZWN0X3JhdGlvICBcbiBNaW4uICAgOiAgICAgMCAgICAgICAgIE1pbi4gICA6MS42MDAgICBNaW4uICAgOiAxLjE4ICBcbiAxc3QgUXUuOiAgIDI4MSAgICAgICAgIDFzdCBRdS46NS44MDAgICAxc3QgUXUuOiAxLjg1ICBcbiBNZWRpYW4gOiAgIDU5NSAgICAgICAgIE1lZGlhbiA6Ni42MDAgICBNZWRpYW4gOiAyLjM1ICBcbiBNZWFuICAgOiAgMTY1MiAgICAgICAgIE1lYW4gICA6Ni40NDIgICBNZWFuICAgOiAyLjIyICBcbiAzcmQgUXUuOiAgIDkxOCAgICAgICAgIDNyZCBRdS46Ny4yMDAgICAzcmQgUXUuOiAyLjM1ICBcbiBNYXguICAgOjEzNzAwMCAgICAgICAgIE1heC4gICA6OS41MDAgICBNYXguICAgOjE2LjAwICBcbiBOQSdzICAgOjEzICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQSdzICAgOjMyOSAgICBcbiBtb3ZpZV9mYWNlYm9va19saWtlc1xuIE1pbi4gICA6ICAgICAwICAgICAgXG4gMXN0IFF1LjogICAgIDAgICAgICBcbiBNZWRpYW4gOiAgIDE2NiAgICAgIFxuIE1lYW4gICA6ICA3NTI2ICAgICAgXG4gM3JkIFF1LjogIDMwMDAgICAgICBcbiBNYXguICAgOjM0OTAwMCAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
-<pre><code>    color           director_name     
- Length:5043        Length:5043       
- Class :character   Class :character  
- Mode  :character   Mode  :character  
-                                      
-                                      
-                                      
-                                      
- num_critic_for_reviews    duration    
- Min.   :  1.0          Min.   :  7.0  
- 1st Qu.: 50.0          1st Qu.: 93.0  
- Median :110.0          Median :103.0  
- Mean   :140.2          Mean   :107.2  
- 3rd Qu.:195.0          3rd Qu.:118.0  
- Max.   :813.0          Max.   :511.0  
- NA's   :50             NA's   :15     
- director_facebook_likes actor_3_facebook_likes
- Min.   :    0.0         Min.   :    0.0       
- 1st Qu.:    7.0         1st Qu.:  133.0       
- Median :   49.0         Median :  371.5       
- Mean   :  686.5         Mean   :  645.0       
- 3rd Qu.:  194.5         3rd Qu.:  636.0       
- Max.   :23000.0         Max.   :23000.0       
- NA's   :104             NA's   :23            
- actor_2_name       actor_1_facebook_likes
- Length:5043        Min.   :     0        
- Class :character   1st Qu.:   614        
- Mode  :character   Median :   988        
-                    Mean   :  6560        
-                    3rd Qu.: 11000        
-                    Max.   :640000        
-                    NA's   :7             
-     gross              genres         
- Min.   :      162   Length:5043       
- 1st Qu.:  5340988   Class :character  
- Median : 25517500   Mode  :character  
- Mean   : 48468408                     
- 3rd Qu.: 62309438                     
- Max.   :760505847                     
- NA's   :884                           
- actor_1_name       movie_title        num_voted_users  
- Length:5043        Length:5043        Min.   :      5  
- Class :character   Class :character   1st Qu.:   8594  
- Mode  :character   Mode  :character   Median :  34359  
-                                       Mean   :  83668  
-                                       3rd Qu.:  96309  
-                                       Max.   :1689764  
-                                                        
- cast_total_facebook_likes actor_3_name      
- Min.   :     0            Length:5043       
- 1st Qu.:  1411            Class :character  
- Median :  3090            Mode  :character  
- Mean   :  9699                              
- 3rd Qu.: 13756                              
- Max.   :656730                              
-                                             
- facenumber_in_poster plot_keywords     
- Min.   : 0.000       Length:5043       
- 1st Qu.: 0.000       Class :character  
- Median : 1.000       Mode  :character  
- Mean   : 1.371                         
- 3rd Qu.: 2.000                         
- Max.   :43.000                         
- NA's   :13                             
- movie_imdb_link    num_user_for_reviews
- Length:5043        Min.   :   1.0      
- Class :character   1st Qu.:  65.0      
- Mode  :character   Median : 156.0      
-                    Mean   : 272.8      
-                    3rd Qu.: 326.0      
-                    Max.   :5060.0      
-                    NA's   :21          
-   language           country         
- Length:5043        Length:5043       
- Class :character   Class :character  
- Mode  :character   Mode  :character  
-                                      
-                                      
-                                      
-                                      
+<!-- rnb-output-begin eyJkYXRhIjoiICAgIGNvbG9yICAgICAgICAgICBkaXJlY3Rvcl9uYW1lICAgICAgbnVtX2NyaXRpY19mb3JfcmV2aWV3c1xuIExlbmd0aDo1MDQzICAgICAgICBMZW5ndGg6NTA0MyAgICAgICAgTWluLiAgIDogIDEuMCAgICAgICAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjogNTAuMCAgICAgICAgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTWVkaWFuIDoxMTAuMCAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDoxNDAuMiAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjoxOTUuMCAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDo4MTMuMCAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTkEncyAgIDo1MCAgICAgICAgICAgIFxuICAgIGR1cmF0aW9uICAgICBkaXJlY3Rvcl9mYWNlYm9va19saWtlcyBhY3Rvcl8zX2ZhY2Vib29rX2xpa2VzXG4gTWluLiAgIDogIDcuMCAgIE1pbi4gICA6ICAgIDAuMCAgICAgICAgIE1pbi4gICA6ICAgIDAuMCAgICAgICBcbiAxc3QgUXUuOiA5My4wICAgMXN0IFF1LjogICAgNy4wICAgICAgICAgMXN0IFF1LjogIDEzMy4wICAgICAgIFxuIE1lZGlhbiA6MTAzLjAgICBNZWRpYW4gOiAgIDQ5LjAgICAgICAgICBNZWRpYW4gOiAgMzcxLjUgICAgICAgXG4gTWVhbiAgIDoxMDcuMiAgIE1lYW4gICA6ICA2ODYuNSAgICAgICAgIE1lYW4gICA6ICA2NDUuMCAgICAgICBcbiAzcmQgUXUuOjExOC4wICAgM3JkIFF1LjogIDE5NC41ICAgICAgICAgM3JkIFF1LjogIDYzNi4wICAgICAgIFxuIE1heC4gICA6NTExLjAgICBNYXguICAgOjIzMDAwLjAgICAgICAgICBNYXguICAgOjIzMDAwLjAgICAgICAgXG4gTkEncyAgIDoxNSAgICAgIE5BJ3MgICA6MTA0ICAgICAgICAgICAgIE5BJ3MgICA6MjMgICAgICAgICAgICBcbiBhY3Rvcl8yX25hbWUgICAgICAgYWN0b3JfMV9mYWNlYm9va19saWtlcyAgICAgZ3Jvc3MgICAgICAgICAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIE1pbi4gICA6ICAgICAwICAgICAgICAgTWluLiAgIDogICAgICAxNjIgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICAxc3QgUXUuOiAgIDYxNCAgICAgICAgIDFzdCBRdS46ICA1MzQwOTg4ICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTWVkaWFuIDogICA5ODggICAgICAgICBNZWRpYW4gOiAyNTUxNzUwMCAgXG4gICAgICAgICAgICAgICAgICAgIE1lYW4gICA6ICA2NTYwICAgICAgICAgTWVhbiAgIDogNDg0Njg0MDggIFxuICAgICAgICAgICAgICAgICAgICAzcmQgUXUuOiAxMTAwMCAgICAgICAgIDNyZCBRdS46IDYyMzA5NDM4ICBcbiAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDo2NDAwMDAgICAgICAgICBNYXguICAgOjc2MDUwNTg0NyAgXG4gICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6NyAgICAgICAgICAgICAgTkEncyAgIDo4ODQgICAgICAgIFxuICAgIGdlbnJlcyAgICAgICAgICBhY3Rvcl8xX25hbWUgICAgICAgbW92aWVfdGl0bGUgICAgICAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIExlbmd0aDo1MDQzICAgICAgICBMZW5ndGg6NTA0MyAgICAgICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBudW1fdm90ZWRfdXNlcnMgICBjYXN0X3RvdGFsX2ZhY2Vib29rX2xpa2VzIGFjdG9yXzNfbmFtZSAgICAgIFxuIE1pbi4gICA6ICAgICAgNSAgIE1pbi4gICA6ICAgICAwICAgICAgICAgICAgTGVuZ3RoOjUwNDMgICAgICAgXG4gMXN0IFF1LjogICA4NTk0ICAgMXN0IFF1LjogIDE0MTEgICAgICAgICAgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNZWRpYW4gOiAgMzQzNTkgICBNZWRpYW4gOiAgMzA5MCAgICAgICAgICAgIE1vZGUgIDpjaGFyYWN0ZXIgIFxuIE1lYW4gICA6ICA4MzY2OCAgIE1lYW4gICA6ICA5Njk5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gM3JkIFF1LjogIDk2MzA5ICAgM3JkIFF1LjogMTM3NTYgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBNYXguICAgOjE2ODk3NjQgICBNYXguICAgOjY1NjczMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZmFjZW51bWJlcl9pbl9wb3N0ZXIgcGxvdF9rZXl3b3JkcyAgICAgIG1vdmllX2ltZGJfbGluayAgIFxuIE1pbi4gICA6IDAuMDAwICAgICAgIExlbmd0aDo1MDQzICAgICAgICBMZW5ndGg6NTA0MyAgICAgICBcbiAxc3QgUXUuOiAwLjAwMCAgICAgICBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgXG4gTWVkaWFuIDogMS4wMDAgICAgICAgTW9kZSAgOmNoYXJhY3RlciAgIE1vZGUgIDpjaGFyYWN0ZXIgIFxuIE1lYW4gICA6IDEuMzcxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiAzcmQgUXUuOiAyLjAwMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gTWF4LiAgIDo0My4wMDAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIE5BJ3MgICA6MTMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBudW1fdXNlcl9mb3JfcmV2aWV3cyAgIGxhbmd1YWdlICAgICAgICAgICBjb3VudHJ5ICAgICAgICAgXG4gTWluLiAgIDogICAxLjAgICAgICAgTGVuZ3RoOjUwNDMgICAgICAgIExlbmd0aDo1MDQzICAgICAgIFxuIDFzdCBRdS46ICA2NS4wICAgICAgIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNZWRpYW4gOiAxNTYuMCAgICAgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gTWVhbiAgIDogMjcyLjggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIDNyZCBRdS46IDMyNi4wICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBNYXguICAgOjUwNjAuMCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gTkEncyAgIDoyMSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNvbnRlbnRfcmF0aW5nICAgICAgICAgYnVkZ2V0ICAgICAgICAgICAgdGl0bGVfeWVhciAgXG4gTGVuZ3RoOjUwNDMgICAgICAgIE1pbi4gICA6Mi4xODBlKzAyICAgTWluLiAgIDoxOTE2ICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1Ljo2LjAwMGUrMDYgICAxc3QgUXUuOjE5OTkgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIuMDAwZSswNyAgIE1lZGlhbiA6MjAwNSAgXG4gICAgICAgICAgICAgICAgICAgIE1lYW4gICA6My45NzVlKzA3ICAgTWVhbiAgIDoyMDAyICBcbiAgICAgICAgICAgICAgICAgICAgM3JkIFF1Ljo0LjUwMGUrMDcgICAzcmQgUXUuOjIwMTEgIFxuICAgICAgICAgICAgICAgICAgICBNYXguICAgOjEuMjIyZSsxMCAgIE1heC4gICA6MjAxNiAgXG4gICAgICAgICAgICAgICAgICAgIE5BJ3MgICA6NDkyICAgICAgICAgTkEncyAgIDoxMDggICBcbiBhY3Rvcl8yX2ZhY2Vib29rX2xpa2VzICAgaW1kYl9zY29yZSAgICAgYXNwZWN0X3JhdGlvICBcbiBNaW4uICAgOiAgICAgMCAgICAgICAgIE1pbi4gICA6MS42MDAgICBNaW4uICAgOiAxLjE4ICBcbiAxc3QgUXUuOiAgIDI4MSAgICAgICAgIDFzdCBRdS46NS44MDAgICAxc3QgUXUuOiAxLjg1ICBcbiBNZWRpYW4gOiAgIDU5NSAgICAgICAgIE1lZGlhbiA6Ni42MDAgICBNZWRpYW4gOiAyLjM1ICBcbiBNZWFuICAgOiAgMTY1MiAgICAgICAgIE1lYW4gICA6Ni40NDIgICBNZWFuICAgOiAyLjIyICBcbiAzcmQgUXUuOiAgIDkxOCAgICAgICAgIDNyZCBRdS46Ny4yMDAgICAzcmQgUXUuOiAyLjM1ICBcbiBNYXguICAgOjEzNzAwMCAgICAgICAgIE1heC4gICA6OS41MDAgICBNYXguICAgOjE2LjAwICBcbiBOQSdzICAgOjEzICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQSdzICAgOjMyOSAgICBcbiBtb3ZpZV9mYWNlYm9va19saWtlc1xuIE1pbi4gICA6ICAgICAwICAgICAgXG4gMXN0IFF1LjogICAgIDAgICAgICBcbiBNZWRpYW4gOiAgIDE2NiAgICAgIFxuIE1lYW4gICA6ICA3NTI2ICAgICAgXG4gM3JkIFF1LjogIDMwMDAgICAgICBcbiBNYXguICAgOjM0OTAwMCAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>    color           director_name      num_critic_for_reviews
+ Length:5043        Length:5043        Min.   :  1.0         
+ Class :character   Class :character   1st Qu.: 50.0         
+ Mode  :character   Mode  :character   Median :110.0         
+                                       Mean   :140.2         
+                                       3rd Qu.:195.0         
+                                       Max.   :813.0         
+                                       NA's   :50            
+    duration     director_facebook_likes actor_3_facebook_likes
+ Min.   :  7.0   Min.   :    0.0         Min.   :    0.0       
+ 1st Qu.: 93.0   1st Qu.:    7.0         1st Qu.:  133.0       
+ Median :103.0   Median :   49.0         Median :  371.5       
+ Mean   :107.2   Mean   :  686.5         Mean   :  645.0       
+ 3rd Qu.:118.0   3rd Qu.:  194.5         3rd Qu.:  636.0       
+ Max.   :511.0   Max.   :23000.0         Max.   :23000.0       
+ NA's   :15      NA's   :104             NA's   :23            
+ actor_2_name       actor_1_facebook_likes     gross          
+ Length:5043        Min.   :     0         Min.   :      162  
+ Class :character   1st Qu.:   614         1st Qu.:  5340988  
+ Mode  :character   Median :   988         Median : 25517500  
+                    Mean   :  6560         Mean   : 48468408  
+                    3rd Qu.: 11000         3rd Qu.: 62309438  
+                    Max.   :640000         Max.   :760505847  
+                    NA's   :7              NA's   :884        
+    genres          actor_1_name       movie_title       
+ Length:5043        Length:5043        Length:5043       
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  
+                                                         
+                                                         
+                                                         
+                                                         
+ num_voted_users   cast_total_facebook_likes actor_3_name      
+ Min.   :      5   Min.   :     0            Length:5043       
+ 1st Qu.:   8594   1st Qu.:  1411            Class :character  
+ Median :  34359   Median :  3090            Mode  :character  
+ Mean   :  83668   Mean   :  9699                              
+ 3rd Qu.:  96309   3rd Qu.: 13756                              
+ Max.   :1689764   Max.   :656730                              
+                                                               
+ facenumber_in_poster plot_keywords      movie_imdb_link   
+ Min.   : 0.000       Length:5043        Length:5043       
+ 1st Qu.: 0.000       Class :character   Class :character  
+ Median : 1.000       Mode  :character   Mode  :character  
+ Mean   : 1.371                                            
+ 3rd Qu.: 2.000                                            
+ Max.   :43.000                                            
+ NA's   :13                                                
+ num_user_for_reviews   language           country         
+ Min.   :   1.0       Length:5043        Length:5043       
+ 1st Qu.:  65.0       Class :character   Class :character  
+ Median : 156.0       Mode  :character   Mode  :character  
+ Mean   : 272.8                                            
+ 3rd Qu.: 326.0                                            
+ Max.   :5060.0                                            
+ NA's   :21                                                
  content_rating         budget            title_year  
  Length:5043        Min.   :2.180e+02   Min.   :1916  
  Class :character   1st Qu.:6.000e+06   1st Qu.:1999  
@@ -521,11 +523,11 @@ x^4</code></pre>
 <pre class="r"><code>movies$net &lt;- (movies$gross - movies$budget) / 1e6
 summary(movies$net)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgTWluLiAgICAxc3QgUXUuICAgICBNZWRpYW4gICAgICAgTWVhbiAgICAzcmQgUXUuIFxuLTEyMjEwLjAwMCAgICAtMTAuMjcwICAgICAgMC44NTIgICAgICA1Ljg0NSAgICAgMjQuNzUwIFxuICAgICAgTWF4LiAgICAgICBOQSdzIFxuICAgNTIzLjUwMCAgICAgICAxMTUyIFxuIn0= -->
-<pre><code>      Min.    1st Qu.     Median       Mean    3rd Qu. 
--12210.000    -10.270      0.852      5.845     24.750 
-      Max.       NA's 
-   523.500       1152 </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgTWluLiAgICAxc3QgUXUuICAgICBNZWRpYW4gICAgICAgTWVhbiAgICAzcmQgUXUuICAgICAgIE1heC4gXG4tMTIyMTAuMDAwICAgIC0xMC4yNzAgICAgICAwLjg1MiAgICAgIDUuODQ1ICAgICAyNC43NTAgICAgNTIzLjUwMCBcbiAgICAgIE5BJ3MgXG4gICAgICAxMTUyIFxuIn0= -->
+<pre><code>      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-12210.000    -10.270      0.852      5.845     24.750    523.500 
+      NA's 
+      1152 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -554,7 +556,7 @@ summary(movies$net)</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW50cm9kdWN0aW9uIHRvIFIiCm91dHB1dDoKICBodG1sX25vdGVib29rOiBkZWZhdWx0CiAgaHRtbF9kb2N1bWVudDogZGVmYXVsdAotLS0KCiMjIE92ZXJ2aWV3IG9mIFIgTWFya2Rvd24gTm90ZWJvb2tzCgpJbiB0aGlzIGNvdXJzZSB3ZSB3aWxsIG9mdGVuIHdvcmsgd2l0aCBSIG1hcmtkb3duIG5vdGVib29rcyBpbiBjbGFzcy4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiBBbiBhbHRlcm5hdGl2ZSB0byB0aGUgUiBtYXJrZG93biBub3RlYm9vayBpcyBhbiBSIG1hcmtkb3duIGZpbGUuCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kL0NudHJsK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KMToxMApgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDbWQvQ250cmwrT3B0aW9uK0kqLgoKV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDbWQrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4KCgojIyBZb3VyIEZpcnN0IFIgc2Vzc2lvbgoKV2hpbGUgeW91IGFyZSBsZWFybmluZyB0aGUgUiBsYW5ndWFnZSwgcmVtZW1iZXIgdGhhdCB5b3UgYXJlIGxlYXJuaW5nIGEgbmV3IGxhbmd1YWdlOyB0aHVzLCB3ZSB3aWxsIHN0YXJ0IHJhdGhlciBzaW1wbHkgd2l0aCBzbWFsbCBhbmFseXNpcyB0YXNrcyBhbmQgYnVpbGQgdXAgdG8gbW9yZSBjb21wbGljYXRlZCB0YXNrcy4gQWxzbywgeW91IHdpbGwgbm90IHJlbWVtYmVyIGV2ZXJ5dGhpbmcgaW1tZWRpYXRlbHktLS10aGF0J3MgT0ssIGl0J3MgYSBuYXR1cmFsIHBhcnQgb2YgbGVhcm5pbmcgYSBsYW5ndWFnZSEgCgojIyMgSW5zdGFsbGluZyBhbmQgbG9hZGluZyBSIHBhY2thZ2VzCgpSIGRvZXMgbm90IGVuYWJsZSBhbGwgb2YgaXRzIGZ1bmN0aW9uYWxpdHkgd2hlbiB5b3Ugb3BlbiBpdC4gVG8gZW5hYmxlIGFkZGl0aW9uYWwgZnVuY3Rpb25hbGl0eSB3ZSBuZWVkIHRvIGxvYWQgKlIgcGFja2FnZXMqLiBJbiB0aGlzIGNsYXNzIHdlIHdpbGwgb2Z0ZW4gdXNlIHRoZSBgdGlkeXZlcnNlYCBSIHBhY2thZ2UgdG8gZW5hYmxlIGJldHRlciB0b29scyBmb3IgcGxvdHRpbmcsIGRhdGEgbWFuaXB1bGF0aW9uLCBldGMuIEJlbG93IGlzIGFuIGV4YW1wbGUgb2YgaW5zdGFsbGF0aW9uIGFuZCBsb2FkaW5nOgoKYGBge3IgbWVzc2FnZT1GQUxTRX0KIyBZb3Ugb25seSBuZWVkIHRvIGluc3RhbGwgYSBwYWNrYWdlIG9uY2UKaW5zdGFsbC5wYWNrYWdlcygidGlkeXZlcnNlIikKCiMgWW91IHdpbGwgbmVlZCB0byBsb2FkIHRoZSBwYWNrYWdlIGluIGVhY2ggUiBtYXJrZG93biBub3RlYm9vawpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgoKIyMjIExvYWRpbmcgZGF0YSBhbmQgYXNzaWdubWVudAoKRGF0YSBzY2llbmNlIGZvY3VzZXMgb24gKipkYXRhKiosIHNvIHdlIG5lZWQgdG8gc3RhcnQgd2l0aCBhIGRhdGEgc2V0LiBUaGVyZSBhcmUgbXVsdGlwbGUgd2F5cyB0byBsb2FkIGRhdGEgc2V0cyAoYW5kIHdlJ2xsIGxlYXJuIG1vcmUgYWJvdXQgdGhlbSBsYXRlciksIGJ1dCB3ZSBvZnRlbiBuZWVkIHRvIGxvYWQgYSBgLmNzdmAgKGNvbW1hIHNlcGVyYXRlZCB2YWx1ZSkgZmlsZS4KClRvZGF5LCB3ZSdsbCBsb29rIGF0IGEgZGF0YSBzZXQgY29udGFpbmluZyBvdmVyIDUsMDAwIG1vdmllcyBzY3JhcGVkIGZyb20gSU1EQi4KCmBgYHtyfQojIExvYWQgdGhlIGRhdGEgYW5kIGFzc2lnbiBpdCBhIG5hbWUKbW92aWVzIDwtIHJlYWQuY3N2KCJodHRwczovL2dpdGh1Yi5jb20vY21zYzIwNS9kYXRhL3Jhdy9tYXN0ZXIvbW92aWVfbWV0YWRhdGEuY3N2IiwgYXMuaXMgPSBUUlVFKQpgYGAKCgojIyMgRGF0YSBmcmFtZXMKClRoZSBgbW92aWVzYCBvYmplY3QgaXMgb3VyIGZpcnN0IGV4YW1wbGUgb2YgYSBkYXRhIGZyYW1lLCB3aGljaCBpcyBlc3NlbnRpYWxseSBhIGxpc3Qgb2YgdmVjdG9ycy4gV2UgY2FuIGdldCBhIGZpcnN0IGdsaW1wc2Ugb2Ygb3VyIGRhdGEgc2V0IGluIGEgZmV3IHdheXM6CgpgYGB7cn0KIyBQcmludGluZyB0aGUgZmlyc3QgNiByb3dzCiMgTm90ZSB0aGF0IG1pc3NpbmcgdmFsdWVzIGFyZSBkZW5vdGVkIGJ5IE5BCmhlYWQobW92aWVzKQpgYGAKCmBgYHtyfQojIFByaW50aW5nIHRoZSBsYXN0IDYgcm93cwp0YWlsKG1vdmllcykKYGBgCgpgYGB7cn0KIyBMb29raW5nIGF0IHRoZSBudW1iZXIgb2Ygcm93cyBhbmQgY29sdW1ucwpkaW0obW92aWVzKQpgYGAKCmBgYHtyfQojIExvb2tpbmcgYXQgdGhlIHN0cnVjdHVyZQpzdHIobW92aWVzKQpgYGAKCmBgYHtyfQojIGxvb2tpbmcgYXQgdGhlIHN1bW1hcnkKc3VtbWFyeShtb3ZpZXMpCmBgYAoKCiMjIyMgVmFyaWFibGUgdHlwZXMKClRoZSBgc3RyYCBmdW5jdGlvbiByZXZlYWxlZCB0aGUgc3RydWN0dXJlIG9mIHRoZSBgbW92aWVzYCBkYXRhIGZyYW1lLCB3aGljaCBpbmNsdWRlZCB0aGUgbnVtYmVyIG9mIHJvd3MgYW5kIGNvbHVtbnMsIGFzIHdlbGwgYXMgYSBnbGltcHNlIGF0IGVhY2ggKip2YXJpYWJsZSoqIChpLmUuIGNvbHVtbikgYW5kIHRoZSBmaXJzdCBmZXcgY2FzZXMuCgpJbiBSLCB0aGVyZSBhcmUgYSBmZXcgYmFzaWMgdmFyaWFibGUgdHlwZXMgKG1vZGVzKToKCiogSW50ZWdlciAKKiBOdW1lcmljIChkb3VibGUsIHJlYWwpCiogQ2hhcmFjdGVyICAKKiBGYWN0b3IgCiogTG9naWNhbAoKVGhlcmUgYXJlIG90aGVyIG1vZGVzLCBidXQgZm9yIG5vdyB0aGF0IHRoaXMgbGlzdCB3aWxsIHN1ZmZpY2UuCgojIyMjIE9wZXJhdG9ycyBhbmQgZXhwcmVzc2lvbnMKCkFzIGEgZGF0YSBzY2llbnRpc3QgeW91IHdpbGwgd2FudCB0byAqKmRvKiogc29tZXRoaW5nIHdpdGggeW91ciBkYXRhLiBTbyB3ZSBuZWVkIHN0YXJ0IGFkZGluZyB0aGluZ3MgdG8geW91ciB0b29sa2l0LgoKVG8gYmVnaW4sIHdlIGNhbiB0aGluayBvZiBSIGFzIGFuIG92ZXItcG93ZXJlZCBjYWxjdWxhdG9yCgpgYGB7cn0KIyBBZGRpdGlvbgozICsgNQoKIyBTdWJ0cmFjdGlvbgoyIC0gNQpgYGAKCklmIHlvdSBkb24ndCB3YW50IHRvIGxvc2UgYSBxdWFudGl0eSwgdGhlbiB5b3Ugc2hvdWxkIGFzc2lnbiBpdCBhIG5hbWUuCgpgYGB7cn0KIyBBc3NpZ24gYSBuYW1lCnggPC0gMyArIDUKCiMgTXVsdGlwbGljYXRpb24KeSA8LSB4ICogMTAKCiMgRGl2aXNpb24KeS94CgojIEV4cG9uZW50aWF0aW9uCnheNApgYGAKClIgb2JleXMgdGhlIGZhbWlsaWFyIG9yZGVyIG9mIG9wZXJhdGlvbnMKCmBgYHtyfQojIE9yZGVyIG9mIG9wZXJhdGlvbnMKMSArIDIgKiAzICogNCAqIDUgLyA2XjMgKyA3ICsgOAoKMSArIDIgKiAoKDMgKiA0ICogNSAvIDYpXjMpICsgNyArIDgKYGBgCgpCdXQgdGhpcyBpcyBhIGRhdGEgc2NpZW5jZSBjbGFzcywgc28gd2UgbmVlZCB0byBicmluZyBiYWNrIHRoZSBkYXRhISBGb3IgZXhhbXBsZSwgd2UgbWF5IHdhbnQgdG8gY2FsY3VsYXRlIHRoZSBuZXQgcHJvZml0IGluIG1pbGxpb25zCgpgYGB7cn0KbW92aWVzJG5ldCA8LSAobW92aWVzJGdyb3NzIC0gbW92aWVzJGJ1ZGdldCkgLyAxZTYKc3VtbWFyeShtb3ZpZXMkbmV0KQpgYGAKCgoKIyMjIyBTeW50YXg6IEZ1bmN0aW9uIGFwcGxpY2F0aW9uCgpXZSBoYXZlIGFscmVhZHkgdXNlZCBmdW5jdGlvbnMgaW4gUi0tLWZvciBleGFtcGxlLCBgc3VtbWFyeWAgaXMgYSBmdW5jdGlvbi0tLXNvIHlvdSBoYXZlIHNlZW4gdGhlIHN5bnRheCwgYnV0IHdlIG5lZWQgdG8gbWFrZSBzdXJlIHdlIHVuZGVyc3RhbmQgd2hhdCdzIGhhcHBlbmluZy4KClRoZSBiYXNpYyBwYXR0ZXJuIGlzCgpgYGB7ciBldmFsPUZBTFNFfQpvYmplY3RfbmFtZSA8LSBmdW5jdGlvbl9uYW1lKGFyZ3VtZW50cykKYGBgCgpTaW5jZSB3ZSBvZnRlbiBoYXZlIGEgZGF0YSBzZXQgb2YgaW50ZXJlc3QsIG1hbnkgb2Ygb3VyIGZ1bmN0aW9ucyB3aWxsIHRha2UgdGhlIGZvcm0KCmBgYHtyIGV2YWw9RkFMU0V9Cm9iamVjdF9uYW1lIDwtIGZ1bmN0aW9uX25hbWUoZGF0YSwgYXJndW1lbnRzKQpgYGAKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW50cm9kdWN0aW9uIHRvIFIiCm91dHB1dDoKICBodG1sX25vdGVib29rOiBkZWZhdWx0CiAgaHRtbF9kb2N1bWVudDogZGVmYXVsdAotLS0KCiMjIE92ZXJ2aWV3IG9mIFIgTWFya2Rvd24gTm90ZWJvb2tzCgpJbiB0aGlzIGNvdXJzZSB3ZSB3aWxsIG9mdGVuIHdvcmsgd2l0aCBSIG1hcmtkb3duIG5vdGVib29rcyBpbiBjbGFzcy4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiBBbiBhbHRlcm5hdGl2ZSB0byB0aGUgUiBtYXJrZG93biBub3RlYm9vayBpcyBhbiBSIG1hcmtkb3duIGZpbGUuCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kL0NudHJsK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KMToxMApgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDbWQvQ250cmwrT3B0aW9uK0kqLgoKV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDbWQrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4KCgojIyBZb3VyIEZpcnN0IFIgc2Vzc2lvbgoKV2hpbGUgeW91IGFyZSBsZWFybmluZyB0aGUgUiBsYW5ndWFnZSwgcmVtZW1iZXIgdGhhdCB5b3UgYXJlIGxlYXJuaW5nIGEgbmV3IGxhbmd1YWdlOyB0aHVzLCB3ZSB3aWxsIHN0YXJ0IHJhdGhlciBzaW1wbHkgd2l0aCBzbWFsbCBhbmFseXNpcyB0YXNrcyBhbmQgYnVpbGQgdXAgdG8gbW9yZSBjb21wbGljYXRlZCB0YXNrcy4gQWxzbywgeW91IHdpbGwgbm90IHJlbWVtYmVyIGV2ZXJ5dGhpbmcgaW1tZWRpYXRlbHktLS10aGF0J3MgT0ssIGl0J3MgYSBuYXR1cmFsIHBhcnQgb2YgbGVhcm5pbmcgYSBsYW5ndWFnZSEgCgojIyMgSW5zdGFsbGluZyBhbmQgbG9hZGluZyBSIHBhY2thZ2VzCgpSIGRvZXMgbm90IGVuYWJsZSBhbGwgb2YgaXRzIGZ1bmN0aW9uYWxpdHkgd2hlbiB5b3Ugb3BlbiBpdC4gVG8gZW5hYmxlIGFkZGl0aW9uYWwgZnVuY3Rpb25hbGl0eSB3ZSBuZWVkIHRvIGxvYWQgKlIgcGFja2FnZXMqLiBJbiB0aGlzIGNsYXNzIHdlIHdpbGwgb2Z0ZW4gdXNlIHRoZSBgdGlkeXZlcnNlYCBSIHBhY2thZ2UgdG8gZW5hYmxlIGJldHRlciB0b29scyBmb3IgcGxvdHRpbmcsIGRhdGEgbWFuaXB1bGF0aW9uLCBldGMuIEJlbG93IGlzIGFuIGV4YW1wbGUgb2YgaW5zdGFsbGF0aW9uIGFuZCBsb2FkaW5nOgoKYGBge3IgbWVzc2FnZT1GQUxTRSwgZXZhbD1GQUxTRX0KIyBZb3Ugb25seSBuZWVkIHRvIGluc3RhbGwgYSBwYWNrYWdlIG9uY2UKaW5zdGFsbC5wYWNrYWdlcygidGlkeXZlcnNlIikKYGBgCgpgYGB7cn0KIyBZb3Ugd2lsbCBuZWVkIHRvIGxvYWQgdGhlIHBhY2thZ2UgaW4gZWFjaCBSIG1hcmtkb3duIG5vdGVib29rCmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCgojIyMgTG9hZGluZyBkYXRhIGFuZCBhc3NpZ25tZW50CgpEYXRhIHNjaWVuY2UgZm9jdXNlcyBvbiAqKmRhdGEqKiwgc28gd2UgbmVlZCB0byBzdGFydCB3aXRoIGEgZGF0YSBzZXQuIFRoZXJlIGFyZSBtdWx0aXBsZSB3YXlzIHRvIGxvYWQgZGF0YSBzZXRzIChhbmQgd2UnbGwgbGVhcm4gbW9yZSBhYm91dCB0aGVtIGxhdGVyKSwgYnV0IHdlIG9mdGVuIG5lZWQgdG8gbG9hZCBhIGAuY3N2YCAoY29tbWEgc2VwZXJhdGVkIHZhbHVlKSBmaWxlLgoKVG9kYXksIHdlJ2xsIGxvb2sgYXQgYSBkYXRhIHNldCBjb250YWluaW5nIG92ZXIgNSwwMDAgbW92aWVzIHNjcmFwZWQgZnJvbSBJTURCLgoKYGBge3J9CiMgTG9hZCB0aGUgZGF0YSBhbmQgYXNzaWduIGl0IGEgbmFtZQptb3ZpZXMgPC0gcmVhZC5jc3YoImh0dHBzOi8vZ2l0aHViLmNvbS9jbXNjMjA1L2RhdGEvcmF3L21hc3Rlci9tb3ZpZV9tZXRhZGF0YS5jc3YiLCBhcy5pcyA9IFRSVUUpCmBgYAoKCiMjIyBEYXRhIGZyYW1lcwoKVGhlIGBtb3ZpZXNgIG9iamVjdCBpcyBvdXIgZmlyc3QgZXhhbXBsZSBvZiBhIGRhdGEgZnJhbWUsIHdoaWNoIGlzIGVzc2VudGlhbGx5IGEgbGlzdCBvZiB2ZWN0b3JzLiBXZSBjYW4gZ2V0IGEgZmlyc3QgZ2xpbXBzZSBvZiBvdXIgZGF0YSBzZXQgaW4gYSBmZXcgd2F5czoKCmBgYHtyfQojIFByaW50aW5nIHRoZSBmaXJzdCA2IHJvd3MKIyBOb3RlIHRoYXQgbWlzc2luZyB2YWx1ZXMgYXJlIGRlbm90ZWQgYnkgTkEKaGVhZChtb3ZpZXMpCmBgYAoKYGBge3J9CiMgUHJpbnRpbmcgdGhlIGxhc3QgNiByb3dzCnRhaWwobW92aWVzKQpgYGAKCmBgYHtyfQojIExvb2tpbmcgYXQgdGhlIG51bWJlciBvZiByb3dzIGFuZCBjb2x1bW5zCmRpbShtb3ZpZXMpCmBgYAoKYGBge3J9CiMgTG9va2luZyBhdCB0aGUgc3RydWN0dXJlCnN0cihtb3ZpZXMpCmBgYAoKYGBge3J9CiMgR2V0dGluZyBhIGdsaW1wc2Ugb2YgdGhlIHN0cnVjdHVyZQpnbGltcHNlKG1vdmllcykKYGBgCgoKYGBge3J9CiMgbG9va2luZyBhdCB0aGUgc3VtbWFyeQpzdW1tYXJ5KG1vdmllcykKYGBgCgoKIyMjIyBWYXJpYWJsZSB0eXBlcwoKVGhlIGBzdHJgIGZ1bmN0aW9uIHJldmVhbGVkIHRoZSBzdHJ1Y3R1cmUgb2YgdGhlIGBtb3ZpZXNgIGRhdGEgZnJhbWUsIHdoaWNoIGluY2x1ZGVkIHRoZSBudW1iZXIgb2Ygcm93cyBhbmQgY29sdW1ucywgYXMgd2VsbCBhcyBhIGdsaW1wc2UgYXQgZWFjaCAqKnZhcmlhYmxlKiogKGkuZS4gY29sdW1uKSBhbmQgdGhlIGZpcnN0IGZldyBjYXNlcy4KCkluIFIsIHRoZXJlIGFyZSBhIGZldyBiYXNpYyB2YXJpYWJsZSB0eXBlcyAobW9kZXMpOgoKKiBJbnRlZ2VyIAoqIE51bWVyaWMgKGRvdWJsZSwgcmVhbCkKKiBDaGFyYWN0ZXIgIAoqIEZhY3RvciAKKiBMb2dpY2FsCgpUaGVyZSBhcmUgb3RoZXIgbW9kZXMsIGJ1dCBmb3Igbm93IHRoYXQgdGhpcyBsaXN0IHdpbGwgc3VmZmljZS4KCiMjIyMgT3BlcmF0b3JzIGFuZCBleHByZXNzaW9ucwoKQXMgYSBkYXRhIHNjaWVudGlzdCB5b3Ugd2lsbCB3YW50IHRvICoqZG8qKiBzb21ldGhpbmcgd2l0aCB5b3VyIGRhdGEuIFNvIHdlIG5lZWQgc3RhcnQgYWRkaW5nIHRoaW5ncyB0byB5b3VyIHRvb2xraXQuCgpUbyBiZWdpbiwgd2UgY2FuIHRoaW5rIG9mIFIgYXMgYW4gb3Zlci1wb3dlcmVkIGNhbGN1bGF0b3IKCmBgYHtyfQojIEFkZGl0aW9uCjMgKyA1CgojIFN1YnRyYWN0aW9uCjIgLSA1CmBgYAoKSWYgeW91IGRvbid0IHdhbnQgdG8gbG9zZSBhIHF1YW50aXR5LCB0aGVuIHlvdSBzaG91bGQgYXNzaWduIGl0IGEgbmFtZS4KCmBgYHtyfQojIEFzc2lnbiBhIG5hbWUKeCA8LSAzICsgNQoKIyBNdWx0aXBsaWNhdGlvbgp5IDwtIHggKiAxMAoKIyBEaXZpc2lvbgp5L3gKCiMgRXhwb25lbnRpYXRpb24KeF40CmBgYAoKUiBvYmV5cyB0aGUgZmFtaWxpYXIgb3JkZXIgb2Ygb3BlcmF0aW9ucwoKYGBge3J9CiMgT3JkZXIgb2Ygb3BlcmF0aW9ucwoxICsgMiAqIDMgKiA0ICogNSAvIDZeMyArIDcgKyA4CgoxICsgMiAqICgoMyAqIDQgKiA1IC8gNileMykgKyA3ICsgOApgYGAKCkJ1dCB0aGlzIGlzIGEgZGF0YSBzY2llbmNlIGNsYXNzLCBzbyB3ZSBuZWVkIHRvIGJyaW5nIGJhY2sgdGhlIGRhdGEhIEZvciBleGFtcGxlLCB3ZSBtYXkgd2FudCB0byBjYWxjdWxhdGUgdGhlIG5ldCBwcm9maXQgaW4gbWlsbGlvbnMKCmBgYHtyfQptb3ZpZXMkbmV0IDwtIChtb3ZpZXMkZ3Jvc3MgLSBtb3ZpZXMkYnVkZ2V0KSAvIDFlNgpzdW1tYXJ5KG1vdmllcyRuZXQpCmBgYAoKCgojIyMjIFN5bnRheDogRnVuY3Rpb24gYXBwbGljYXRpb24KCldlIGhhdmUgYWxyZWFkeSB1c2VkIGZ1bmN0aW9ucyBpbiBSLS0tZm9yIGV4YW1wbGUsIGBzdW1tYXJ5YCBpcyBhIGZ1bmN0aW9uLS0tc28geW91IGhhdmUgc2VlbiB0aGUgc3ludGF4LCBidXQgd2UgbmVlZCB0byBtYWtlIHN1cmUgd2UgdW5kZXJzdGFuZCB3aGF0J3MgaGFwcGVuaW5nLgoKVGhlIGJhc2ljIHBhdHRlcm4gaXMKCmBgYHtyIGV2YWw9RkFMU0V9Cm9iamVjdF9uYW1lIDwtIGZ1bmN0aW9uX25hbWUoYXJndW1lbnRzKQpgYGAKClNpbmNlIHdlIG9mdGVuIGhhdmUgYSBkYXRhIHNldCBvZiBpbnRlcmVzdCwgbWFueSBvZiBvdXIgZnVuY3Rpb25zIHdpbGwgdGFrZSB0aGUgZm9ybQoKYGBge3IgZXZhbD1GQUxTRX0Kb2JqZWN0X25hbWUgPC0gZnVuY3Rpb25fbmFtZShkYXRhLCBhcmd1bWVudHMpCmBgYAoK</div>
 
 
 
