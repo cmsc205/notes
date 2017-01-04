@@ -39,7 +39,7 @@ library(tidyverse)
 
 ### Loading data and assignment
 
-Data science focuses on **data**, so we need to start with a data set. There are multiple ways to load data sets (and we'll learn more about them later), but we often need to load a `.csv` (comma seperated value) file.
+Data science focuses on **data**, so we need to start with a data set. There are multiple ways to load data sets (and we'll learn more about them later), but we often need to load a `.csv` (comma separated value) file.
 
 Today, we'll look at a data set containing over 5,000 movies scraped from IMDB.
 
