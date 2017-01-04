@@ -9,6 +9,7 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
 ## What is Data Science?
 
 One [answer](http://bulletin.imstat.org/2014/10/ims-presidential-address-let-us-own-data-science/) from former Institute of Mathematical Statistics president Bin Yu
@@ -31,16 +32,18 @@ Another view from Drew Conway
 
 Source: *R for Data Science*, Grolemund and Wickham
 
-## Advice
+## Advice for this course
 
 - You are going to get frustrated, you're learning a new language
+    + "You actually don't know what you are doing until after you have done it."
+    
 - Look at your data
-- Don't thrash
-- Do the most braindead thing first, take it end to end, then iterate/improve.
-- "You actually don’t know what you are doing until after you have done it."
-- Think of the marginal return of your efforts.
 
-*From Albert Kim's presentation on teaching data science to undergrads*
+- Don't be stuck for more than 20 minutes. This takes self-awareness and mindfulness.  Think of the marginal return of your efforts.
+
+- Do the most braindead thing first, take it end to end, then iterate/improve.
+
+# [cmsc205.github.io](https://cmsc205.github.io/index.html)
 
 # R and R Studio
 
@@ -54,6 +57,6 @@ Source: *R for Data Science*, Grolemund and Wickham
 
 ### On your machine
 
-- Follow the instructions on the website to install
+- Follow the [instructions](https://cmsc205.github.io/week01.html) on the website to install
 
 # Demo
