@@ -56,27 +56,27 @@ The `movies` object is our first example of a data frame, which is essentially a
 ```{r}
 # Printing the first 6 rows
 # Note that missing values are denoted by NA
-
+head(movies)
 ```
 
 ```{r}
 # Printing the last 6 rows
-
+tail(movies)
 ```
 
 ```{r}
 # Looking at the number of rows and columns
-
+dim(movies)
 ```
 
 ```{r}
 # Looking at the structure
-
+str(movies)
 ```
 
 ```{r}
 # looking at the summary
-
+summary(movies)
 ```
 
 
@@ -102,26 +102,26 @@ To begin, we can think of R as an over-powered calculator
 
 ```{r}
 # Addition
-
+3 + 5
 
 # Subtraction
-
+2 - 5
 ```
 
 If you don't want to lose a quantity, then you should assign it a name.
 
 ```{r}
 # Assign a name
-
+x <- 3 + 5
 
 # Multiplication
-
+y <- x * 10
 
 # Division
-
+y/x
 
 # Exponentiation
-
+x^4
 ```
 
 R obeys the familiar order of operations
@@ -136,7 +136,8 @@ R obeys the familiar order of operations
 But this is a data science class, so we need to bring back the data! For example, we may want to calculate the net profit in millions
 
 ```{r}
-
+movies$net <- (movies$gross - movies$budget) / 1e6
+summary(movies$net)
 ```
 
 
