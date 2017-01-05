@@ -1,0 +1,74 @@
+---
+title: ""
+output: html_notebook
+---
+
+## Loading packages
+
+1.  Load the `tidyverse` in the code chunk below.
+
+```{r}
+# SOLUTION:
+
+```
+
+* * *
+
+## Manipulating vectors
+
+The `letters` vector is a vector of all lowercase letters of the alphabet.
+
+2.  Determine the length of the `letters` vector.
+
+```{r}
+# SOLUTION:
+
+```
+
+3.  Select the 13th letter of the alphabet.
+
+```{r}
+# SOLUTION:
+
+```
+
+4.  Select the 17th through 21st letters of the alphabet.
+
+```{r}
+# SOLUTION:
+
+```
+
+* * *
+
+## Examining data frames
+
+The XX data frame contains information on... 
+
+5.  Load the data frame into R and assign it to `name_df`.
+
+```{r}
+# SOLUTION:
+
+```
+
+6.  Print the first six rows of the data frame.
+
+```{r}
+# SOLUTION:
+
+```
+
+7.  How many rows and columns does the data frame have?
+
+```{r}
+# SOLUTION:
+
+```
+
+8.  For each variable, determine it's type (integer, numeric, character, factor, logical).
+
+```{r}
+# SOLUTION:
+
+```
