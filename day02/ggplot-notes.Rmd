@@ -1,0 +1,299 @@
+---
+title: "Introduction to ggplot2"
+author: "CMSC 205, Winter 2017"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# Set up
+
+```{r message=FALSE}
+library(tidyverse) # includes ggplot2
+# Load data
+# show head
+```
+
+---
+
+# The grammar of graphics
+
+
+**geom**: the geometric "shape" used to display data (glyph)
+ 
+ * bar, point, line, ribbon, text, etc.
+ 
+**aesthetic**: an attribute controlling how geom is displayed
+
+ * x position, y position, color, fill, shape, size, etc.
+
+**scale**: conversion of raw data to visual display
+
+ * particular assignment of colors, shapes, sizes, etc. 
+ 
+**guide**: helps user convert visual data back into raw data (legends, axes)
+
+**stat**: a transformation applied to data before geom gets it
+
+ * example: histograms work on binned data
+
+---
+ 
+# How do we make this plot?
+
+
+```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8}
+library(mosaic)
+data(Births78)
+p1 <- ggplot(
+  data=Births78, aes(x=date, y=births)) + 
+  geom_point()
+p1
+```
+
+--
+
+Two Questions:
+
+--
+
+ 1. What do we want R to do?  (What is the goal?)
+ 
+ 1. What does R need to know?
+ 
+---
+
+# How do we make this plot?
+
+```{r, echo=FALSE, message=FALSE, fig.height=3, fig.width=8}
+p1
+```
+
+Two Questions:
+
+ 1. Goal: scatterplot = a plot with points
+ 
+ 2. What does R need to know?
+
+.pull-left[
+    * data source: `Births78`
+]
+
+.pull-right[
+    * aesthetics: 
+        - `date -> x`
+        - `births -> y`
+        - default color (same for all points) 
+]
+
+---
+
+# How do we make this plot?
+
+
+```{r, echo=FALSE, fig.height=1.5, fig.width=8}
+p1
+```
+
+ 1. Goal: scatterplot = a plot with points
+ 
+    * `ggplot() + geom_point()`
+ 
+ 2. What does R need to know?
+ 
+    * data source: `data = Births78`
+
+    * aesthetics: `aes(x = date, y = births)`
+
+--
+
+```{r, eval=FALSE, fig.height=1.5}
+ggplot(data=Births78, aes(x=date, y=births)) + 
+  geom_point()
+```
+
+--
+
+```{r, eval=FALSE, fig.height=1.5}
+ggplot() +
+  geom_point(data=Births78, aes(x=date, y=births))  
+```
+
+---
+
+# How do we make this plot?
+
+
+```{r, echo=FALSE, fig.width=8, fig.height=3}
+ggplot(data=Births78) +
+  geom_point(aes(x=date, y=births, color=wday)) 
+```
+
+What has changed?
+
+--
+
+ * new aesthetic: mapping color to day of week
+ 
+--
+
+```{r, eval=FALSE}
+ggplot(data=Births78) +
+  geom_point(aes(x=date, y=births, color=wday))
+```
+---
+
+# How do we make this plot?
+
+
+```{r, echo=FALSE, fig.height=3, fig.width=8}
+ggplot(data=Births78) +
+  geom_line(aes(x=date, y=births, color=wday)) 
+```
+
+--
+
+This time we use lines instead of dots
+
+--
+
+```{r, eval=FALSE}
+ggplot(data=Births78) +
+  geom_line(aes(x=date, y=births, color=wday)) 
+```
+
+---
+
+How do we make this plot?
+====================
+
+```{r, echo=FALSE, fig.height=3, fig.width=8, tidy=FALSE}
+ggplot(data=Births78, aes(x=date, y=births, color=wday)) + 
+  geom_point() + 
+  geom_line()
+```
+
+--
+
+This time we have two **layers**, one with points and one with
+lines
+
+```{r, eval=FALSE}
+ggplot(data=Births78, aes(x=date, y=births, color=wday)) + 
+  geom_point() +  
+  geom_line()
+```
+
+--
+
+ *  The layers are placed one on top of the other:  the points 
+are *below* and the lines are *above*.   
+
+ * `data` and `aes` specified in `ggplot()` affect all geoms
+
+---
+
+Alternative Syntax
+===================
+
+```{r fig.height=3, fig.width=8}
+Births78 %>% 
+  ggplot(aes(x=date, y=births, color=wday)) + 
+  geom_point() + 
+  geom_line()
+```
+
+---
+
+# What does this do?
+
+
+```{r, eval=FALSE}
+Births78 %>% 
+ggplot(aes(x=date, y=births, color="navy")) + 
+  geom_point()  
+```
+
+--
+
+```{r, echo=FALSE, fig.height=3, fig.width=8}
+Births78 %>% 
+  ggplot(aes(x=date, y=births, color="navy")) + 
+  geom_point()  
+```
+
+--
+
+- This is *mapping* the color aesthetic to a new variable with 
+only one value ("navy").  
+
+- So all the dots get set to the same color, but it's not navy.
+
+---
+
+# Setting vs. Mapping
+
+
+If we want to *set* the color to be navy for all of the dots, we do 
+it this way:
+
+```{r fig.height=3, fig.width=8}
+Births78 %>%
+  ggplot(aes(x=date, y=births)) +   # map these 
+  geom_point(color = "navy")        # set this
+```
+
+* Note that `color = "navy"` is now outside of the aesthetics list.  That's how `ggplot2` distinguishes between mapping and setting.
+
+---
+
+# How do we make this plot?
+
+```{r, echo=FALSE, fig.height=3, fig.width=8}
+Births78 %>%
+  ggplot(aes(x=date, y=births)) + 
+  geom_line(aes(color=wday)) +        # map color here
+  geom_point(color="navy")            # set color here
+```
+
+--
+
+```{r, eval=FALSE}
+Births78 %>%
+  ggplot(aes(x=date, y=births)) + 
+  geom_line(aes(color=wday)) +       # map color here
+  geom_point(color="navy")           # set color here
+```
+
+* `ggplot()` establishes the default data and aesthetics
+for the geoms, but each geom may change these defaults.
+
+* good practice: put into `ggplot()` the things that affect all (or most) of the layers; rest in `geom_blah()`
+
+---
+
+# Other geoms
+```{r, echo=TRUE, comment=NA}
+apropos("^geom_")
+```
+
+help pages will tell you their aesthetics, default stats, etc.
+
+```{r, eval=FALSE}
+?geom_area             # for example
+```
+
+
+
+---
+
+# Acknowledgments
+
+These slides were adapted from a set shared by Randy Prium

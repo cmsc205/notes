@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to ggplot2</title>
+    <meta charset="utf-8">
+    <meta name="author" content="CMSC 205, Winter 2017" />
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to ggplot2
+### CMSC 205, Winter 2017
+
+---
+
+
+
+
+# Set up
+
+
+```r
+library(tidyverse) # includes ggplot2
+# Load data
+# show head
+```
+
+---
+
+# The grammar of graphics
+
+
+**geom**: the geometric "shape" used to display data (glyph)
+ 
+ * bar, point, line, ribbon, text, etc.
+ 
+**aesthetic**: an attribute controlling how geom is displayed
+
+ * x position, y position, color, fill, shape, size, etc.
+
+**scale**: conversion of raw data to visual display
+
+ * particular assignment of colors, shapes, sizes, etc. 
+ 
+**guide**: helps user convert visual data back into raw data (legends, axes)
+
+**stat**: a transformation applied to data before geom gets it
+
+ * example: histograms work on binned data
+
+---
+ 
+# How do we make this plot?
+
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+--
+
+Two Questions:
+
+--
+
+ 1. What do we want R to do?  (What is the goal?)
+ 
+ 1. What does R need to know?
+ 
+---
+
+# How do we make this plot?
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+Two Questions:
+
+ 1. Goal: scatterplot = a plot with points
+ 
+ 2. What does R need to know?
+
+.pull-left[
+    * data source: `Births78`
+]
+
+.pull-right[
+    * aesthetics: 
+        - `date -&gt; x`
+        - `births -&gt; y`
+        - default color (same for all points) 
+]
+
+---
+
+# How do we make this plot?
+
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+ 1. Goal: scatterplot = a plot with points
+ 
+    * `ggplot() + geom_point()`
+ 
+ 2. What does R need to know?
+ 
+    * data source: `data = Births78`
+
+    * aesthetics: `aes(x = date, y = births)`
+
+--
+
+
+```r
+ggplot(data=Births78, aes(x=date, y=births)) + 
+  geom_point()
+```
+
+--
+
+
+```r
+ggplot() +
+  geom_point(data=Births78, aes(x=date, y=births))  
+```
+
+---
+
+# How do we make this plot?
+
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+What has changed?
+
+--
+
+ * new aesthetic: mapping color to day of week
+ 
+--
+
+
+```r
+ggplot(data=Births78) +
+  geom_point(aes(x=date, y=births, color=wday))
+```
+---
+
+# How do we make this plot?
+
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+--
+
+This time we use lines instead of dots
+
+--
+
+
+```r
+ggplot(data=Births78) +
+  geom_line(aes(x=date, y=births, color=wday)) 
+```
+
+---
+
+How do we make this plot?
+====================
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+--
+
+This time we have two **layers**, one with points and one with
+lines
+
+
+```r
+ggplot(data=Births78, aes(x=date, y=births, color=wday)) + 
+  geom_point() +  
+  geom_line()
+```
+
+--
+
+ *  The layers are placed one on top of the other:  the points 
+are *below* and the lines are *above*.   
+
+ * `data` and `aes` specified in `ggplot()` affect all geoms
+
+---
+
+Alternative Syntax
+===================
+
+
+```r
+Births78 %&gt;% 
+  ggplot(aes(x=date, y=births, color=wday)) + 
+  geom_point() + 
+  geom_line()
+```
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+# What does this do?
+
+
+
+```r
+Births78 %&gt;% 
+ggplot(aes(x=date, y=births, color="navy")) + 
+  geom_point()  
+```
+
+--
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+--
+
+- This is *mapping* the color aesthetic to a new variable with 
+only one value ("navy").  
+
+- So all the dots get set to the same color, but it's not navy.
+
+---
+
+# Setting vs. Mapping
+
+
+If we want to *set* the color to be navy for all of the dots, we do 
+it this way:
+
+
+```r
+Births78 %&gt;%
+  ggplot(aes(x=date, y=births)) +   # map these 
+  geom_point(color = "navy")        # set this
+```
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+* Note that `color = "navy"` is now outside of the aesthetics list.  That's how `ggplot2` distinguishes between mapping and setting.
+
+---
+
+# How do we make this plot?
+
+![](ggplot-notes_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+--
+
+
+```r
+Births78 %&gt;%
+  ggplot(aes(x=date, y=births)) + 
+  geom_line(aes(color=wday)) +       # map color here
+  geom_point(color="navy")           # set color here
+```
+
+* `ggplot()` establishes the default data and aesthetics
+for the geoms, but each geom may change these defaults.
+
+* good practice: put into `ggplot()` the things that affect all (or most) of the layers; rest in `geom_blah()`
+
+---
+
+# Other geoms
+
+```r
+apropos("^geom_")
+```
+
+```
+ [1] "geom_abline"     "geom_area"       "geom_ash"       
+ [4] "geom_bar"        "geom_bin2d"      "geom_blank"     
+ [7] "geom_boxplot"    "geom_contour"    "geom_count"     
+[10] "geom_crossbar"   "geom_curve"      "geom_density"   
+[13] "geom_density_2d" "geom_density2d"  "geom_dotplot"   
+[16] "geom_errorbar"   "geom_errorbarh"  "geom_freqpoly"  
+[19] "geom_hex"        "geom_histogram"  "geom_hline"     
+[22] "geom_jitter"     "geom_label"      "geom_line"      
+[25] "geom_linerange"  "geom_map"        "geom_path"      
+[28] "geom_point"      "geom_pointrange" "geom_polygon"   
+[31] "geom_qq"         "geom_quantile"   "geom_raster"    
+[34] "geom_rect"       "geom_ribbon"     "geom_rug"       
+[37] "geom_segment"    "geom_smooth"     "geom_spoke"     
+[40] "geom_step"       "geom_text"       "geom_tile"      
+[43] "geom_violin"     "geom_vline"     
+```
+
+help pages will tell you their aesthetics, default stats, etc.
+
+
+```r
+?geom_area             # for example
+```
+
+
+
+---
+
+# Acknowledgments
+
+These slides were adapted from a set shared by Randy Prium
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('showSlide', function (slide) {setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 100)});</script>
+
+  </body>
+</html>
