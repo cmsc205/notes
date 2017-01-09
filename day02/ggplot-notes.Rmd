@@ -17,8 +17,8 @@ options(htmltools.dir.version = FALSE)
 
 ```{r message=FALSE}
 library(tidyverse) # includes ggplot2
-# Load data
-# show head
+Births78 <- read.csv("https://github.com/cmsc205/data/raw/master/Birth78.csv", as.is = TRUE)
+head(Births78)
 ```
 
 ---

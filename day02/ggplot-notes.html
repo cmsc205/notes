@@ -23,8 +23,18 @@ class: center, middle, inverse, title-slide
 
 ```r
 library(tidyverse) # includes ggplot2
-# Load data
-# show head
+Births78 &lt;- read.csv("https://github.com/cmsc205/data/raw/master/Birth78.csv", as.is = TRUE)
+head(Births78)
+```
+
+```
+##         date births dayofyear  wday
+## 1 1978-01-01   7701         1   Sun
+## 2 1978-01-02   7527         2   Mon
+## 3 1978-01-03   8825         3  Tues
+## 4 1978-01-04   8859         4   Wed
+## 5 1978-01-05   9043         5 Thurs
+## 6 1978-01-06   9208         6   Fri
 ```
 
 ---
