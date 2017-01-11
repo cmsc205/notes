@@ -1,0 +1,291 @@
+---
+title: "Common plots in ggplot2"
+output: html_notebook
+---
+
+The type of plot created depends on a few factors:
+
+- the type of variable(s) being displayed,
+- and the number of variables being displayed.
+
+Today we'll learn more about creating specific types of plots using the `ggplot2` package.
+
+To begin, load the `tidyverse`:
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Further, to ground our discussion, let's consider the `diamonds` data set that is loaded with the `tidyverse`.
+
+```{r}
+head(diamonds)
+```
+
+**Question.** How how many observations are in the diamonds data set?
+
+For information about the variable definitions, see the help file using `?diamonds` in the console.
+
+
+# Univariate graphics
+
+### Histograms
+
+**Use:** exploring the distribution of a quantitative variable
+
+**geometry:** `geom_histogram`
+
+**aesthetics required**: `x` (the variable to be displayed)
+
+
+```{r}
+# Histogram of carat
+diamonds %>%
+  ggplot(aes(x = carat)) +
+  geom_histogram()
+```
+
+**Remember to check the binwidth!**
+
+
+### Density plots
+
+**Use:** exploring the distribution of a quantitative variable
+
+**geometry:** `geom_density`
+
+**aesthetics required**: `x` (the variable to be displayed)
+
+
+```{r}
+# Density plot of price
+diamonds %>%
+  ggplot(aes(x = price)) +
+  geom_density()
+```
+
+
+### Bar charts
+
+**Use:** exploring the distribution of a categorical variable
+
+**geometry:** `geom_bar`
+
+**aesthetics required**: `x` (the variable to be displayed)
+
+
+```{r}
+# Bar chart of clarity
+diamonds %>%
+  ggplot(aes(x = clarity)) +
+  geom_bar()
+```
+
+
+* * * 
+
+# Bivariate graphics
+
+### Scatterplots
+
+**Use:** exploring the relationship between two quantitative variables
+
+**geometry:** `geom_point`
+
+**aesthetics required**: `x`, `y`
+
+```{r}
+# Let's see how carat and price are related
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point()
+```
+
+But that's pretty hard to read because we're plotting so many points!
+
+```{r}
+# Set the alpha level to help with overplotting
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(alpha = 0.1)
+```
+
+We can also add a smoother to reveal the trend in the scatterplot
+
+```{r}
+# Add a smoother to the plot above
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth()
+```
+
+
+
+
+### Segmented bar chart
+
+**Use:** exploring the relationship between two categorical variables
+
+**geometry:** `geom_bar`
+
+**aesthetics required**: `x`, `fill`
+
+```{r}
+# create a segmented bar chart of clarity by color
+diamonds %>%
+  ggplot(aes(x = clarity, fill = color)) +
+  geom_bar()
+```
+
+
+It's also interesting to set the `position`.
+
+```{r}
+# create a segmented bar chart of  clarity by color, setting position = "fill"
+diamonds %>%
+  ggplot(aes(x = clarity, fill = color)) +
+  geom_bar(position = "fill")
+```
+
+
+```{r}
+# create a segmented bar chart of  clarity by color, setting position = "dodge"
+diamonds %>%
+  ggplot(aes(x = clarity, fill = color)) +
+  geom_bar(position = "dodge")
+```
+
+
+
+### Side-by-side boxplots
+
+
+**Use:** exploring the relationship between a quantitative and categorical variable
+
+**geometry:** `geom_boxplot`
+
+**aesthetics required**: `x` (categorical), `y` (quantitative)
+
+```{r}
+# create boxplots of price by cut
+diamonds %>%
+  ggplot(aes(x = cut, y = price)) +
+  geom_boxplot()
+```
+
+```{r}
+# Let's try adding the points on top of the boxplots
+diamonds %>%
+  ggplot(aes(x = cut, y = price)) +
+  geom_boxplot() +
+  geom_point()
+```
+
+```{r}
+# Let's try again with geom_jitter
+# we'll need to eliminate the outliers in the boxplots by setting
+#   outlier.size=0
+diamonds %>%
+  ggplot(aes(x = cut, y = price)) +
+  geom_jitter(alpha = 0.1) +
+  geom_boxplot(outlier.size=0, alpha = 0.7) 
+```
+
+
+
+
+
+* * * 
+
+# Adding in more variables
+
+To add additional variables we can use **aesthetics** such as
+
+- size
+- color
+- fill
+- shape
+
+```{r}
+# Let's look at whether adding color for cut tells us anything about
+# the relationship between carat and price
+diamonds %>%
+  ggplot(aes(x = carat, y = price, color = cut)) +
+  geom_point(alpha = 0.3)
+```
+
+```{r}
+# Would shape be a better aesthetic to use?
+diamonds %>%
+  ggplot(aes(x = carat, y = price, shape = cut)) +
+  geom_point(alpha = 0.3)
+```
+
+```{r}
+# Would be using both color and shape better?
+diamonds %>%
+  ggplot(aes(x = carat, y = price, color = cut, shape = cut)) +
+  geom_point(alpha = 0.3)
+```
+
+
+Alternatively, we can use **facetting**.
+
+```{r}
+# Let's facet the scatterplot of price vs. carat by color
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(alpha = 0.3) + 
+  facet_wrap(~color)
+```
+
+```{r}
+# Let's facet the scatterplot of price vs. carat by color AND clarity
+diamonds %>%
+  ggplot(aes(x = carat, y = price)) +
+  geom_point(alpha = 0.1) +
+  facet_grid(color~clarity)
+```
+
+
+
+* * * 
+
+# Exercise
+
+In this exercise, we investigate home prices in Saratoga County, New York. The data set `saratoga.csv` contains the prices of 1,728 homes. 
+
+To begin, load the data set.
+
+```{r}
+# SOLUTION
+```
+
+
+1. Describe the distribution of `Price`.
+
+```{r}
+# SOLUTION
+```
+
+
+2. Are houses with fireplaces generally more expensive than houses without?
+
+```{r}
+# SOLUTION
+```
+
+3. Describe the relationship between Price and Living Area.
+
+```{r}
+# SOLUTION
+```
+
+4. Update the plot you created in part 3 to include whether information about whether the house has a fireplace. Summarize your findings.
+
+```{r}
+# SOLUTION
+```
+
+
