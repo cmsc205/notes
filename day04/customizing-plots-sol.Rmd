@@ -14,6 +14,10 @@ library(tidyverse)
 Also, let's start with our plot from the exercise
 
 ```{r}
+scorecard <- read_csv("https://github.com/cmsc205/data/raw/master/ScorecardSmallNarrow.csv")
+```
+
+```{r}
 p <- 
   scorecard %>%
   ggplot(aes(x=ADM_RATE, y=net_cost)) + 
@@ -79,7 +83,7 @@ Sometimes we need to order the levels of a factor to make a plot meaningful.
 To examine this, let's look at a new data set which contains informatio on the 10 most popular baby names in 2014.
 
 ```{r}
-babynames <- 
+babynames <- read_csv("https://github.com/cmsc205/data/raw/master/top10babynames2014.csv")
 ```
 
 ```{r}
@@ -100,6 +104,7 @@ p2 <- babynames %>%
   geom_bar(stat = "identity") + 
   labs(title = "Top 10 Baby Names of 2014", x = NULL, y = "Count") +
   coord_flip()
+p2
 ```
 
 
@@ -148,6 +153,7 @@ The `ggthemes` package contains a colorblind-friendly palette, which can be adop
 
 
 ```{r}
+library(ggthemes)
 p2 + scale_fill_colorblind()
 ```
 
@@ -177,11 +183,19 @@ p + theme_hc()
 
 Sometimes the `ggthemes` package won't do exactly what you want so you will have to dig into `ggplot2` a bit deeper and create your own theme.
 
+See `?theme` for a list of all of the components that you can modify.
+
 
 ```{r}
 babynames %>%
   ggplot(aes(x = name, y = n)) +
   geom_bar(stat = "identity") + 
-  theme()
+  geom_text(aes(label = n), vjust=1.5, color = "white") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())
 ```
 

@@ -7,11 +7,21 @@ We now know how to create many plot types using `ggplot2`, but often you want to
 
 To begin, make sure that you have the `tidyverse` loaded.
 
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 ```
 
 Also, let's start with our plot from the exercise
+
+```{r}
+scorecard <- read_csv("https://github.com/cmsc205/data/raw/master/ScorecardSmallNarrow.csv")
+```
+
+```{r}
+# Code for your solution to the warm up exercise
+# Let's assign the plot ot the object p
+```
+
 
 # Adding titles, axis labels, and legend labels
 
@@ -20,51 +30,54 @@ Good labels are critical for making your plots accessible to a wider audience. I
 
 To add/alter these annotations we simply add a new layer using the `labs` function.
 
-Let's start with a rather simple dotplot
-
-```{r}
-states <- as.data.frame(state.x77)
-
-p2 <- states %>%
-  ggplot(aes(x = state.name, y = state.area)) +
-  geom_point() +
-  coord_flip()
-p2
-```
 
 #### Adding a title
 
 ```{r}
-p + labs(title = "")
+# Code for adding a title to a plot
 ```
 
 #### Adding a subtitle
 
 ```{r}
-p + labs(subtitle = "")
+# Code for adding a subtitle to a plot
 ```
 
 #### Changing the axis labels
 
 ```{r}
-p + labs(x = "", y = "")
+# Code to change axis labels
 ```
 
 
 #### Changing the legend labels
 
-p + labs(color = "")
+```{r}
+# Code to change legend labels
+```
 
 
 # Ordering factors
 
 Sometimes we need to order the levels of a factor to make a plot meaningful.
 
+To examine this, let's look at a new data set which contains informatio on the 10 most popular baby names in 2014.
+
+```{r}
+babynames <- read_csv("https://github.com/cmsc205/data/raw/master/top10babynames2014.csv")
+```
+
+```{r}
+# Let's work with this bar chart of the top 10 baby names in 2014
+babynames %>%
+  ggplot(aes(x = name, y = n, fill = sex)) +
+  geom_bar(stat = "identity")
+```
 
 To do this with respect to another variable we can use the `reorder` function. 
 
 ```{r}
-
+# Reordering the names by popularity in the bar chart
 ```
 
 
@@ -75,11 +88,47 @@ To do this with respect to another variable we can use the `reorder` function.
 
 #### Manual adjustments
 
+To manually adjust the colors we can use the functions `scale_color_manual` or `scale_fill_manual`
+
+```{r}
+# Code to manually adjust the plot colors
+```
+
+
 #### Using RColorBrewer
+
+You can let the RColorBrewer package choose the colors for you using the `scale_color_brewer` and `scale_fill_brewer` functions. 
+
+```{r}
+# Code to use the scale_fill_brewer function
+```
+
+
+You can see all of the possible palettes in the package by running 
+
+```{r}
+RColorBrewer::display.brewer.all()
+```
+
 
 #### Using viridis
 
+If you install the viridis package (this might not be on the server), then you can use the `scale_color_viridis` and `scale_fill_viridis` functions.
+
+```{r}
+# Example of how to use the viridis color scheme with a discrete variable
+```
+
 #### A colorblind friendly palette
+
+The `ggthemes` package contains a colorblind-friendly palette, which can be adopted using the `scale_color_colorblind` and `scale_fill_colorblind` functions.
+
+
+```{r}
+# Using the colorblind friendly palette in ggthemes
+```
+
+
 
 
 # Choosing themes
@@ -88,8 +137,27 @@ By default `ggplot2` uses a grey background and guidlines on a plot; however, we
 
 The `ggthemes` package offers many additional [choices](https://github.com/jrnold/ggthemes). 
 
-A new theme is added just like a layer.
+We can use an existing theme just like adding a layer.
+
+
+```{r}
+# Let's check out the minimal theme first to remove many features
+```
+
+
+```{r}
+# Let's pick another theme from the list
+```
 
 
 # Customizing themes
+
+Sometimes the `ggthemes` package won't do exactly what you want so you will have to dig into `ggplot2` a bit deeper and create your own theme.
+
+See `?theme` for a list of all of the components that you can modify.
+
+
+```{r}
+# Let's really make a bare bones bar chart...
+```
 

@@ -25,7 +25,7 @@ The *Economist* is a well-regarded weekly news magazine.  The following graphic 
 The Scorecard data is too voluminous to work with conveniently in class; it takes too long to download.  You'll be working with a subset available in the file `ScorecardSmallNarrow.csv` which contains a single data table that is ready for plotting. After loading the `tidyverse` package, you can read this data set in using the below command:
 
 ```{r echo=FALSE}
-scorecard <- read_csv("ScorecardSmallNarrow.csv")
+scorecard <- read_csv("https://github.com/cmsc205/data/raw/master/ScorecardSmallNarrow.csv")
 ```
 
 Note that both in the graph and the data set the case (i.e. row) is a level of family income at an institution. In all there are 8964 cases and 5 variables:
