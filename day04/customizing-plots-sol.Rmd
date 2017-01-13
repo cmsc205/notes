@@ -1,0 +1,187 @@
+---
+title: "Customizing Plots"
+output: html_notebook
+---
+
+We now know how to create many plot types using `ggplot2`, but often you want to customize your plots. Today, we'll discuss common tools for customizing our plots.
+
+To begin, make sure that you have the `tidyverse` loaded.
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Also, let's start with our plot from the exercise
+
+```{r}
+p <- 
+  scorecard %>%
+  ggplot(aes(x=ADM_RATE, y=net_cost)) + 
+  geom_point(alpha = 0.3, color="blue") + 
+  facet_grid(CONTROL ~ income_group) +
+  geom_smooth(color="red") + 
+  ylim(0, 50000)
+p
+```
+
+
+# Adding titles, axis labels, and legend labels
+
+
+Good labels are critical for making your plots accessible to a wider audience. It's important to ensure axis and legend labels display the full variable name (or a logical abbreviaition), but this does not always happen by default. 
+
+To add/alter these annotations we simply add a new layer using the `labs` function.
+
+
+#### Adding a title
+
+```{r}
+p <- p + labs(title = "Average Net Cost per Year at U.S. Colleges")
+p
+```
+
+#### Adding a subtitle
+
+```{r}
+p <- p + labs(subtitle = "By income quintile")
+p
+```
+
+#### Changing the axis labels
+
+```{r}
+p + labs(x = "Admissions rate, %", 
+         y = "Net cost per year, $'000")
+```
+
+
+#### Changing the legend labels
+
+```{r}
+scorecard %>%
+  ggplot(aes(x=ADM_RATE, y=net_cost, color=ADM_RATE)) + 
+  geom_point(alpha = 0.3) + 
+  facet_grid(CONTROL ~ income_group) +
+  geom_smooth(color="darkorange") + 
+  ylim(0, 50000) +
+  labs(title = "Average Net Cost per Year at U.S. Colleges",
+       subtitle = "By income quintile",
+       x = "Admissions rate, %", 
+       y = "Net cost per year, $'000",
+       color = "Admissions\nRate")
+```
+
+
+# Ordering factors
+
+Sometimes we need to order the levels of a factor to make a plot meaningful.
+
+To examine this, let's look at a new data set which contains informatio on the 10 most popular baby names in 2014.
+
+```{r}
+babynames <- 
+```
+
+```{r}
+babynames %>%
+  ggplot(aes(x = name, y = n, fill = sex)) +
+  geom_bar(stat = "identity")
+```
+
+
+
+To do this with respect to another variable we can use the `reorder` function. 
+
+```{r}
+babynames$name <- reorder(babynames$name, FUN = identity, babynames$n)
+
+p2 <- babynames %>%
+  ggplot(aes(x = name, y = n, fill = sex)) +
+  geom_bar(stat = "identity") + 
+  labs(title = "Top 10 Baby Names of 2014", x = NULL, y = "Count") +
+  coord_flip()
+```
+
+
+
+# Choosing color palettes
+
+`ggplot2` does not choose the nicest looking palettes, and the palettes are typically not colorblind friendly. Luckily, it's quite easy to change the color palettes you use.
+
+#### Manual adjustments
+
+To manually adjust the colors we can use the functions `scale_color_manual` or `scale_fill_manual`
+
+```{r}
+p2 + scale_fill_manual(values = c("deeppink", "steelblue"))
+```
+
+
+#### Using RColorBrewer
+
+You can let the RColorBrewer package choose the colors for you using the `color_scale_brewer` and `fill_scale_brewer` functions. 
+
+```{r}
+p2 + scale_fill_brewer(palette = "Dark2")
+```
+
+
+You can see all of the possible palettes in the package by running 
+
+```{r}
+RColorBrewer::display.brewer.all()
+```
+
+
+#### Using viridis
+
+If you install the viridis package (this might not be on the server), then you can use the `scale_color_viridis` and `scale_fill_viridis` functions.
+
+```{r}
+library(viridis)
+p2 + scale_fill_viridis(discrete = TRUE)
+```
+
+#### A colorblind friendly palette
+
+The `ggthemes` package contains a colorblind-friendly palette, which can be adopted using the `scale_color_colorblind` and `scale_fill_colorblind` functions.
+
+
+```{r}
+p2 + scale_fill_colorblind()
+```
+
+
+
+
+# Choosing themes
+
+By default `ggplot2` uses a grey background and guidlines on a plot; however, we don't always want our plots to appear this way. To change this the appearance, we need to work with themes.
+
+The `ggthemes` package offers many additional [choices](https://github.com/jrnold/ggthemes). 
+
+We can use an existing theme just like adding a layer.
+
+
+```{r}
+p + theme_minimal()
+```
+
+
+```{r}
+p + theme_hc()
+```
+
+
+# Customizing themes
+
+Sometimes the `ggthemes` package won't do exactly what you want so you will have to dig into `ggplot2` a bit deeper and create your own theme.
+
+
+```{r}
+babynames %>%
+  ggplot(aes(x = name, y = n)) +
+  geom_bar(stat = "identity") + 
+  theme()
+```
+

@@ -1,0 +1,95 @@
+---
+title: "Customizing Plots"
+output: html_notebook
+---
+
+We now know how to create many plot types using `ggplot2`, but often you want to customize your plots. Today, we'll discuss common tools for customizing our plots.
+
+To begin, make sure that you have the `tidyverse` loaded.
+
+```{r}
+library(tidyverse)
+```
+
+Also, let's start with our plot from the exercise
+
+# Adding titles, axis labels, and legend labels
+
+
+Good labels are critical for making your plots accessible to a wider audience. It's important to ensure axis and legend labels display the full variable name (or a logical abbreviaition), but this does not always happen by default. 
+
+To add/alter these annotations we simply add a new layer using the `labs` function.
+
+Let's start with a rather simple dotplot
+
+```{r}
+states <- as.data.frame(state.x77)
+
+p2 <- states %>%
+  ggplot(aes(x = state.name, y = state.area)) +
+  geom_point() +
+  coord_flip()
+p2
+```
+
+#### Adding a title
+
+```{r}
+p + labs(title = "")
+```
+
+#### Adding a subtitle
+
+```{r}
+p + labs(subtitle = "")
+```
+
+#### Changing the axis labels
+
+```{r}
+p + labs(x = "", y = "")
+```
+
+
+#### Changing the legend labels
+
+p + labs(color = "")
+
+
+# Ordering factors
+
+Sometimes we need to order the levels of a factor to make a plot meaningful.
+
+
+To do this with respect to another variable we can use the `reorder` function. 
+
+```{r}
+
+```
+
+
+
+# Choosing color palettes
+
+`ggplot2` does not choose the nicest looking palettes, and the palettes are typically not colorblind friendly. Luckily, it's quite easy to change the color palettes you use.
+
+#### Manual adjustments
+
+#### Using RColorBrewer
+
+#### Using viridis
+
+#### A colorblind friendly palette
+
+
+# Choosing themes
+
+By default `ggplot2` uses a grey background and guidlines on a plot; however, we don't always want our plots to appear this way. To change this the appearance, we need to work with themes.
+
+The `ggthemes` package offers many additional [choices](https://github.com/jrnold/ggthemes). 
+
+A new theme is added just like a layer.
+
+
+# Customizing themes
+
