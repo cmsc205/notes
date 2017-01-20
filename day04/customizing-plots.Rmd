@@ -20,6 +20,12 @@ scorecard <- read_csv("https://github.com/cmsc205/data/raw/master/ScorecardSmall
 ```{r}
 # Code for your solution to the warm up exercise
 # Let's assign the plot ot the object p
+p <- scorecard %>%
+  ggplot(aes(x = ADM_RATE, y = net_cost)) +
+  geom_point(alpha = 0.2, color = "steelblue") +
+  geom_smooth(color = "black", se = TRUE) +
+  facet_grid(CONTROL ~ income_group)
+p
 ```
 
 
@@ -35,18 +41,24 @@ To add/alter these annotations we simply add a new layer using the `labs` functi
 
 ```{r}
 # Code for adding a title to a plot
+p <- p + labs(title = "Average Next Cost per Year at U.S. Colleges")
+p
 ```
 
 #### Adding a subtitle
 
 ```{r}
 # Code for adding a subtitle to a plot
+p <- p + labs(subtitle = "By income quintile")
+p
 ```
 
 #### Changing the axis labels
 
 ```{r}
 # Code to change axis labels
+p <- p + labs(x = "Admissions rate, %",
+         y = "Net cost per year, $'000")
 ```
 
 
@@ -54,6 +66,12 @@ To add/alter these annotations we simply add a new layer using the `labs` functi
 
 ```{r}
 # Code to change legend labels
+scorecard %>%
+  ggplot(aes(x = ADM_RATE, y = net_cost, color = ADM_RATE)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(color = "black", se = TRUE) +
+  facet_grid(CONTROL ~ income_group) + 
+  labs(color = "Admissions\nRate")
 ```
 
 
@@ -71,13 +89,26 @@ babynames <- read_csv("https://github.com/cmsc205/data/raw/master/top10babynames
 # Let's work with this bar chart of the top 10 baby names in 2014
 babynames %>%
   ggplot(aes(x = name, y = n, fill = sex)) +
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  coord_flip()
 ```
 
 To do this with respect to another variable we can use the `reorder` function. 
 
 ```{r}
 # Reordering the names by popularity in the bar chart
+babynames$name <- reorder(babynames$name, 
+                          FUN = function(x) -identity(x), 
+                          babynames$n)
+
+p2 <- babynames %>%
+  ggplot(aes(x = name, y = n, fill = sex)) +
+  geom_bar(stat = "identity") + 
+  coord_flip() +
+  labs(title = "Top 10 Baby Names in 2014",
+       x = NULL,
+       y = "Count")
+
 ```
 
 
@@ -92,6 +123,7 @@ To manually adjust the colors we can use the functions `scale_color_manual` or `
 
 ```{r}
 # Code to manually adjust the plot colors
+p2 + scale_fill_manual(values = c("turquoise", "gold"))
 ```
 
 
@@ -101,6 +133,7 @@ You can let the RColorBrewer package choose the colors for you using the `scale_
 
 ```{r}
 # Code to use the scale_fill_brewer function
+p2 + scale_fill_brewer(palette = "Dark2")
 ```
 
 
@@ -117,6 +150,8 @@ If you install the viridis package (this might not be on the server), then you c
 
 ```{r}
 # Example of how to use the viridis color scheme with a discrete variable
+library(viridis)
+p2 + scale_fill_viridis(discrete = TRUE)
 ```
 
 #### A colorblind friendly palette
@@ -126,6 +161,8 @@ The `ggthemes` package contains a colorblind-friendly palette, which can be adop
 
 ```{r}
 # Using the colorblind friendly palette in ggthemes
+library(ggthemes)
+p2 + scale_fill_colorblind()
 ```
 
 
@@ -142,11 +179,13 @@ We can use an existing theme just like adding a layer.
 
 ```{r}
 # Let's check out the minimal theme first to remove many features
+p + theme_minimal()
 ```
 
 
 ```{r}
 # Let's pick another theme from the list
+p + theme_tufte()
 ```
 
 
