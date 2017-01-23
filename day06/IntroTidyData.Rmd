@@ -1,8 +1,8 @@
 ---
 title: "Introduction to Tidy Data in R"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   word_document:
     fig_height: 3
     fig_width: 5
