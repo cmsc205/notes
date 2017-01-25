@@ -1,0 +1,161 @@
+---
+title: "Merging Data Tables"
+output: html_notebook
+---
+
+
+## Set up for today
+
+Load the tidyverse
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+Download the data folder from the webpage and put it in a logical directory on you computer (or the server). Then, load the data using the appropriate relative file path.
+
+```{r}
+orders <- read.csv("data/orders.csv", as.is = TRUE)
+customers <- read.csv("data/customers.csv", as.is = TRUE)
+```
+
+## Joining data tables
+
+- The `dplyr` package contains 6 different types of join statements
+
+- There are two main flavors
+
+  1. Mutating joins - add new variables to one data frame from matching observations in another
+
+  2. Filtering joins - filter observations from one data frame based on whether or not they match an observation in the other
+  
+## Keys
+
+In order to connect two data tables, we need to use **keys**
+
+- **primary key** - uniquely identifies an observation in its own table
+
+- **foreign key** uniquely identifies an observation in another table
+
+**Questions**
+
+1. What are the primary and foreign keys for the `orders` data table?
+
+2. What are the primary and foreign keys for the `customers` data table?
+
+
+## `inner_join`
+
+An `inner_join` matches pairs of observations when their keys are equal
+
+<img src="http://r4ds.had.co.nz/diagrams/join-inner.png" alt="Gather sketch" style = "width: 500px;"/>
+
+```{r}
+inner_join(x = orders, y = customers, by = "id")
+```
+
+## Outer joins
+
+**Outer joins** keeps the rows (observations) that appear in a specified table
+
+- A left join keeps all observations in the `x` table
+- A right join keeps all observations in the `y` table
+- A full join keeps all observations in both the `x` and `y` tables
+
+## Outer joins
+
+<img src="http://r4ds.had.co.nz/diagrams/join-outer.png" alt="Gather sketch" style = "width: 400px;"/>
+
+## `left_join`
+
+```{r}
+left_join(x = orders, y = customers, by = "id")
+```
+
+
+## `right_join`
+
+```{r}
+right_join(x = orders, y = customers, by = "id")
+```
+
+## `inner_join`
+
+```{r}
+full_join(x = orders, y = customers, by = "id")
+```
+
+## Filtering joins
+
+Filtering joins still match observations between two data tables, but do not add additional variables, they only impact the rows returned.
+
+1. `semi_join(x, y)` keeps all observations in `x` that have a match in `y`
+
+
+<img src="http://r4ds.had.co.nz/diagrams/join-semi.png" alt="Gather sketch" style = "width: 400px;"/>
+
+Notice that observations will never be duplicated.
+
+<img src="http://r4ds.had.co.nz/diagrams/join-semi-many.png" alt="Gather sketch" style = "width: 400px;"/>
+
+
+2. `anti_join(x, y)` drops all observations in `x` that have a match in `y`
+
+
+<img src="http://r4ds.had.co.nz/diagrams/join-anti.png" alt="Gather sketch" style = "width: 400px;"/>
+
+
+
+## `semi_join`
+
+```{r}
+semi_join(x = orders, y = customers, by = "id")
+```
+
+What if we had an extra order?
+
+```{r}
+extra_order <- data.frame(order = 5, id = 42, date = "May-01")
+extra_order
+```
+
+```{r}
+orders2 <- rbind(orders, extra_order)
+orders2
+```
+
+
+```{r}
+semi_join(x = customers, y = orders2, by = "id")
+```
+
+Let's compare that behavior to an `inner_join`
+
+```{r}
+inner_join(x = customers, y = orders2, by = "id")
+```
+
+
+
+
+
+
+## `anti_join`
+
+```{r}
+anti_join(x = orders, y = customers, by = "id")
+```
+
+```{r}
+anti_join(x = customers, y = orders, by = "id")
+```
+
+
+
+## Common complications
+
+- If you want to join by multiple variables, then you need to specify a vector of variable names: `by = c("var1", "var2", "var3")`. Here all three columns must match in both tables.
+
+- If you want to use all variables that appear in both tables, then you can leave the `by` argument blank.
+
+- If the variable you wish to join by is not named identically in both tables, then you specify `by = c("left_var" = "right_var")`.
