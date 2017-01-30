@@ -1,0 +1,245 @@
+---
+title: "Intro to Text Manipulation in R"
+output: html_notebook
+---
+
+## Set up for today
+
+Install and load the `stringr` package
+
+```{r}
+library(stringr)
+```
+
+
+## Definition
+
+A **(character) string** is any finite sequence of characters (i.e., letters, numerals, symbols and punctuation marks).
+
+
+## Basic commands
+
+In the `base` package (loaded by default), there are ways to manipulate character strings, most of which we won't discuss, but we do need a discuss a few:
+
+`nchar` determines the length of a string.
+
+```{r}
+lu <- "Lawrence University"
+nchar(lu)
+```
+
+
+`paste` allows us to easily create strings.
+
+```{r}
+building <- "Briggs"
+room <- "421"
+begin_time <- "1:50 p.m."
+end_time <- "3:00 p.m."
+days <- "MWF"
+class <- "CMSC 205"
+paste(class, "meets from", begin_time, "to", end_time, days, "in", building, room)
+```
+
+`paste` also works with vectors
+
+```{r}
+paste(letters, 1:26)
+paste(letters, 1:26, sep = "")
+paste(letters, 1:26, sep = "-")
+```
+
+
+You can also make everything either lowercase or uppercase using `tolower` and `toupper`, respectively.
+
+```{r}
+text <- "AppleTon, Wi"
+tolower(text)
+toupper(text)
+```
+
+
+
+## stringr Package
+
+Handling text can be complicated, but is often necessary. The `stringr` package eases the level of complication for many commonly used manipulations (i.e. it eliminates options that you often don't need to worry about).
+
+
+## Extracting substrings
+
+The `str_sub` command extracts substrings from a string given the starting and ending position.
+
+Example with a single character string
+
+```{r}
+lu <- "Lawrence University"
+str_sub(lu, 1, 8)
+str_sub(lu, 1, nchar(lu))
+str_sub(lu, c(1, 10), c(8, 19))
+```
+
+What about a vector of strings?
+
+```{r}
+fruits <- c("apple", "pineapple", "Pear", "orange", "peach", "banana")
+str_sub(fruits, 2, 4)
+```
+
+
+## Padding strings
+
+Sometimes, you want to add character(s) to the beginning or end of a string
+
+```{r}
+nums <- c(1:15)
+as.character(nums)
+str_pad(nums, 2, pad ="0")
+str_pad(nums, 3, pad ="0")
+```
+
+
+## Detecting strings 
+
+The `str_detect` command checks to see if **any** instance of a pattern occurs in a string.
+
+```{r}
+fruits <- c("apple", "pineapple", "Pear", "orange", "peach", "banana")
+str_detect(fruits, pattern = "p")
+```
+
+
+## Matching strings
+
+```{r}
+strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+             "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+             "239 923 8115 and 842 566 4692", "Work: 579-499-7527",
+             "$1000", "Home: 543.355.3679")
+str_match(string=strings, pattern="233")
+str_match(string=strings, pattern="Work")
+
+```
+
+
+## Locate the position of a string
+
+To locate the position of a pattern within a string, use `str_locate`.
+
+
+```{r}
+sentence <- "Peter Piper picked a peck of pickled peppers."
+str_locate(sentence, pattern="pick")
+str_locate_all(sentence, pattern="pick")
+```
+
+
+```{r}
+str_locate(fruits, "an")
+str_locate_all(fruits,"an")
+output <- str_locate_all(fruits,"an")
+output[[6]]
+```
+
+
+## String replacing
+
+Use `str_replace` to replace a character string with 
+
+```{r}
+rhyme <- "Peter Piper picked a peck of pickled peppers; A peck of pickled peppers Peter Piper picked; If Peter Piper picked a peck of pickled peppers, Where's the peck of pickled peppers Peter Piper picked?"
+
+str_replace(string=rhyme, pattern = "Peter Piper", replacement = "John Doe")
+
+str_replace_all(string=rhyme, pattern = "Peter Piper", replacement = "John Doe")
+```
+
+
+## String splitting
+
+To split a string on based on a specific character, use `str_split`.
+
+```{r}
+str_split(rhyme, pattern = ";")
+str_split(rhyme, pattern = "; ")
+```
+
+
+
+## Common pitfalls
+
+There are a number of meta characters that we cannot use directly in the above functions
+
+`.  ^  \  $  ?  *  +  [  ]  (  )  {  }  |`
+
+If you actually want to use these symbols literally, then in R, you precede them by a double slash (or surround them with brackets).
+
+
+```{r}
+tuition <- "$45,801"
+str_replace(tuition, pattern = "$", replacement = "")
+str_replace(tuition, pattern = "\\$", replacement = "")
+str_replace(tuition, pattern = "[$]", replacement = "")
+```
+
+
+
+## Introduction to regular expressions
+
+Sometimes the patterns we wish to detect, extract, replace, etc. are complex and we need to turn to **regular expressions**.
+
+Regular expressions (regexps) are very terse and can be quite confusing, but sometimes they are necessary.
+
+**Motivation:** We wish to anonymize phone numbers. 
+
+```{r}
+a1 <- "Home: 507-645-5489"
+a2 <- "Cell: 219.917.9871"
+a3 <- "My work phone is 507-202-2332"
+a4 <- "I don't have a phone"
+info <- c(a1, a2, a3, a4)
+info
+```
+
+
+We need to build up to this solution slowly...
+
+
+Question: How can we detect **any** digit?
+
+```{r}
+str_view(a1, "\\d")
+str_view_all(a1, "\\d")
+
+str_view(a1, "[0-9]")
+str_view_all(a1, "[0-9]")
+```
+
+
+Question: How can we detect three digits in a row?
+
+```{r}
+str_view(a1, "[0-9]{3}")
+```
+
+
+Question: How can we detect either `.` or `-`?
+
+```{r}
+str_view(a1, "[.-]")
+str_view(a2, "[.-]")
+```
+
+
+OK, let's put this together and try to extract the phone numbers from `info`.
+
+```{r}
+str_extract(info, pattern = "[2-9][0-9]{2}[.-][0-9]{3}[.-][0-9]{4}")
+```
+
+Now, let's replace the numbers with an anonymized `"XXX-XXX-XXXX"`.
+
+
+```{r}
+str_replace_all(info, pattern = "[2-9][0-9]{2}[.-][0-9]{3}[.-][0-9]{4}", replacement = "XXX-XXX-XXXX")
+```
+
