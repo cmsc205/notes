@@ -1,0 +1,110 @@
+---
+title: "Understanding Samples"
+output: html_notebook
+---
+
+
+## Set up
+
+```{r message=FALSE}
+library(tidyverse)
+library(readr)
+```
+
+
+## Data
+
+[SF OpenData](https://data.sfgov.org/) is a website where the City and County of San Francisco make some of their data publicly available. One of the data sets contains compensation data for employees of the City. These include medical professionals at City-run hospitals, police officers, fire fighters, transportation workers, elected officials, and all other employees of the City.
+
+```{r}
+sf2016 <- read_csv("sf2016.csv")
+glimpse(sf2016)
+```
+
+Financial packages in a calendar year can sometimes be hard to understand as they depend on the date of hire, whether the employee is changing jobs within the City, and so on. For example, the lowest values in the Total Compensation column look a little strange.
+
+```{r}
+sf2016 %>%
+  select(Job, TotalCompensation, everything()) %>%
+  arrange(TotalCompensation) %>%
+  head()
+```
+
+To avoid these complications, we'll only focus on employees who had at least the equivalent of a half-time job for the whole year. At a minimum wage of about \$10 per hour, and 20 hours per week for 52 weeks, that's a salary of about \$10,000.
+
+```{r}
+sf2016 <- filter(sf2016, TotalCompensation >= 10000)
+```
+
+
+## Populations and parameters
+
+**Population:** 
+
+**Parameter:** 
+
+```{r}
+sf2016 %>%
+  ggplot(aes(x = TotalCompensation)) +
+  geom_histogram(binwidth = 25000, fill = "steelblue")
+```
+
+
+When we have the entire population, it's very easy to find the parameter value
+
+```{r}
+sf2016 %>%
+  summarise(median = median(TotalCompensation),
+            mean = mean(TotalCompensation))
+```
+
+
+## Estimating a parameter from a sample
+
+In practice, we often only have information about some subset of a population, called a **sample**. To mimic this, let's draw a random sample of 500 employees. (Note: this sample will change each time you run the code, don't panic!)
+
+```{r}
+our_sample <- sf2016 %>%
+  sample_n(size = 500)
+```
+
+Let's take a peek at our sample
+
+```{r}
+our_sample %>%
+  ggplot(aes(x = TotalCompensation)) +
+  geom_histogram(binwidth = 25000, fill = "steelblue")
+```
+
+Now, we want to estimate median total compensation
+
+```{r}
+median(our_sample$TotalCompensation)
+```
+
+But this will change each time we draw a new sample! 
+
+
+### Pulling a sample up by its bootstraps
+
+A better estimate of the median total compensation would be given by an interval that accounts for the **sampling variability**. To do this, we will use the **bootstrap**.
+
+Idea:
+
+- Treat the original sample as if it were the population.
+- Draw from the sample, at random with replacement, the same number of times as the original sample size.
+
+![](https://www.inferentialthinking.com/notebooks-images/Bootstrap_25_0.png)
+
+
+#### Your task:
+Using a `for` loop, take 5,000 bootstrap resamples from `our_sample`, calculate the median total compensation, and store is in vector `medians`.
+
+
+#### Building an interval estimate
+
+Once we have a large number of bootstrap medians, we construct a so-called **95% confidence interval** by peeling off the 2.5th and 97.5th percentile (i.e. we look at the central 95% of bootstrap medians).
+
+## Acknowledgements
+
+This example was adapted from [Computational and Inferential Thinking: The Foundations of Data Science](https://www.inferentialthinking.com/chapters/11/2/bootstrap.html).
