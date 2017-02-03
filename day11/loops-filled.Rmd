@@ -187,4 +187,14 @@ N <- 20   # set total wealth
 p <- 0.5  # set prob. A wins a bet
 i <- 10   # A's initial wealth
 
+bets <- 0
+while(i > 0 && N - i > 0) {
+  bets <- bets + 1
+  outcome <- rbinom(1, n = 1, p = 0.5)
+  if(outcome == 1) {
+    i <- i + 1
+  } else {
+    i <- i - 1
+  }
+}
 ```
