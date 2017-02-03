@@ -19,7 +19,6 @@ library(tidyverse)
 and load in the example data sets
 
 ```{r}
-# You can paste the urls of the data sets in place of the file names
 UBSprices <- read.csv("data/UBSprices.csv", as.is = TRUE)
 polls <- read.csv("data/rcp-polls.csv", na.strings = "--", as.is = TRUE)
 airlines <- read.csv("data/airline-safety.csv", as.is = TRUE)
