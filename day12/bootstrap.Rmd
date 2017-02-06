@@ -1,0 +1,253 @@
+---
+title: "Understanding Samples"
+output: html_notebook
+---
+
+## From last time...
+
+**Example:** Gambler's ruin
+
+Two gamblers, A and B, make a sequence of $1 bets. In each bet, gambler A has probability p of winning, and gambler B has probability q = 1 − p of winning. Gambler A starts with i dollars and gambler B starts with N − i dollars; the total wealth between the two remains constant since every time A loses a dollar, the dollar goes to B, and vice versa. The game ends when either A or B is ruined, i.e., when the random walk reaches 0 or N. What is the probability that A wins the game (walking away with all the money)?
+
+Note: `rbinom(1, n = 1, p = 0.5)` will simulate a coin flip where `1` denotes heads and `p` is the probability of heads.
+
+```{r}
+N <- 20   # set total wealth
+p <- 0.5  # set prob. A wins a bet
+i <- 10   # A's initial wealth
+```
+
+
+## Set up
+
+```{r message=FALSE}
+library(tidyverse)
+library(readr)
+```
+
+
+## Data
+
+[SF OpenData](https://data.sfgov.org/) is a website where the City and County of San Francisco make some of their data publicly available. One of the data sets contains compensation data for employees of the City. These include medical professionals at City-run hospitals, police officers, fire fighters, transportation workers, elected officials, and all other employees of the City.
+
+```{r}
+sf2016 <- read_csv("https://github.com/cmsc205/notes/raw/master/day11/sf2016.csv")
+glimpse(sf2016)
+```
+
+Financial packages in a calendar year can sometimes be hard to understand as they depend on the date of hire, whether the employee is changing jobs within the City, and so on. For example, the lowest values in the Total Compensation column look a little strange.
+
+```{r}
+sf2016 %>%
+  select(Job, TotalCompensation, everything()) %>%
+  arrange(TotalCompensation) %>%
+  head()
+```
+
+To avoid these complications, we'll only focus on employees who had at least the equivalent of a half-time job for the whole year. At a minimum wage of about \$10 per hour, and 20 hours per week for 52 weeks, that's a salary of about \$10,000.
+
+```{r}
+sf2016 <- filter(sf2016, TotalCompensation >= 10000)
+```
+
+
+## Populations and parameters
+
+**Population:** all units of interest
+
+**Parameter:** a numeric summary of the population
+
+```{r}
+sf2016 %>%
+  ggplot(aes(x = TotalCompensation)) +
+  geom_histogram(binwidth = 25000, fill = "steelblue4")
+```
+
+
+When we have the entire population, it's very easy to find the parameter value
+
+```{r}
+sf2016 %>%
+  summarise(median = median(TotalCompensation),
+            mean = mean(TotalCompensation))
+```
+
+
+## Estimating a parameter from a sample
+
+In practice, we often only have information about some subset of a population, called a **sample**. To mimic this, let's draw a random sample of 500 employees. (Note: this sample will change each time you run the code, don't panic!)
+
+```{r}
+our_sample <- sf2016 %>%
+  sample_n(size = 500)
+```
+
+Let's take a peek at our sample
+
+```{r}
+our_sample %>%
+  ggplot(aes(x = TotalCompensation)) +
+  geom_histogram(binwidth = 25000, fill = "steelblue4")
+```
+
+Now, we want to estimate median total compensation
+
+```{r}
+median(our_sample$TotalCompensation)
+```
+
+But this will change each time we draw a new sample! 
+
+
+### Pulling a sample up by its bootstraps
+
+A better estimate of the median total compensation would be given by an interval that accounts for the **sampling variability**. To do this, we will use the **bootstrap**.
+
+Idea:
+
+- Treat the original sample as if it were the population.
+- Draw from the sample, at random with replacement, the same number of times as the original sample size.
+- Calculate the statistic of interest from this new bootstrap sample.
+
+![](https://www.inferentialthinking.com/notebooks-images/Bootstrap_25_0.png)
+
+
+#### Your task:
+Using a `for` loop, take 5,000 bootstrap resamples from `our_sample`, calculate the median total compensation, and store is in vector `medians`. Note, the `sample` function allows you to take a sample from a vector of a given `size`, and `replace = TRUE` makes it with replacement.
+
+```{r}
+B <- 5000
+n <- nrow(our_sample)
+medians <- numeric(length = B)
+for(b in 1:B) {
+  boot_sample <- sample(our_sample$TotalCompensation, size = n, 
+                        replace = TRUE)
+  medians[b] <- median(boot_sample)
+}
+```
+
+Let's examine the bootstrap distribution
+
+```{r}
+boot_df <- data.frame(means = medians)
+ggplot(data = boot_df, aes(x = medians)) +
+  geom_histogram(fill = "steelblue4", bins = 10)
+```
+
+
+
+#### Building an interval estimate
+
+Once we have a large number of bootstrap medians, we can construct a so-called **95% confidence interval** by peeling off the 2.5th and 97.5th percentile (i.e. we look at the central 95% of bootstrap means).
+
+```{r}
+ci <- quantile(medians, probs = c(.025, .975))
+ci
+```
+
+```{r}
+boot_df <- data.frame(medians = medians)
+ggplot(data = boot_df, aes(x = medians)) +
+  geom_histogram(fill = "steelblue4", bins = 10) +
+  geom_segment(x = ci[1], y = 0, xend = ci[2], yend = 0, color = "gold", size = 2)
+```
+
+If instead of a 95% confidence interval, we wanted an 80% confidence interval, then we simply choose different quantiles that take the middle 80% of bootstrap statistics.
+
+```{r}
+ci80 <- quantile(medians, probs = c(.1, .9))
+ci80
+```
+
+```{r}
+boot_df <- data.frame(medians = medians)
+ggplot(data = boot_df, aes(x = medians)) +
+  geom_histogram(fill = "steelblue4", bins = 10) +
+  geom_segment(x = ci80[1], y = 0, xend = ci80[2], yend = 0, color = "gold", size = 2)
+```
+
+
+#### Do the intervals capture the parameter?
+
+```{r}
+pop_median <- median(sf2016$TotalCompensation)
+pop_median
+```
+
+
+```{r}
+boot_df <- data.frame(medians = medians)
+ggplot(data = boot_df, aes(x = medians)) +
+  geom_histogram(fill = "steelblue4", bins = 10) +
+  geom_segment(x = ci[1], y = 0, xend = ci[2], yend = 0, color = "gold", size = 2) +
+  geom_point(x = pop_median, y = 0, color = "red")
+```
+
+```{r}
+boot_df <- data.frame(medians = medians)
+ggplot(data = boot_df, aes(x = medians)) +
+  geom_histogram(fill = "steelblue4", bins = 10) +
+  geom_segment(x = ci80[1], y = 0, xend = ci80[2], yend = 0, color = "gold", size = 2) +
+  geom_point(x = pop_median, y = 0, color = "red")
+```
+
+To see how frequently the interval contains the parameter, we have to run the entire process over and over again. Specifically, we will repeat the following process 100 times:
+
+- Draw an original sample of size 500 from the population.
+- Carry out 5,000 replications of the bootstrap process and generate the "middle 90%" interval of resampled means.
+
+We will end up with 100 intervals, and count how many of them contain the population median.
+
+```{r, }
+# Initialize everything
+B <- 5000 
+n <- nrow(our_sample)
+intervals <- data.frame(rep = integer(100), lower = numeric(100), upper = numeric(100))
+
+for(i in 1:100){
+  # Obtain the sampled data
+  in_hand <- sf2016 %>%
+    sample_n(size = 500)
+  
+  # Run the bootstrap to get the means
+  medians <- numeric(length = B)
+  for(b in 1:B) {
+    boot_sample <- sample(in_hand$TotalCompensation, size = n, 
+                          replace = TRUE)
+    medians[b] <- median(boot_sample)
+  }
+  
+  # Calculate the interval and store the results
+  intervals[i,] <- c(i, quantile(medians, probs = c(.05, .95)))
+}
+```
+
+```{r}
+intervals <- intervals %>%
+  group_by(rep) %>%
+  mutate(contain = lower <= pop_median & upper >= pop_median)
+
+ggplot(data = intervals, aes(x = rep, y = upper)) +
+  geom_hline(yintercept = pop_median, color = "red") +
+  geom_linerange(aes(ymin = lower, ymax = upper, color = contain)) +
+  coord_flip() +
+  scale_color_manual("Contains\nparameter", values = c("gold", "steelblue4"))
+```
+
+
+## Cautions
+
+* You need to start with a large sample, otherwise the bootstrap may not work as expected.
+
+* In general, it's recommend to run around 10,000 bootstrap simulations.
+
+* We can construct confidence intervals using percentiles of the bootstrap distribution for the mean and median quite easily, but it does not work well for
+
+    + minimum/maximum values (or just values close to the extremes)
+    + small sample sizes (say, under 15)
+    + distributions that are not roughly bell shaped
+
+
+## Acknowledgements
+
+This example was adapted from [Computational and Inferential Thinking: The Foundations of Data Science](https://www.inferentialthinking.com/chapters/11/2/bootstrap.html).
