@@ -5,7 +5,7 @@ output: html_notebook
 
 This activity on K-Nearest Neighbors in R is adapted from p. 165-167 of "Introduction to Statistical Learning with Applications in R" by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. It is also adapted from an  implementation by Amelia McNamara and R. Jordan Crouser at Smith College.
 
-In this activity, we will perform KNN on the [`Caravan`]() data set from the `ISLR` package. The data are available on the course webpage. Let's start by loading a few useful packages.
+In this activity, we will perform KNN on the [`Caravan`](https://raw.githubusercontent.com/cmsc205/notes/master/day15/Caravan.csv) data set from the `ISLR` package. The data are available on the course webpage. Let's start by loading a few useful packages.
 
 ```{r, message=FALSE}
 library(tidyverse) # for data manipulation functions
