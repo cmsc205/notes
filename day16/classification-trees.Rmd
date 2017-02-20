@@ -1,0 +1,176 @@
+---
+title: "An Introduction to Classification Trees"
+author: "CMSC 205, Winter 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+```
+
+
+## A first tree {.smaller}
+
+<img src="tree_example.png" height="400px" width="600px" />
+
+
+Source: Stephen Marsland’s book, *Machine Learning: An Algorithmic Perspective*
+
+## Iris data
+
+- Measurements in centimeters of the variables sepal length and width and petal length and width
+- 50 flowers each from 3 species of iris (setosa, versicolor, and virginica)
+
+```{r}
+head(iris) # data already loaded in R
+```
+
+## Iris data
+
+```{r}
+summary(iris)
+```
+
+
+
+## Training and testings sets
+
+```{r}
+set.seed(2172017)
+index <- sample(x = nrow(iris), size = round(.2*nrow(iris)))
+train <- iris[-index,]
+dim(train)
+
+test <- iris[index,]
+dim(test)
+```
+
+
+## Growing the tree
+
+Using the testing set...
+
+1. Start with all observations in one group
+2. Find the variable/split that best separates the outcome
+3. Divide the data into two groups (**leaves**) on the split (**node**)
+4. Within each split, find the best variable/split that separates the outcomes
+5. Continue until the groups are too small or sufficiently "pure"
+
+## Growing the tree
+
+```{r echo=FALSE}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+## Growing the tree
+
+```{r echo=FALSE}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  geom_hline(yintercept = 2.45) +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+
+## Growing the tree
+
+```{r echo=FALSE}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  geom_hline(yintercept = 2.45) +
+  geom_segment(aes(x = 1.75, y = 2.45, xend = 1.75, yend = 7), color = "black") +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+
+
+## Measuring node purity
+
+Gini index: $\displaystyle \sum_{k=1}^K \hat{p}_{mk}(1-\hat{p}_{mk})$ 
+
+* $\hat{p}_{mk}$ is the proportion of training observations in the $m$th region that are from class $k$.
+* measures total variance across the classes
+* 0 = perfect purity (only one class)
+* 0.5 = no purity
+
+
+## Measuring node purity {.smaller}
+
+```{r echo=FALSE, fig.width = 5.5, fig.height = 3.5}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+```{r}
+table(train$Species)
+```
+
+
+## Measuring node purity {.smaller}
+
+```{r echo=FALSE, fig.width = 5.5, fig.height = 3.5}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  geom_hline(yintercept = 2.45) +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+```{r}
+top <- filter(train, Petal.Width < 1.75 & Petal.Length > 2.45)
+table(top$Species)
+```
+
+## Measuring node purity {.smaller}
+
+
+```{r echo=FALSE, fig.width = 5.5, fig.height = 3.5}
+ggplot(train, aes(x = Petal.Width, y = Petal.Length, color = Species, shape = Species)) +
+  geom_point() +
+  geom_hline(yintercept = 2.45) +
+  geom_segment(aes(x = 1.75, y = 2.45, xend = 1.75, yend = 7), color = "black") +
+  scale_color_viridis(discrete = TRUE) +
+  theme_minimal()
+```
+
+
+```{r}
+top_left <- filter(train, Petal.Width < 1.75 & Petal.Length > 2.45)
+table(top_left$Species)
+```
+
+
+## Fitting a classification tree in R {.smaller}
+
+```{r}
+library(rpart)
+```
+
+
+```{r}
+fit <- rpart(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, data=train)
+fit
+```
+
+## Plotting the tree
+
+```{r message=FALSE}
+library(partykit)
+plot(as.party(fit))
+```
+
+
+## Assessing accuracy
+
+```{r}
+pred_test <- predict(fit, newdata = test, type = "class")
+table(prediction = pred_test, truth = test$Species)
+```

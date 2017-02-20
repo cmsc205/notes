@@ -1,0 +1,246 @@
+---
+title: "Classification Trees"
+output: html_notebook
+---
+
+
+This activity on Decision Trees in R is an abbreviated version of p. 324-331 of "Introduction to Statistical Learning with
+Applications in R" by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. It is also adapted from an  implementation by Amelia McNamara and R. Jordan Crouser at Smith College.
+
+## Fitting Classification Trees
+
+The `rpart` library is useful for constructing classification and regression trees:
+
+```{r message=FALSE}
+library(rpart)
+library(tidyverse)
+```
+
+We'll start by using **classification trees** to analyze the `Carseats` data set. 
+
+```{r}
+carseats <- read.csv("Carseats.csv")
+```
+
+
+The data set contains the following variables:
+
+Variable | Description
+-----|---------------------------------------------------------
+`Sales`     | Unit sales (in thousands) at each location
+`CompPrice` | Price charged by competitor at each location
+`Income`    | Community income level (in thousands of dollars)
+`Advertising`| Local advertising budget for company at each location (in thousands of dollars)
+`Population`| Population size in region (in thousands)
+`Price`     | Price company charges for car seats at each site
+`ShelveLoc` | Quality of the shelving location for the car seats (Bad, Good or Medium)
+`Age`       | Average age of the local population
+`Education` | Education level at each location
+`Urban`     | Is the store in an urban location (`No` or `Yes`)
+`US`        | Is the store in the US (`No` or `Yes`)
+
+
+In these
+data, `Sales` is a continuous variable, and so we begin by converting it to a
+binary variable. We use the `ifelse()` function to create a variable, called
+`High`, which takes on a value of `Yes` if the `Sales` variable exceeds 8, and
+takes on a value of `No` otherwise:
+
+```{r}
+carseats <- carseats %>%
+  mutate(High = as.factor(ifelse(Sales <= 8, "No", "Yes")))
+```
+
+In order to properly evaluate the performance of a classification tree on
+the data, we must estimate the test error rather than simply computing
+the training error. We first split the observations into a training set and a test
+set:
+
+```{r}
+set.seed(2202017)
+
+train <- carseats %>%
+  sample_n(200)
+
+test <- carseats %>%
+  setdiff(train)
+```
+
+We now use the `rpart()` function to fit a classification tree in order to predict
+`High` using all variables but `Sales` (that would be a little silly...). The `rpart()` function requires two arguments:
+
+* `formula`: a formula of the form `class ~ attributes`
+* `data`: a data frame with the training observations
+
+```{r}
+tree_carseats <- rpart(High ~ . - Sales, data = train, method = "class")
+```
+
+The formula in the above code chunk is `High ~ . - Sales`, which indicates we will use all of the variables *except* Sales to predict the class specified in `High`.
+
+To see the decision tree, simply print the fitted classifier
+
+```{r}
+tree_carseats
+```
+
+To obtain predictions we use the `predict()` function. In the
+case of a classification tree, the argument `type="class"` instructs `R` to return
+the actual class prediction, rather than the probability that the observations falls into each class.
+
+```{r}
+preds <- predict(tree_carseats, type = "class")
+```
+
+With these predictions in hand, we can easily construct a confusion matrix
+```{r}
+table(Prediction = preds, Truth = train$High)
+```
+
+and calculate the training accuracy and error rate
+
+```{r}
+mean(preds == train$High)     # training accuracy
+1 - mean(preds == train$High) # training error rate
+```
+
+We see that the training error rate is 15%. 
+
+One of the most attractive properties of trees is that they can be
+graphically displayed. We can use the `plot()` function to display the tree structure,
+and the `text()` function to display the node labels. The argument
+`pretty = 0` instructs `R` to include the category names for any qualitative predictors,
+rather than simply displaying a letter for each category:
+
+```{r}
+plot(tree_carseats)
+text(tree_carseats, pretty = 0)
+```
+
+The most important indicator of `High` sales appears to be shelving location,
+since the first branch differentiates `Good` locations from `Bad` and `Medium`
+locations.
+
+A plot that graphics the purity of each node can be obtained using the package `partkit`:
+
+```{r}
+library(partykit)
+plot(as.party(tree_carseats))
+```
+
+
+A "fancier" plot can be obtained using the `rpart.plot` package, but it does not always look good for larger trees:
+
+```{r}
+library(rpart.plot)
+rpart.plot(tree_carseats)
+```
+
+
+If we just type the name of the tree object, `R` prints output corresponding
+to each branch of the tree_ `R` displays the split criterion (e.g. $Price>=127$), the
+number of observations in that branch, the deviance, the overall prediction
+for the branch (`Yes` or `No`), and the fraction of observations in that branch
+that take on values of `Yes` and `No`. Branches that lead to terminal nodes are
+indicated using asterisks:
+
+```{r}
+tree_carseats
+```
+
+Finally, let's evaluate the tree's performance on
+the test data.
+
+```{r}
+tree_pred <-  predict(tree_carseats, test, type = "class")
+table(tree_pred, test$High)
+```
+
+What's the estimated accuracy of the classifier?
+
+* * * 
+
+# Pruning
+
+Often, the tree that is produced by `rpart()` is very large, and it is often necessary to **prune** it back to obtain a **subtree**. The reason can be seen by comparing the misclassification error rates between the training data set and that found through cross-validation.
+
+```{r echo=FALSE}
+library(tidyr)
+prune_df <- as.data.frame(tree_carseats$cptable) 
+prune_df_tidy <- gather(prune_df, key = "source", value = "error", `rel error`, xerror) 
+prune_df_tidy$source <- factor(prune_df_tidy$source, labels = c("training", "cv"))
+ggplot(data = prune_df_tidy, aes(x = nsplit + 1, y = error, color = source)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "No. of terminal nodes", y = "Relative misclassification error") +
+  scale_x_continuous(breaks = 1:9) +
+  theme_minimal() +
+  scale_color_manual(values = c("#1b9e77", "#d95f02"))
+```
+
+
+Notice that there is a point of diminishing returns: there is really no gain in accuracy past 5 terminal nodes. Consequently, we need to prune the tree to avoid **overfitting** the training data set.
+
+The `rpart()` performs 10-fold cross-validation in the background, and the results can be seen using the `printcp()` function, or simply extracted using the below code:
+
+```{r}
+printcp(tree_carseats)
+```
+
+
+```{r}
+tree_carseats$cptable
+```
+
+This table has the following columns:
+
+Column | Explanation
+----- | ------------------------------
+`CP`     | complexity parameter
+`nsplit` | number of splits
+`rel error` | scaled error in the training set (relative to the root node error)
+`xerror` |  scaled cross-validated error
+`xstd` | cross-validated standard error of `xerror`
+
+To prune the tree we choose the number of splits that minimizes the cross-validation error, or can choose the point of diminishing returns. 
+
+To prune the tree in this example, we use the `prune()` function and specify the `cp` argument:
+
+```{r}
+pruned_tree <- prune(tree_carseats, cp = .02)
+rpart.plot(pruned_tree)
+```
+
+We can also use the minimum cross-validation error:
+
+```{r}
+opt <- which.min(tree_carseats$cptable[,"xerror"])
+opt_cp <- tree_carseats$cptable[opt, "CP"]
+carseats_prune <- prune(tree_carseats, cp = opt_cp)
+carseats_prune
+```
+
+```{r}
+rpart.plot(carseats_prune)
+```
+
+In this case, the "optimal" value of `xerror` results in the full tree, but this need not be the case.
+
+How well does do these pruned tree perform on the test data set? Once again,
+we can apply the `predict()` function top find out:
+
+
+```{r}
+pruned_pred <- predict(pruned_tree, test, type = "class")
+
+# Confusion matrix
+table(pruned_pred, test$High)
+```
+
+```{r}
+# Accuracy
+mean(pruned_pred == test$High)
+```
+
+
+Now 72% of the test observations are correctly classified, so the pruning process produced a more interpretable tree, but at a slight cost in classification accuracy.
