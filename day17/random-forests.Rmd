@@ -1,0 +1,198 @@
+---
+title: "An Introduction to Random Forests"
+author: "Math 430, Winter 2017"
+output: ioslides_presentation
+---
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+## Heart data {.smaller}
+
+Goal: Determine whether patient with chest pain has heart disease (`AHD`)
+
+```{r}
+heart <- read.csv("http://www-bcf.usc.edu/~gareth/ISL/Heart.csv")[,-1]
+heart <- na.omit(heart)
+glimpse(heart)
+```
+
+## Baseline error
+
+The worst our classifier can do is to classify all observations into the largest class
+
+```{r}
+ahd_tab <- table(heart$AHD)
+ahd_tab
+```
+
+```{r}
+ahd_tab["Yes"] / sum(ahd_tab)
+```
+
+## Classification trees
+
+- Grow a tree from your training set
+
+- Prune the tree
+
+- Use for classification
+
+
+## Growing a tree
+
+```{r}
+set.seed(222)
+train_index <- sample(1:nrow(heart), size = 200)
+test_index <- setdiff(1:nrow(heart), train_index)
+train <- heart[train_index,]
+test <- heart[-train_index,]
+```
+
+```{r}
+library(rpart)
+heart_tree <- rpart(AHD ~ ., data = train)
+table(prediction = predict(heart_tree, newdata = test, type = "class"), 
+      truth = test$AHD)
+```
+
+
+## What if we repeat?
+
+```{r}
+train_index2 <- sample(1:nrow(heart), size = 200)
+test_index2 <- setdiff(1:nrow(heart), train_index2)
+train2 <- heart[train_index2,]
+test2 <- heart[-train_index2,]
+```
+
+```{r}
+heart_tree2 <- rpart(AHD ~ ., data = train)
+table(prediction = predict(heart_tree2, newdata = test2, type = "class"), 
+      truth = test2$AHD)
+```
+
+
+## Classification trees
+
+Advantages      | Disadvantages
+--------------- | ---------------
+Easy to explain | Generally do not have the same level of predictive accuracy as many other classification  approaches 
+May more closely mirror human decision-making than other approaches | High variability
+Can be displayed graphically, and are easily interpreted even by a non-expert (especially if they are small) |  
+Can easily handle categorical predictors without the need to create dummy variables |  
+
+
+
+## An improvement: <font color="dodgerblue">B</font>ootstrap <font color="dodgerblue">agg</font>regat<font color="dodgerblue">ing</font>
+
+- Sample with replacement from your training data set
+
+- Grow a tree for each bootstrap sample 
+
+- Majority (plurality) vote to classify an observation
+
+
+## Bagging {.smaller}
+
+```{r message=FALSE}
+library(randomForest)
+heart_bag <- randomForest(AHD ~ ., data = heart, mtry = 13)
+heart_bag
+```
+
+
+## Estimating test error
+
+- Each tree contains ~ 2/3 of the observations, on average
+
+- <font color = "dodgerblue">Out-of-bag (OOB) observations</font>: the remaining ~1/3 of observations
+
+- <font color = "dodgerblue">Test error:</font> Predict the class of each observations only using trees for which that observation is OOB
+
+##
+
+```{r cache=TRUE, echo=FALSE, warning=FALSE}
+xtest <- test[,-14]
+ytest <- test[,14]
+results <- data.frame(ntrees = 1:300, oob.error = 0, test.error = 0)
+for(i in 1:300) {
+  bag <- randomForest(AHD ~ ., data = heart, mtry = 13, ntree = i, xtest = xtest, ytest = ytest)
+  oob.conf <- bag$confusion[1:2, 1:2]
+  test.conf <- bag$test$confusion[1:2, 1:2]
+  results$oob.error[i] <- 1 - (sum(diag(oob.conf)) / sum(oob.conf))
+  results$test.error[i] <- 1 - (sum(diag(test.conf)) / sum(test.conf))
+}
+
+tree_pred <- predict(heart_tree, newdata = test, type = "class")
+tree_error <- mean(tree_pred != test$AHD)
+
+ggplot(results, aes(x = ntrees, y = oob.error)) +
+  geom_line(color = "#d95f02") +
+  theme_minimal() +
+  lims(y = c(.1, .3)) +
+  labs(y = "Error", x = "Number of trees")
+```
+
+
+## Pitfalls
+
+- If there is a particularly strong attribute in the data set, the trees may all use that attribute as the top split
+
+- Resulting trees are highly correlated, which leads to less improvement over a single tree
+
+
+## Another improvement: Random forests
+
+- Sample with replacement from your training data set
+
+- Grow a tree for each bootstrap sample 
+    + For each split <font color="dodgerblue">only consider m out of p attributes</font>
+    + Select the best attribute and partition the data
+
+- Majority (plurality) vote to classify an observation
+
+
+##
+
+```{r}
+# By default, mtry = sqrt(p)
+heart_rf <- randomForest(AHD ~ ., data = heart)
+heart_rf
+```
+
+
+## 
+
+```{r cache=TRUE, echo=FALSE, warning=FALSE}
+rf_results <- data.frame(ntrees = 1:300, oob.error = 0, test.error = 0)
+for(i in 1:300) {
+  bag <- randomForest(AHD ~ ., data = heart, ntree = i, xtest = xtest, ytest = ytest)
+  oob.conf <- bag$confusion[1:2, 1:2]
+  test.conf <- bag$test$confusion[1:2, 1:2]
+  rf_results$oob.error[i] <- 1 - (sum(diag(oob.conf)) / sum(oob.conf))
+  rf_results$test.error[i] <- 1 - (sum(diag(test.conf)) / sum(test.conf))
+}
+
+ggplot(results, aes(x = ntrees, y = oob.error)) +
+  geom_line(aes(color = "OOB: Bagging")) +
+  geom_line(data = rf_results, aes(x = ntrees, y = oob.error, color = "OOB: RF")) +
+  theme_minimal() +
+  lims(y = c(.1, .3)) +
+  labs(y = "Error", x = "Number of trees") +
+  scale_colour_manual(name = "Method", values = c("#d95f02", "#1b9e77")) +
+  theme(legend.position="bottom")
+
+```
+
+
+
+## Interpretability of forests {.smaller}
+
+A voting scheme across hundreds of trees is hard to interpret... but we can see which variables are important
+
+```{r}
+varImpPlot(heart_rf)
+```
+
