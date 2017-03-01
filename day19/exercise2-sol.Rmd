@@ -1,0 +1,109 @@
+---
+title: 'Shiny Exercise 2: The One Sample Bootstrap'
+author: "CMSC 205, Winter 2017"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Modularize code with reactive()
+
+Sometimes you need to create a reactive object outside of a `renderSomething` chunk. For example, if you need to access that object from multiple `renderSomething` chunks.
+
+In this situation, use the `reactive` function. 
+
+
+## Task
+
+Using the `sf2016_sample.csv` data set, create a shiny app to run a one-sample bootstrap for the mean. Specifically, a user should be able to
+
+- specify the number of bootstrap resamples to draw with a slider, 
+- select `Salaries` or `TotalCompensation` from a drop-down menu, and
+- enter the confidence level for a percentile confidence interval. 
+
+The results should include:
+
+- a histogram of the original sample,
+- a histogram of the bootstrap distribution for the mean,
+- the mean of the bootstrap distribution along with the percentile confidence interval.
+
+## Resources/Hints
+
+1. Below is the one-sample bootstrap function we wrote in class on 2/8. Note that running the .Rmd file will make this function available.
+
+```{r}
+# x = the data vector
+# stat = an R function to calculate the statistic of interest
+# B = the number of bootstrap resamples
+bootstrap1 <- function(x, stat, B, na.rm = TRUE) {
+  n <- length(x)
+  stats <- numeric(length = B) # Place to store the stats
+  for(b in 1:B) {
+    boot_sample <- sample(x, size = n, replace = TRUE)
+    stats[b] <- stat(boot_sample, na.rm = TRUE)
+  }
+  stats
+}
+```
+
+2. To select a column based on an input, use the `select` function in the `dplyr` package along with the `one_of` function with the input.
+
+3. When specifying the aesthetics in `ggplot`, use `aes_string` instead of `aes` if you need to specify the name of a colum as a string.
+
+## Advice
+
+This is a complicated Shiny app---there are a lot of moving parts. I recommend that you 
+
+- Start with a "braindead" version and go end-to-end immediately.
+- Then back and iterate and improve.
+
+You get feedback much quicker this way!
+
+## Build the App
+
+
+
+Below is the Shiny template we discussed last class. Edit the template in order to create your app.
+
+```{r eruptions, echo=FALSE}
+# Load the data set
+sf_sample <- read.csv("sf2016_sample.csv")
+
+inputPanel(
+  sliderInput("n_boot", label = "Number of bootstrap resamples:", 
+              min = 500, max = 10000, value = 1000),
+  
+  selectInput("variable", label = "Variable:",
+              choices = c("Salaries", "TotalCompensation")),
+  
+  numericInput("conf_level", label = "Confidence level", value = 0.95, min = 0.8, max = 0.99, step = 0.01)
+)
+
+data <- reactive(select(sf_sample, one_of(input$variable)))
+
+renderPlot({
+  ggplot(data = data(), aes_string(x = input$variable)) +
+    geom_histogram(color = "black") +
+    labs(x = input$variable, title = paste("Distribution of", input$variable))
+})
+
+means <- reactive({bootstrap1(data()[[1]], stat = mean, 
+                             B = input$n_boot, na.rm = TRUE)})
+
+renderPlot({
+  ggplot(data.frame(means = means()), aes(x = means)) +
+    geom_histogram(color = "black") +
+    labs(x = paste("Mean", input$variable), title = "Bootstrap Distribution")
+})
+
+renderPrint({
+  alpha <- 1 - input$conf_level
+  c(mean = mean(means()), quantile(means(), alpha/2), 
+    quantile(means(), 1 - alpha/2))
+})
+```
+
