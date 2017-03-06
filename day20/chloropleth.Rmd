@@ -1,0 +1,112 @@
+---
+title: "Choloropleth maps in R"
+author: "CMSC 205, Winter 2017"
+date: "March 5, 2017"
+output: 
+  html_notebook:
+    css: lab.css
+---
+
+## Toolkit
+
+```{r message=FALSE}
+library(tidyverse) # for out usual plotting and data wrangling tools
+library(maps)      # Provides latitude and longitude data for various maps
+library(stringr)
+library(ggthemes)
+```
+
+
+## Choloropleth maps
+
+A **choropleth map** is a map that shows a geographic landscape with units such as countries, states, or watersheds where each unit is colored according to a particular value.
+
+Today, our goal is to create a chloropleth map of the results of the 2016 presidential election such as the one shown below:
+
+![](https://simonrogersdotnet.files.wordpress.com/2016/11/screen-shot-2016-11-16-at-1-12-08-pm.png?w=1010&h=698)
+
+## Polygons
+
+To create such a map, we must plot counties rather than individual coordinates. In this case, we think of our data representing a polygon.
+
+To begin creating such a map, we must load a county-level map data set:
+
+```{r}
+county_map <- map_data("county")
+head(county_map)
+```
+
+
+To create a base plot with the outlines of the counties, we can use a `geom_polygon` layer:
+
+```{r}
+ggplot(county_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill="dodgerblue", color = "black")
+```
+
+
+Note: **The order of the rows within each group is extremely important**. For example, is we reshuffle the rows the results are disastrous!
+
+```{r}
+county_map %>%
+  sample_frac() %>%
+  ggplot(aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill="dodgerblue", color = "black")
+```
+
+
+## Data manipulation
+
+In addition to county-level map data, we also need a data set with the election results:
+
+```{r}
+election <- read_csv("2016_US_County_Level_Presidential_Results.csv")
+head(election)
+```
+
+
+To link the two data sets together, we need to add FIPS codes to the `county_map` data:
+
+```{r}
+# String manipulation to create region and subregion columns
+county.fips <- county.fips %>%
+  mutate(region = str_extract(polyname, "^[^,]*"),
+         subregion = str_extract(county.fips$polyname, "\\,(.*)")) %>%
+  mutate(subregion = str_replace(subregion, "\\,", ""))
+head(county.fips)
+```
+
+```{r}
+# There are a few counties with NAs, but we can fix that later
+county_map <- left_join(x = county_map, y = county.fips)
+head(county_map)
+```
+
+
+Finally, we can merge the two data sets together:
+
+```{r}
+election_map <- left_join(county_map, election, by =  c("fips" = "combined_fips"))
+head(election_map)
+```
+
+
+## Customizing the map
+
+Now that we have created a base map of the mainland states, we will color each county by the difference between the percentage of voters voting for Trump and Clinton (`per_point_diff`).
+
+```{r}
+p <- ggplot(election_map, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = per_point_diff))
+p
+```
+
+Now that the map is created we can customize it's appearance.
+
+1.  Apply the map theme found in the `ggthemes` package.
+
+2.  Adjust the color scheme used on this map to better display the results. Consider using `scale_fill_gradient`, `scale_fill_gradient2`, or `scale_fill_brewer` to help adjust the fill color. Be sure to tweak the legend title.
+
+3.  Add an informative title to the map and remove the axis labels
+
+4.  Finally, we can change the projection of the map using the `coord_map` layer. There are multiple map projections that could be used, and you can start to read about them in the help file, but for now we will use a polyconic projection. Apply this projection by adding the layer `coord_map(projection = "polyconic")` to your map.

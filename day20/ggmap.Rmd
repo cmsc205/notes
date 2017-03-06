@@ -1,0 +1,110 @@
+---
+title: "Creating maps in R"
+author: "CMSC 205, Winter 2017"
+date: "March 5, 2017"
+output: 
+  html_notebook:
+    css: lab.css
+---
+
+
+## Toolkit
+
+```{r eval=FALSE}
+# In order to get ggmap running, run the following:
+install.packages("devtools")
+library(devtools)
+devtools::install_github("dkahle/ggmap")
+devtools::install_github("hadley/ggplot2")
+```
+
+
+```{r message=FALSE}
+library(tidyverse) # all of our usual tools
+library(ggmap)     # for spatial viz.
+library(viridis)   # for color scales
+```
+
+## Oklahoma earthquakes
+
+- The number of earthquakes in Oklahoma has increased in the past decade
+
+-  We will examine data obtained from the U.S. Geological Survey (USGS) on earthquakes in Oklahoma since 2000 
+
+
+```{r}
+ok_quakes <- read.csv("OKquakes.csv")
+str(ok_quakes)
+```
+
+## Displaying spatial data with `ggplot2` {.smaller}
+
+```{r}
+ggplot(data = filter(ok_quakes, year == 2015), aes(x = longitude, y = latitude)) +
+  geom_point()
+```
+
+
+## The `ggmap` package
+
+- Context is important, we need more than just the points!
+
+- `ggmap` allows us to grab this context from Google or other sources
+
+- By default, `get_map`, downloads a terrain image from Google maps
+
+```{r}
+# Download the requested map
+ok_map <- get_map(location = 'oklahoma', zoom = 7)
+
+# Display the map
+ggmap(ok_map)
+```
+
+1. Look at the help file for `get_map` and read about the `location` and `zoom` arguments. Do the following:
+- Use `location = 'lawrence university'` to get a map of the surrounding area. Try difference values for `zoom`.
+- Choose a city and use [Google maps](https://www.google.com/maps) to find the longitude and latitude of a landmark. Specify the coordinates in the `location` argument and produce a map of the surrounding area. Again, try different values for `zoom`.
+
+There are other options aside from a terrain map.
+
+
+2.  Look at the help file for the `get_map` function and read about the `maptype` and `source` arguments. Specify different `maptypes` and `sources`. How do things change?
+
+Now that we have our map of Oklahoma, we can add points to it:
+
+```{r}
+ggmap(ok_map) +
+  geom_point(data = ok_quakes, aes(x = longitude, y = latitude, color = year))
+```
+
+A better idea might be to facet the plot by year. In order to to this we need to add the `base_layer` argument to the `ggmap` function:
+
+```{r}
+ggmap(ok_map, base_layer = ggplot(ok_quakes, aes(x = longitude, y = latitude))) +
+  geom_point(size = .8) +
+  facet_wrap(~year, ncol = 5)
+```
+
+3. Add color to the faceted map based on the `type` of earthquake. Be sure to use an appropriate color palette. Do any patterns emerge?
+
+4.  The file `CAquakes.csv` contains data on earthquakes in California from January 1, 2010 through the end of 2015. Use `ggmap` to plot the earthquakes that occurred in California during this time, similar to what we did for Oklahoma above. Do any patterns emerge? 
+
+
+## Heatmaps
+
+```{r}
+ok2015 <- filter(ok_quakes, year == 2015)
+```
+
+
+We can create heat maps using `stat_density2d` in place of our `geom_point` layer:
+
+```{r}
+ggmap(ok_map, base_layer = ggplot(ok2015, aes(x = longitude, y = latitude))) +
+  stat_density2d(aes(fill = ..level.., alpha = ..level..), size = 0.01, 
+    bins = 16, geom = "polygon") +
+  scale_fill_viridis() +
+  scale_alpha(guide = FALSE)
+```
+
+5. Create a heat map of California earthquakes in 2015.
