@@ -60,7 +60,7 @@ county_map %>%
 In addition to county-level map data, we also need a data set with the election results:
 
 ```{r}
-election <- read_csv("2016_US_County_Level_Presidential_Results.csv")
+election <- read_csv("https://github.com/cmsc205/notes/raw/master/day20/2016_US_County_Level_Presidential_Results.csv")
 head(election)
 ```
 

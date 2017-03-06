@@ -33,7 +33,7 @@ library(viridis)   # for color scales
 
 
 ```{r}
-ok_quakes <- read.csv("OKquakes.csv")
+ok_quakes <- read.csv("https://raw.githubusercontent.com/cmsc205/notes/master/day20/OKquakes.csv")
 str(ok_quakes)
 ```
 
@@ -87,7 +87,7 @@ ggmap(ok_map, base_layer = ggplot(ok_quakes, aes(x = longitude, y = latitude))) 
 
 3. Add color to the faceted map based on the `type` of earthquake. Be sure to use an appropriate color palette. Do any patterns emerge?
 
-4.  The file `CAquakes.csv` contains data on earthquakes in California from January 1, 2010 through the end of 2015. Use `ggmap` to plot the earthquakes that occurred in California during this time, similar to what we did for Oklahoma above. Do any patterns emerge? 
+4.  The file [`CAquakes.csv`](https://raw.githubusercontent.com/cmsc205/notes/master/day20/CAquakes.csv) contains data on earthquakes in California from January 1, 2010 through the end of 2015. Use `ggmap` to plot the earthquakes that occurred in California during this time, similar to what we did for Oklahoma above. Do any patterns emerge? 
 
 
 ## Heatmaps
