@@ -10,15 +10,6 @@ output:
 
 ## Toolkit
 
-```{r eval=FALSE}
-# In order to get ggmap running, run the following:
-install.packages("devtools")
-library(devtools)
-devtools::install_github("dkahle/ggmap")
-devtools::install_github("hadley/ggplot2")
-```
-
-
 ```{r message=FALSE}
 library(tidyverse) # all of our usual tools
 library(ggmap)     # for spatial viz.
