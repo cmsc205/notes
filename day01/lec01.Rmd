@@ -1,7 +1,7 @@
 ---
 title: "Data-Scientific Programming"
 author: "CMSC 205"
-date: "Winter 2017"
+date: "Spring 2017"
 output: ioslides_presentation
 ---
 
