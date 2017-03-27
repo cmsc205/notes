@@ -13,7 +13,7 @@
     + [MacTeX](https://tug.org/mactex/downloading.html) for Mac (2.5GB)
     + [MiKTeX](https://miktex.org/download) for Windows (176MB)
 
-- [Git](https://git-scm.com/) open source distributed version control system
+- [Install git](http://happygitwithr.com/install-git.html#windows), the open source distributed version control system
 
 2. Ensure you can login to RStudio Server from your browser at [rstudio.lawrence.edu](https://rstudio.lawrence.edu). You must be on campus to login to the server.
 
@@ -45,7 +45,8 @@ Next, we need to install R packages, or extensions to R, from the [CRAN reposito
 
 GitHub is a web-based Git repository hosting system.
 
-- Go to [GitHub](https://github.com/), create an account using your `@lawrence.edu` account, and verify your email.
+- Go to [GitHub](https://github.com/), create an account using your `@lawrence.edu` account, and verify your email. 
+- Fill out the [survey](https://goo.gl/forms/QfcDhD29m6Z9m3gp1) so that I know your GitHub username and learn a bit about you.
 - Edit your profile:
     + Change your profile picture to a cropped picture of you (this will help me learn your names faster)
     + Add your name
