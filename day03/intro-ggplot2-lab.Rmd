@@ -2,8 +2,11 @@
 title: "Creating Graphs with ggplot2"
 author: "CMSC 205, Spring 2017"
 output:
-  pdf_document: default
-  html_document: default
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    smooth_scroll: false
 ---
 
 ### 1. Introduction
@@ -55,10 +58,10 @@ Here, we are warned that the histogram was been drawn with 30 bins, a rather arb
 
 ```{r fig.height=2, fig.width=5, eval=FALSE}
 ggplot(data = AmesHousing, mapping = aes(x = SalePrice)) +
-  geom_histogram(binwidth=10000)
+  geom_histogram(binwidth = 10000)
 ```
 
-We can also add some color to the plot by invoking the fill and color arguments.
+We can also add some color to the plot by invoking the `fill` and `color` arguments.
 
 ```{r fig.height=2, fig.width=5, eval=FALSE}
 ggplot(data = AmesHousing, mapping = aes(x = SalePrice)) +
@@ -85,7 +88,7 @@ ggplot(data = AmesHousing, mapping = aes(x = SalePrice)) +
 ```
 
 
-Throughout the remainder of this lab we will explore how to create and customize the basic plot types:
+Throughout the remainder of this activity you will explore how to create and customize the basic plot types:
 
 * histograms,
 * bar charts,
@@ -97,16 +100,6 @@ Throughout the remainder of this lab we will explore how to create and customize
 
 #### Displaying a quantitative variable
 
-In the previous section you learned how to create a histogram, which can be used to display the distribution of a quantitative variable. Before moving on, answer the following questions:
-
-**Questions**
-
-1) Create a histogram of the above-grade living area (in ft$^2$). This is the `Gr.Liv.Area` variable in the data set. Remember to experiment with the bin width!
-
-2) Would you classify the distribution of above-grade living area as symmetric or skewed?
-
-3) What would you guess is the "center" value in this distribution? Why did you make that choice?
-
 
 Density plots are also useful in exploring the shape of the distribution of  a quantitative variable. To create a density plot, we start with the same base layer as a histogram, but add the `geom_density` layer rather than the `geom_histogram` layer. For example, the below code creates a density plot for the sale price.
 
@@ -115,11 +108,9 @@ ggplot(data = AmesHousing, mapping = aes(x = SalePrice)) +
   geom_density()
 ```
 
-We can customize a density plot using the same options as a histogram.
+We can customize a density plot using the same options as a histogram. 
 
-**Question**
-
-4) Use the color and fill arguments to customize the density plot or sale price. You should also change the x-axis label to "Sale Price (in dollars)."
+**TODO:**Use the color and fill arguments to customize the density plot or sale price. You should also change the x-axis label to "Sale Price (in dollars)."
 
 
 #### Displaying a categorical variable
@@ -143,10 +134,7 @@ ggplot(data = AmesHousing, mapping = aes(x = Central.Air, fill = Central.Air)) +
 ```
 
 
-**Questions**
-
-5) Create a bar chart of the type of heating system (`Heating`). 
-6) Which type of heating system is the most common?
+**TODO:** Create a bar chart of the type of heating system (`Heating`). Which type of heating system is the most common?
 
 
 Categorical variables are often coded numerically. For example, in the **AmesHousing** data set the garage capacity (`Garage.Cars`, the number of cars the garage can hole) is coded as an integer (0, 1, 2, 3, 4, or 5). This variable can be considered categorical, as the number of cars can be viewed as a label. To create a bar chart for the `Garage.Cars` variable, we must tell `ggplot` to treat it as a factor
@@ -157,9 +145,7 @@ ggplot(data = AmesHousing, mapping = aes(x = as.factor(Garage.Cars))) +
   labs(x = "Garage capacity in cars")
 ```
 
-**Question**
-
-7) Create a bar chart of the number of `Fireplaces`. What does the bar chart reveal?
+**TODO:** Create a bar chart of the number of `Fireplaces`. What does the bar chart reveal?
 
 ### 4. Building bivariate plots
 
@@ -177,11 +163,6 @@ ggplot(data = AmesHousing, mapping = aes(x = as.factor(Bedroom.AbvGr), fill = as
   labs(x = "Number of bedrooms above grade")
 ```
 
-**Questions**
-
-8) Recreate the above bar chart.
-9) What kinds of questions are not easily answered by looking at the above figure?
-10) What can you say about the relationship between the number of bedrooms and the number of full bath rooms?
 
 Instead of displaying counts on the y-axis, we could also display proportions. To do this, we add `position = "fill"` to the `geom_bar` layer.
 
@@ -191,10 +172,6 @@ ggplot(data = AmesHousing, mapping = aes(x = as.factor(Bedroom.AbvGr), fill = as
   labs(x = "Number of bedrooms above grade")
 ```
 
-**Questions**
-
-11) Recreate the above plot.
-12) What kinds of questions are more easily answered by looking at the above figure?
 
 Another option would be to create a side-by-side bar chart, which is often called a faceted bar chart. Faceting is used when we'd like to create small multiples of the same plot over a different categorical variable. By default, all of the small multiples will have the same vertical axis.
 
@@ -205,19 +182,8 @@ ggplot(data = AmesHousing, mapping = aes(x = as.factor(Bedroom.AbvGr), fill = as
   labs(x = "Number of bedrooms above grade")
 ```
 
-It is often easier to compare small multiples if they are either displayed in a row or a column. To specify the layout of the panels, you can add arguments specifying the number of rows (`nrow`) and the number of columns (`ncol`). For example, we can arrange all of the panels in one column:
 
-```{r, eval=FALSE}
-ggplot(data = AmesHousing, mapping = aes(x = as.factor(Bedroom.AbvGr), fill = as.factor(Full.Bath))) +
-  geom_bar() +
-  facet_wrap(~ Full.Bath, ncol = 1) +
-  labs(x = "Number of bedrooms above grade")
-```
-
-**Questions**
-
-13) Recreate the above plot.
-14) What kinds of questions are more easily answered by looking at the above figure?
+**TODO:** Think about the merits of each configuration. What is easy to see? What's hard to see?
 
 
 
@@ -231,10 +197,7 @@ ggplot(data = AmesHousing, mapping = aes(x = Gr.Liv.Area, y = SalePrice)) +
   labs(x = "Above grade living area (sq. ft)", y = "Sale price ($)")
 ```
 
-**Questions**
-
-15) Recreate the above scatterplot.
-16) Describe the relationship between the above grade living area and sales price of a home.
+**TODO:** Describe the relationship between the above grade living area and sales price of a home.
 
 The large mass of points near the bottom left of the scatterplot can cause some confusion. This is the result of a phenomenon called over-plotting. As one may guess, this corresponds to values being plotted on top of each other over and over again. It is often difficult to know just how many values are plotted in this way when looking at a basic scatterplot as we have here.
 
@@ -246,11 +209,7 @@ ggplot(data = AmesHousing, mapping = aes(x = Gr.Liv.Area, y = SalePrice)) +
   labs(x = "Above grade living area (sq. ft)", y = "Sale price ($)")
 ```
 
-**Questions**
-
-17) Recreate the above scatterplot.
-18) Why is setting the alpha argument value useful with scatterplots? What further information does it give you that a regular scatterplot cannot?
-
+**TODO:** It can also be helpful to add a smoother to a scatterplot. To do this, recreate the above scatterplot, but add a layer: `geom_smooth()`.
 
 #### One categorical and one quantiative variable
 
@@ -271,11 +230,8 @@ ggplot(data = AmesHousing, mapping = aes(x = SalePrice, fill = Central.Air)) +
   geom_density(alpha = 0.5)
 ```
 
-**Questions:**
 
-19) Recreate the faceted histogram and overlaid density plots.
-20) What do these plots reveal about the impact of central air on the price of a home?
-21) Which plot did you find most helpful? Why?
+**TODO:** What do these plots reveal about the impact of central air on the price of a home? Which plot did you find most helpful? Why?
 
 A third option is to create side-by-side boxplots. To do this we use the `geom_boxplot` layer, where we display the categories on the x-axis and the quantitative variable on the y-axis.
 
@@ -284,10 +240,6 @@ ggplot(data = AmesHousing, mapping = aes(x = Central.Air, y = SalePrice)) +
   geom_boxplot()
 ```
 
-**Questions:**
-
-22) Create side-by-side boxplots of sale price by building type (`Bldg.Type`).
-23) Describe what you can learn from this plot about the relationship between sale price and building type.
 
 
 ### 5. Customizing colors
