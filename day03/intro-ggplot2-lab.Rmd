@@ -27,7 +27,7 @@ library(tidyverse)
 You can load the data directly from GitHub by using the URL in place of a filename:
 
 ```{r}
-AmesHousing <- read.csv("AmesHousing.csv")
+AmesHousing <- read.csv("https://raw.githubusercontent.com/cmsc205/notes/master/day03/AmesHousing.csv")
 ```
 
 ### 2. Building your first plot

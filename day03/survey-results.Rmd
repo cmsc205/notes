@@ -1,0 +1,35 @@
+---
+title: "Survey Results"
+author: "CMSC 205, Spring 2017"
+date: "March 29, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load the packages necessary
+library(googlesheets)
+library(dplyr)
+library(ggplot2)
+```
+
+## Grabbing the results from Google
+
+```{r setup, include=FALSE}
+# Grab list of my google sheets
+my_sheets <- gs_ls()
+
+# Grab the specific sheets
+responses <- gs_title("CMSC205_GitHub_Account_Information (Responses)") %>%
+  gs_read() 
+
+colnames(responses) <- c("timestamp", "first", "last",
+                         "email", "github", "stats", "programming",
+                         "major", "activities", "goals", "other")
+
+random <- gs_title("Random Sampling from the Gettysburg Address") %>%
+  gs_read()
+
+colnames(random) <- c("timestamp", "word.length", "ewords")
+```
