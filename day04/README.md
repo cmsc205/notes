@@ -13,3 +13,6 @@ The [The Data Visualisation Catalogue](http://www.datavizcatalogue.com/) contain
 -   [Line plot](http://www.datavizcatalogue.com/methods/line_graph.html)
 -   [Scatterplot](http://www.datavizcatalogue.com/methods/scatterplot.html)
 -   [Stacked bar chart](http://www.datavizcatalogue.com/methods/stacked_bar_graph.html)
+
+Data sets
+---------

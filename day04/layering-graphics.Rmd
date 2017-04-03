@@ -1,0 +1,64 @@
+---
+title: "Layering Graphics"
+author: "CMSC 205, Winter 2017"
+date: "April 3, 2017"
+output: html_document
+---
+
+## Motivating example
+
+Today, we hope to recreate the below graphic that appeared in the [FiveThirtyEight](https://fivethirtyeight.com/) article ["How to Tell Someone’s Age When All You Know Is Her Name"](https://fivethirtyeight.com/features/how-to-tell-someones-age-when-all-you-know-is-her-name/).
+
+The data we will use today are found on [GitHub]().
+
+
+![](https://espnfivethirtyeight.files.wordpress.com/2014/05/silver-feature-joseph2.png?quality=90&strip=all&w=1150&ssl=1)
+
+## Step 1: Load the tidyverse and the data
+
+
+## Step 2: Filter out the Josephs
+
+
+## Step 3: Draw a bar chart on top for Josephs who are alive
+
+
+## Step 4: Draw the line plot for all Josephs
+
+
+## Step 5: Tweaking the colors and line width
+
+
+## Step 6: Highlighting the median age
+
+Don't forget to install `Hmisc`!
+
+```{r}
+library(Hmisc) # to access wtd.quantile() function
+
+median_year <- wtd.quantile(x = joseph$year, weights = joseph$est_alive_today, probs = 0.5)
+median_year
+```
+
+
+## Step 7: Fixing the axis labels
+
+
+## Step 8: Adding a title
+
+
+## Step 9: Adding text annotations
+
+
+## Step 10: Changing the theme
+
+When creating publication-quality graphics, we often want to change the **theme** of the plot. That is, we might not want a gray background, or we may which to change the tick marks on the axis, or some other characteristic. This type of change is a change to the theme. Today, we'll use the `ggthemes` package to quickly make a change to a different theme.
+
+```{r message=FALSE}
+library(ggthemes) # contains numerous different themes
+```
+
+You can find a gallery of the available themes [here](https://github.com/jrnold/ggthemes)
+
+
+

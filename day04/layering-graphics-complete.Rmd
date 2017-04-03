@@ -1,0 +1,128 @@
+---
+title: "Layering Graphics"
+author: "CMSC 205, Winter 2017"
+date: "April 3, 2017"
+output: html_document
+---
+
+## Motivating example
+
+Today, we hope to recreate the below graphic that appeared in the [FiveThirtyEight](https://fivethirtyeight.com/) article ["How to Tell Someone’s Age When All You Know Is Her Name"](https://fivethirtyeight.com/features/how-to-tell-someones-age-when-all-you-know-is-her-name/).
+
+The data we will use today are found on [GitHub]().
+
+
+![](https://espnfivethirtyeight.files.wordpress.com/2014/05/silver-feature-joseph2.png?quality=90&strip=all&w=1150&ssl=1)
+
+## Step 1: Load the tidyverse and the data
+
+```{r message=FALSE}
+library(mdsr)
+babynames <- make_babynames_dist()
+head(babynames)
+```
+
+
+## Step 2: Filter out the Josephs
+
+```{r}
+joseph <- filter(babynames, name == "Joseph" & sex == "M")
+```
+
+## Step 3: Draw a bar chart on top for Josephs who are alive
+
+```{r}
+name_plot <- 
+  ggplot(joseph, aes(x = year)) +
+  geom_bar(stat = "identity", aes(y = count_thousands * alive_prob))
+name_plot
+```
+
+## Step 4: Draw the line plot for all Josephs
+
+```{r}
+name_plot <- 
+  name_plot +
+  geom_line(aes(y = count_thousands)) 
+name_plot
+```
+
+## Step 5: Tweaking the colors and line width
+
+```{r}
+name_plot <- 
+  ggplot(joseph, aes(x = year)) +
+  geom_bar(stat = "identity", aes(x = year, y = count_thousands * alive_prob), fill = "skyblue", color = "white") +
+  geom_line(aes(y = count_thousands), size = 1)
+name_plot
+```
+
+
+## Step 6: Highlighting the median age
+
+```{r}
+library(Hmisc) # to access wtd.quantile() function
+
+median_year <- wtd.quantile(x = joseph$year, weights = joseph$est_alive_today, probs = 0.5)
+median_year
+
+median_year_alive <- filter(joseph, year == median_year)
+```
+
+```{r}
+name_plot <- 
+  name_plot +
+   geom_bar(stat = "identity", color = "white", fill = "dodgerblue3", aes(y = ifelse(year == median_year, count_thousands * alive_prob, NA)))
+name_plot
+```
+
+
+## Step 7: Fixing the axis labels
+
+```{r}
+name_plot <- 
+  name_plot +
+  labs(x = NULL, y = "Number of people (thousands)")
+name_plot
+```
+
+## Step 8: Adding a title
+
+```{r}
+name_plot <- 
+  name_plot +
+  labs(title = "Age Distribution of American Boys Named Joseph",
+       subtitle = "By year of birth")
+name_plot
+```
+
+
+## Step 9: Adding text annotations
+
+```{r}
+name_plot <- 
+  name_plot + 
+  ylim(0, 43) +
+  geom_text(x = 1935, y = 40, label = "Number of Josephs\nborn each year") +
+  geom_text(x = 1915, y = 13, label = "Number of Josephs\nborn each year\nestimated to be alive\non 1/1/2014", color = "skyblue") +
+  geom_text(x = 2003, y = 40, label = "The median\nliving Joseph\nis 37 years old", color = "darkgray") +
+  geom_curve(x = 1995, xend = 1975, y = 40, yend = 24, 
+             arrow = arrow(length = unit(0.3, "cm")),
+             curvature = 0.5)
+name_plot
+```
+
+## Step 10: Changing the theme
+
+When creating publication-quality graphics, we often want to change the **theme** of the plot. That is, we might not want a gray background, or we may which to change the tick marks on the axis, or some other characteristic. This type of change is a change to the theme. Today, we'll use the `ggthemes` package to quickly make a change to a different theme.
+
+```{r message=FALSE}
+library(ggthemes) # contains numerous different themes
+```
+
+You can find a gallery of the available themes [here](https://github.com/jrnold/ggthemes)
+
+```{r}
+name_plot + theme_minimal()
+```
+
