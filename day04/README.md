@@ -16,3 +16,12 @@ The [The Data Visualisation Catalogue](http://www.datavizcatalogue.com/) contain
 
 Data sets
 ---------
+
+-   To access the `babynames` data set we used in class, you need to download the `mdsr` package and run the below commands:
+
+``` r
+library(mdsr)
+babynames <- make_babynames_dist()
+```
+
+-   The college scorecard data can be found on [GitHub]()
