@@ -3,9 +3,10 @@ title: "Layering Graphics"
 author: "CMSC 205, Winter 2017"
 date: "April 3, 2017"
 output:
+  pdf_document: default
   html_document:
-    fig_width: 6
     fig_height: 4
+    fig_width: 6
 ---
 
 ## Motivating example

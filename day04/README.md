@@ -24,4 +24,4 @@ library(mdsr)
 babynames <- make_babynames_dist()
 ```
 
--   The college scorecard data can be found on [GitHub]()
+-   The college scorecard data can be found on [GitHub](https://github.com/cmsc205/data/raw/master/ScorecardSmallNarrow.csv)
