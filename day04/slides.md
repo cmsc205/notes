@@ -76,7 +76,8 @@
 #### Source: https://github.com/fivethirtyeight/data
 
 ```{}
-babynames <- read.csv("")
+library(mdsr)
+babynames <- make_babynames_dist()
 head(babynames)
 ```
 

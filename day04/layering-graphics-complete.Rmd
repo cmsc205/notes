@@ -17,6 +17,7 @@ The data we will use today are found on [GitHub]().
 ## Step 1: Load the tidyverse and the data
 
 ```{r message=FALSE}
+library(tidyverse)
 library(mdsr)
 babynames <- make_babynames_dist()
 head(babynames)
