@@ -1,5 +1,5 @@
 ---
-title: "Polishing Plots"
+title: "Customizing Plots"
 output: html_document
 ---
 
@@ -28,7 +28,18 @@ dead_names <- read_csv("https://raw.githubusercontent.com/cmsc205/data/master/de
 
 First, we must recreate the structure of the bar chart.
 
-
+```{r}
+dnplot <- 
+  ggplot(dead_names, aes(x = reorder(name, pct_dead), y = pct_dead, fill = sex)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = pct_dead), hjust = -.1) +
+  facet_wrap(~sex, scales = "free_y", ncol = 1) +
+  coord_flip() +
+  ylim(0, 95) +
+  labs(x = NULL, y = NULL, 
+       title = "Deadest Names",
+       subtitle = "Estimated percentage of Americans with a given name born since\n1900 who were dead as of Jan. 1, 2014")
+```
 
 # Choosing color palettes
 
@@ -36,26 +47,50 @@ First, we must recreate the structure of the bar chart.
 
 ## Manual adjustments
 
+```{r}
+dnplot +
+  scale_fill_manual(values = c("goldenrod1", "dodgerblue1"))
+```
 
 
 R has numerous named colors, but they are limited. For more freedom in your color specification, you may wish to switch to hexdecimal color specification.
 
 We can match the colors used exactly using a hexadecimal specification determined with a digital color meter.
 
+```{r}
+dnplot2 <- 
+  dnplot +
+  scale_fill_manual(values = c("#f6b900", "#008fd5"))
+dnplot2
+```
 
 
 ## Using RColorBrewer
 
 While it was relatively easy to pick two colors, it can be much harder to select color palettes. Luckily, we can use other vetted palettes.
 
+```{r}
+dnplot +
+  scale_fill_brewer(palette = "Dark2")
+```
 
 
 ## Using viridis
 
+```{r}
+library(viridis)
+dnplot + 
+  scale_fill_viridis(discrete = TRUE)
+```
 
 
 ## A colorblind friendly palette
 
+```{r}
+library(ggthemes)
+dnplot +
+  scale_fill_colorblind()
+```
 
 
 
@@ -67,14 +102,30 @@ The `ggthemes` package offers many additional [choices](https://github.com/jrnol
 
 Remember, a new theme is added just like a layer.
 
+```{r}
+dnplot2 +
+  theme_minimal()
+```
 
 What other themes could we try?
 
+```{r}
+dnplot2 +
+  theme_fivethirtyeight()
+```
 
 
 # Customizing themes
 
 The `theme()` function allows us to fine tune every aspect of our plot canvas.
 
-
+```{r}
+dnplot2 +
+  theme_fivethirtyeight() +
+  theme(legend.position = "none", # get rid of legend
+        panel.grid = element_blank(), # get rid of grid lines
+        strip.text = element_blank(),  # get rid of facet labels
+        axis.text.x = element_blank() # no scale for bar length
+        )
+```
 
