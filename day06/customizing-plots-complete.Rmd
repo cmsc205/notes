@@ -1,6 +1,8 @@
 ---
 title: "Customizing Plots"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 We now know how to create many plot types using `ggplot2`, but often you want to customize your plots. Today, we'll discuss common tools for customizing our plots.
