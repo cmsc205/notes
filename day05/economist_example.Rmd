@@ -1,0 +1,28 @@
+---
+title: "Economist Graphic"
+author: "CMSC 205, Spring 2017"
+date: "April 5, 2017"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+scorecard <- read_csv("https://github.com/cmsc205/data/raw/master/ScorecardSmallNarrow.csv")
+```
+
+Now, let's make the plot
+
+```{r}
+library(ggthemes)
+ggplot(scorecard, aes(x = ADM_RATE*100, y = net_cost/1000)) +
+  geom_point(alpha = 0.2, color = "skyblue") +
+  geom_smooth(se = FALSE, color = "black") +
+  facet_grid(CONTROL ~ income_group) +
+  labs(x = "Admissions rate, %", y = "Net cost per year, $`000",
+       title = "Scorecard",
+       subtitle = "Average net cost per year at U.S. colleges") +
+  ylim(0, 50) +
+  xlim(0, 100) +
+  theme_minimal()
+```
+
