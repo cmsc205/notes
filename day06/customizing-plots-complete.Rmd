@@ -60,10 +60,10 @@ R has numerous named colors, but they are limited. For more freedom in your colo
 We can match the colors used exactly using a hexadecimal specification determined with a digital color meter.
 
 ```{r}
-dnplot2 <- 
+p538 <-
   dnplot +
   scale_fill_manual(values = c("#f6b900", "#008fd5"))
-dnplot2
+p538
 ```
 
 
@@ -81,7 +81,7 @@ dnplot +
 
 ```{r}
 library(viridis)
-dnplot + 
+p538 + 
   scale_fill_viridis(discrete = TRUE)
 ```
 
@@ -90,7 +90,7 @@ dnplot +
 
 ```{r}
 library(ggthemes)
-dnplot +
+p538 +
   scale_fill_colorblind()
 ```
 
@@ -105,14 +105,14 @@ The `ggthemes` package offers many additional [choices](https://github.com/jrnol
 Remember, a new theme is added just like a layer.
 
 ```{r}
-dnplot2 +
+p538 +
   theme_minimal()
 ```
 
 What other themes could we try?
 
 ```{r}
-dnplot2 +
+p538 +
   theme_fivethirtyeight()
 ```
 
@@ -122,7 +122,7 @@ dnplot2 +
 The `theme()` function allows us to fine tune every aspect of our plot canvas.
 
 ```{r}
-dnplot2 +
+p538 +
   theme_fivethirtyeight() +
   theme(legend.position = "none", # get rid of legend
         panel.grid = element_blank(), # get rid of grid lines
