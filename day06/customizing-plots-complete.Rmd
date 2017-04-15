@@ -9,8 +9,9 @@ We now know how to create many plot types using `ggplot2`, but often you want to
 
 To begin, make sure that you have the `tidyverse` loaded.
 
-```{r message=FALSE}
+```{r message = FALSE}
 library(tidyverse)
+library(plyr)
 ```
 
 # The Deadest Names in the U.S.
@@ -41,6 +42,7 @@ dnplot <-
   labs(x = NULL, y = NULL, 
        title = "Deadest Names",
        subtitle = "Estimated percentage of Americans with a given name born since\n1900 who were dead as of Jan. 1, 2014")
+dnplot
 ```
 
 # Choosing color palettes
