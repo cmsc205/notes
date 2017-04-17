@@ -359,23 +359,28 @@ arrange(small_flights, carrier, dest)
 Compute table summaries
 
 ```
-summarise(flights,
+summarize(flights,
           N = n(),
           mean = mean(dep_delay, na.rm = TRUE),
           sd = sd(dep_delay, na.rm = TRUE),
           min = min(dep_delay, na.rm = TRUE),
+          Q1 = quantile(dep_delay, probs = 0.25, na.rm = TRUE),
           median = median(dep_delay, na.rm = TRUE),
+          Q3 = quantile(dep_delay, probs = 0.75, na.rm = TRUE),
           max = max(dep_delay, na.rm = TRUE))
-
-# A tibble: 1 × 6
-       N     mean       sd   min median   max
-   <int>    <dbl>    <dbl> <dbl>  <dbl> <dbl>
-1 336776 12.63907 40.21006   -43     -2  1301
+# A tibble: 1 × 8
+       N     mean       sd   min    Q1 median    Q3   max
+   <int>    <dbl>    <dbl> <dbl> <dbl>  <dbl> <dbl> <dbl>
+1 336776 12.63907 40.21006   -43    -5     -2    11  1301
 ```
 
 ---
 
 ## Your turn
 
-- HW-3 contains practice with today's verbs (due 4/19 by 9:50 a.m.)
-- Complete the Data Camp tutorial (linked through Moodle) for next class
+- Work on the `dplyr` exercises
+
+
+## For next time
+
+- Complete the Data Camp tutorial (linked through Moodle)
