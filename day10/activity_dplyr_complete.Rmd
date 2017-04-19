@@ -1,6 +1,6 @@
 ---
 title: "Introduction to dplyr"
-output: html_document
+output: html_notebook
 ---
 
 ## Overview
@@ -58,26 +58,27 @@ Variable        | Description
 
 ```{r}
 sub_colleges <- select(colleges, college, city, state, undergrads, cost)
-sub_colleges
+head(sub_colleges)
 ```
 
 2) What is the most expensive school? 
 
 ```{r}
-arrange(sub_colleges, desc(cost))
+sub_colleges <- arrange(sub_colleges, desc(cost))
+head(sub_colleges)
 ```
 
 3) What school has the lowest admissions rate? 
 
 ```{r}
-arrange(colleges, admissionRate)
+head(arrange(colleges, admissionRate))
 ```
 
 4) What school has the least expensive school in Wisconsin?
 
 ```{r}
 wi <- filter(colleges, state == "WI")
-arrange(wi, cost)
+head(arrange(wi, cost))
 ```
 
 5) What school has the lowest admissions rate in the Great Lakes or Plains regions?
@@ -85,7 +86,7 @@ arrange(wi, cost)
 ```{r}
 glp <- filter(colleges, region == "Great Lakes" | region == "Plains")
 glp <- filter(colleges, region %in% c("Great Lakes", "Plains"))
-arrange(glp, admissionRate)
+head(arrange(glp, admissionRate))
 ```
 
 5) How many private colleges are there in Maryland with under 5000 undergraduates?
