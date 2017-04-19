@@ -1,0 +1,115 @@
+---
+title: "Introduction to dplyr"
+output: html_document
+---
+
+## Overview
+
+Data manipulation is central to data analysis and is often the most time consuming portion of an analysis. The `dplyr` package contains a suite of functions to make data manipulation easier. The core functions of the `dplyr` package can be thought of as verbs for data manipulation.
+
+
+Verb(s)               | Meaning
+------------ | -----------------------------------------------------
+`filter`     | pick specific observations (i.e. specific rows)
+`arrange`    | reorder the rows
+`select`     | pick variables by their names (i.e. specific columns)
+`mutate`     | add new calculated columns to a data frame
+`summarize`  | aggregate many rows into a single row 
+
+
+In this example you will explore how to use each of these functions.
+
+To begin, load the `tidyverse` (which loads `dplyr`) and the data set
+
+```{r message=FALSE, warning=FALSE}
+colleges <- read.csv("https://raw.githubusercontent.com/cmsc205/data/master/colleges2015.csv")
+library(tidyverse)
+```
+
+
+## Data 
+
+The file `college2015.csv` contains information on predominantly bachelor's-degree granting institutions from 2015 that might be of interest to a college applicant. A brief summary of each column is given below:
+
+
+Variable        | Description
+--------------- | -----------
+`unitid`        | A unique ID number for each school
+`college`       | School name
+`type`          | School type: public or private
+`city`          | City
+`state`         | State abbreviation
+`region`        | Region of the U.S.
+`admissionRate` | Proportion of undergraduate applicants admitted
+`ACTmath`       | Median ACT math score
+`ACTenglish`    | Median ACT English score
+`undergrads`    | Undergraduate enrollment
+`cost`          | Total cost of attendance
+`gradRate`      | Proportion of students graduating within six years
+`FYretention`   | Proportion of first year students returning for a second year
+`fedloan`       | Proportion of students with federal student loans
+`debt`          | Median principal of student loans entering repayment
+
+
+
+## Questions
+
+1) Create a new data frame that only contains the columns `college`, `city`, `state`, `undergrads`, and `cost`.
+
+```{r}
+sub_colleges <- select(colleges, college, city, state, undergrads, cost)
+sub_colleges
+```
+
+2) What is the most expensive school? 
+
+```{r}
+arrange(sub_colleges, desc(cost))
+```
+
+3) What school has the lowest admissions rate? 
+
+```{r}
+arrange(colleges, admissionRate)
+```
+
+4) What school has the least expensive school in Wisconsin?
+
+```{r}
+wi <- filter(colleges, state == "WI")
+arrange(wi, cost)
+```
+
+5) What school has the lowest admissions rate in the Great Lakes or Plains regions?
+
+```{r}
+glp <- filter(colleges, region == "Great Lakes" | region == "Plains")
+glp <- filter(colleges, region %in% c("Great Lakes", "Plains"))
+arrange(glp, admissionRate)
+```
+
+5) How many private colleges are there in Maryland with under 5000 undergraduates?
+
+```{r}
+md <- filter(colleges, state == "MD" & type == "private" & undergrads < 5000)
+summarize(md, N = n())
+```
+
+
+6) Create a column giving the cumulative average cost of attendance, assuming that students finish in four years and that costs increase 3% per year. Name this new column `total.avg.cost4`.
+
+```{r}
+sub_colleges <- mutate(sub_colleges, total.avg.cost4 = cost + 1.03 * cost + 1.03^2 * cost + 1.03^3 * cost)
+head(sub_colleges)
+```
+
+
+
+
+## Additional Resources
+
+* [RStudio's data wrangling cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) provides a nice summary of the functions in the `dplyr` package, including those covered in this tutorial.
+
+* The [introductory vignette](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html) to `dplyr` provides an example of wrangling a data set consisting of 336,776 flights that departed from New York City in 2013.
+
+* Roger Peng's [video overview](https://www.youtube.com/watch?v=aywFompr1F4&feature=youtu.be) of the `dplyr` package.
