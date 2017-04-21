@@ -1,0 +1,99 @@
+---
+title: "Solutions"
+author: "CMSC 205, Spring 2017"
+date: "April 19, 2017"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Your turn
+
+Use the `colleges2015.csv` file from last class to answer the following questions:
+
+```{r}
+colleges <- read.csv("https://raw.githubusercontent.com/cmsc205/data/master/colleges2015.csv")
+
+library(tidyverse)
+```
+
+
+#### 1. Which state has the most private schools?
+
+```{r}
+colleges %>%
+  group_by(state) %>%
+  filter(type == "private") %>%
+  summarize(number_colleges = n()) %>%
+  arrange(desc(number_colleges)) %>%
+  head(n=1)
+
+# alternative approach
+colleges %>%
+  group_by(state) %>%
+  filter(type == "private") %>%
+  summarize(number_colleges = n()) %>%
+  mutate(rank = rank(number_colleges)) %>%
+  filter(rank == max(rank))
+```
+
+
+#### 2. Which state has the most private schools with fewer than 3000 students?
+
+```{r}
+colleges %>%
+  group_by(state) %>%
+  filter(type == "private" & undergrads < 3000 & !is.na(undergrads)) %>%
+  summarize(number_colleges = n()) %>%
+  arrange(desc(number_colleges)) 
+
+# checking to see if there are NAs to worry about
+colleges %>%
+  group_by(state) %>%
+  filter(type == "private" & undergrads < 3000) %>%
+  summarize(na = sum(is.na(undergrads)))
+```
+
+
+#### 3. In which state do students graduate with the least debt? the most debt?
+
+```{r}
+colleges %>%
+  group_by(state) %>%
+  summarize(mean = mean(debt, na.rm = TRUE),
+            median = median(debt, na.rm = TRUE)) %>%
+  arrange(desc(median))
+```
+
+
+#### 4. Find the typical difference in average cost between private and public schools by state. Which state has the largest difference? Which state has the smallest difference?
+
+To start, this problem doesn't seem overly difficult...
+```{r}
+cost_df <- colleges %>%
+  group_by(state, type) %>%
+  summarize(avg_cost = mean(cost, na.rm = TRUE))
+
+head(cost_df)
+```
+
+To easily find the differences between private and public in a state, it would be ideal to have the average cost for each type of institution to be in different columns. Since this is not the case, we have to manually index the values:
+
+```{r}
+cost_df <- 
+  cost_df %>%
+  summarize(avg_diff = avg_cost[1] - avg_cost[2])
+```
+
+Thus, we find that Mississippi (MS) is the state with the smallest difference in average cost between private and public schools, and Rhode Island is the state with the largest difference.
+
+```{r}
+arrange(cost_df, avg_diff)
+```
+
+```{r}
+arrange(cost_df, desc(avg_diff))
+```
+
