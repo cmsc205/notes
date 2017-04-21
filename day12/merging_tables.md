@@ -163,12 +163,15 @@ How do `semi_join` and `inner_join` differ?
 inner_join(x = customers, y = orders2, by = "id")
 ```
 
+![inline](inner_join3.png)
+
+
 ---
 
 For an `anti_join`, order matters
 
 ```{r}
-anti_join(x = orders, y = customers, by = "id")
+anti_join(x = orders2, y = customers, by = "id")
 ```
 
 ![inline](anti_join1.png)
@@ -179,7 +182,7 @@ For an `anti_join`, order matters
 
 
 ```{r}
-anti_join(x = customers, y = orders, by = "id")
+anti_join(x = customers, y = orders2, by = "id")
 ```
 
 ![inline](anti_join2.png)
