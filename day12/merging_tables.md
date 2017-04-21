@@ -8,16 +8,7 @@
 
 An online retailer stores customer data in two places: <br>
 
-```
-orders                      customers
-  order id   date              id    name
-1     1  4 Jan-01            1  4   Tukey
-2     2  8 Feb-01            2  8 Wickham
-3     3 42 Apr-15            3 15   Mason
-4     4 50 Apr-17            4 16  Jordan
-                             5 23   Patil
-                             6 42     Cox
-```
+![inline](data_tables.png)
 
 ---
 
@@ -62,7 +53,7 @@ inner_join(x = orders, y = customers, by = "id")
 
 ## Outer joins
 
-**Outer joins** keeps the rows (observations) that appear in a specified table
+### Keep the rows that appear in a specified table
 
 ---
 
@@ -88,11 +79,15 @@ A **full join** keeps all observations in both the `x` and `y` tables
 left_join(x = orders, y = customers, by = "id")
 ```
 
+![inline](left_join.png)
+
 ---
 
 ```{r}
 right_join(x = orders, y = customers, by = "id")
 ```
+
+![inline](right_join.png)
 
 ---
 
@@ -100,11 +95,13 @@ right_join(x = orders, y = customers, by = "id")
 full_join(x = orders, y = customers, by = "id")
 ```
 
+![inline](full_join.png)
+
 ---
 
 ## Filtering joins
 
-Filtering joins still match observations between two data tables, but do not add additional variables, they only impact the rows returned.
+Filtering joins still match observations between two data tables, but do not add additional variables, they **only impact the rows returned.**
 
 1. `semi_join(x, y)` keeps all observations in `x` that have a match in `y`
 
@@ -134,19 +131,18 @@ Observations will never be duplicated.
 semi_join(x = orders, y = customers, by = "id")
 ```
 
+![inline](semi_join.png)
+
 ---
 
 What if we had an extra order?
 
 ```{r}
 extra_order <- data.frame(order = 5, id = 42, date = "May-01")
-extra_order
+orders2 <- rbind(orders, extra_order)
 ```
 
-```{r}
-orders2 <- rbind(orders, extra_order)
-orders2
-```
+![inline](orders2.png)
 
 ---
 
@@ -155,6 +151,12 @@ How do `semi_join` and `inner_join` differ?
 ```{r}
 semi_join(x = customers, y = orders2, by = "id")
 ```
+
+![inline](semi_join2.png)
+
+---
+
+How do `semi_join` and `inner_join` differ?
 
 
 ```{r}
@@ -169,9 +171,18 @@ For an `anti_join`, order matters
 anti_join(x = orders, y = customers, by = "id")
 ```
 
+![inline](anti_join1.png)
+
+---
+
+For an `anti_join`, order matters
+
+
 ```{r}
 anti_join(x = customers, y = orders, by = "id")
 ```
+
+![inline](anti_join2.png)
 
 ---
 
@@ -185,7 +196,9 @@ You must specify a vector of variable names:
 
 `by = c("var1", "var2", "var3")`. 
 
-Here all three columns must match in both tables.
+<br>
+
+All three columns must match in both tables.
 
 ---
 
@@ -206,16 +219,9 @@ Leave the `by` argument blank.
 
 ----
 
-## Set up for today
+## Does payroll differ between the American League and the National League?
 
-1. Load the tidyverse
-
-2. Download the data folder from the webpage and put it in a logical directory on your computer. 
-
-3. Open an R markdown file and load the data using the appropriate relative file path.
-
-
-```{r}
-orders <- read.csv("data/orders.csv", as.is = TRUE)
-customers <- read.csv("data/customers.csv", as.is = TRUE)
-```
+- Load the `tidyverse`
+- Install and load the `Lahman` R package 
+- Look at the `Salaries` and `Teams` data tables
+- Devise a way to clearly compare the team payroll between the two leagues over the years
