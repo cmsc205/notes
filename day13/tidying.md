@@ -7,7 +7,7 @@
 ## Does payroll differ between the American League and the National League?
 
 - Load the `tidyverse`
-- Install and load the `Lahman` R package 
+- Load the `Lahman` R package 
 - Look at the `Salaries` and `Teams` data tables
 - Devise a way to clearly compare the team payroll between the two leagues over the years
 
@@ -45,7 +45,7 @@
 
 ## Your turn
 
-- Data: `french_fries.csv`
+- Data: `frenchfries.csv`
 
 - 10 week sensory experiment, 12 individuals asked to assess taste of french fries on several scales (how potato-y, buttery, grassy, rancid, paint-y do the fries taste?)
 
@@ -99,7 +99,9 @@ under5mortality.csv contains the child mortality rate per 1,000 children born fo
 
 1. Briefly describe why it is not considered to be tidy data and what changes need to be made to tidy it.
 
-2. Create a tidy data set with columns country, year and mortality. Use `parse_numeric` to ensure that the  year column is numeric (see `?parse_numeric` for help).
+2. Create a tidy data set with columns country, year and mortality. 
+
+Hint: Use `parse_numeric` to ensure that the  year column is numeric (see `?parse_numeric` for help).
 
 ---
 
