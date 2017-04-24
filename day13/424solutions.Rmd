@@ -1,0 +1,60 @@
+---
+title: "4/24 Solutions"
+author: "CMSC 205, Spring 2017"
+date: "April 24, 2017"
+output: html_notebook
+---
+
+```{r preliminaries, message=FALSE}
+library(tidyverse)
+library(Lahman)
+```
+
+**Idea 1:** Plot avg. payroll for each league in each year
+
+```{r}
+avg_team_payroll <- 
+  Salaries %>%
+  group_by(lgID, yearID, teamID) %>%
+  summarize(team_salary = sum(salary)) %>%
+  group_by(lgID, yearID) %>%
+  summarize(avg_team_salary = mean(team_salary))
+
+ggplot(avg_team_payroll, aes(x = yearID, y = avg_team_salary, color = lgID)) +
+  geom_point()
+```
+
+**Idea 2:** use boxplots to display team payroll by league in each year
+
+```{r}
+team_payroll <- 
+  Salaries %>%
+  group_by(lgID, yearID, teamID) %>%
+  summarize(team_salary = sum(salary)) 
+head(team_payroll)
+
+ggplot(team_payroll, aes(x = factor(yearID), y = team_salary, fill = lgID)) +
+  geom_boxplot()
+```
+
+**Idea 3:** Calculate the total payroll for each league in each year
+
+```{r}
+league_payroll <- 
+  Salaries %>%
+  group_by(lgID, yearID) %>%
+  summarize(total_salary = sum(salary)) 
+```
+
+
+## Example join statement
+
+What if we wanted to bring in team performance?
+
+```{r}
+team_df <- left_join(x = team_payroll, y = Teams, 
+                     by = c("yearID", "lgID", "teamID"))
+glimpse(team_df)
+```
+
+
