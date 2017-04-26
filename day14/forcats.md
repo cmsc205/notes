@@ -53,7 +53,9 @@ levels(gss_cat$marital)
 [6] "Married"
 
 levels(gss_cat$partyid)
-[1] "other" "rep"   "ind"   "dem"  
+ [1] "No answer"          "Don't know"         "Other party"        "Strong republican" 
+ [5] "Not str republican" "Ind,near rep"       "Independent"        "Ind,near dem"      
+ [9] "Not str democrat"   "Strong democrat"   
 
 levels(gss_cat$relig)
  [1] "No answer"               "Don't know"              "Inter-nondenominational"
