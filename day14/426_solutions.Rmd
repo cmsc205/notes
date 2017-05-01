@@ -1,0 +1,71 @@
+---
+title: "4/26 Solutions"
+author: "CMSC 205, Spring 2017"
+date: "April 26, 2017"
+output: html_document
+---
+]
+## Tidying french fries
+
+```{r Loading ff}
+ff <- read.csv("https://raw.githubusercontent.com/cmsc205/data/master/frenchfries.csv")
+
+library(tidyverse)
+glimpse(ff)
+```
+
+# Goals
+- Create a scale column (potato, buttery, etc.)
+- Create a rating column to store the values from the old columns
+- Create boxplots of ratings by scale 
+
+```{r ff tidy}
+tidy_ff <- ff %>%
+  gather(key = "scale", value = "rating", potato, buttery, grassy, rancid, painty)
+glimpse(tidy_ff)
+```
+
+```{r boxplots}
+ggplot(tidy_ff, aes(x = scale, y = rating)) +
+  geom_boxplot() +
+  facet_wrap(~time, ncol = 5)
+```
+
+```{r}
+ggplot(tidy_ff, aes(x = factor(time), y = rating)) +
+  geom_boxplot() +
+  facet_wrap(~scale)
+```
+
+
+```{r}
+ggplot(tidy_ff, aes(x = time, y = rating, color = scale)) +
+  # geom_point() +
+  geom_smooth(se = FALSE) 
+  # facet_wrap(~scale)
+```
+
+
+
+## Example of separating
+
+```{r}
+table3 %>%
+  separate(rate, into = c("cases", "population"), sep = "/")
+```
+
+## Tidying the polls.csv data set
+
+```{r}
+polls <- read.csv("https://github.com/cmsc205/notes/raw/master/day13/polls.csv")
+```
+
+```{r tidying}
+polls %>%
+  separate(Date, into = c("start", "end"), "-") %>%
+  separate(Sample, into = c("size", "population")) %>%
+  gather(key = "candidate", value = "percent", Clinton..D.:Stein..G.) %>%
+  separate(candidate, into = c("candidate", "party"), sep = "[..]")
+```
+
+

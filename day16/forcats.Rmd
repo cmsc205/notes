@@ -1,0 +1,208 @@
+---
+title: "Manipulating Factors"
+author: "CMSC 205, Spring 2017"
+output: html_document
+---
+
+## Example
+
+To learn about factors, let's work with the candidates data set from mini project 2.
+
+```{r message=FALSE}
+library(tidyverse)
+library(forcats)
+candidates <- read.csv("https://raw.githubusercontent.com/cmsc205/mini-project-2/master/candidates.csv?token=ABQEtsMxwsxTEJwAxPc5-gQ3vfkYSztUks5ZD2T6wA%3D%3D")
+glimpse(candidates)
+```
+
+
+## stringsAsFactors
+
+From your initial glimpse at the data set, you should have noticed that `read.csv()` created factor rather than character variables by default. This can be OK, but often it causes many headaches! (Read [stringsAsFactors: An unauthorized biography](http://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/) and/or [stringsAsFactors = <sigh>](http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh) for more information.)
+
+Some of the drawbacks of this automatic conversion begin to emerge through a simple summary of the data set.
+
+```{r}
+summary(candidates)
+```
+
+
+## Creating factors
+
+A few variables were automatically coded as numbers, but should be factors, such as `cand_office_district` and `cand_zip`. These are easily converted to factors 
+
+```{r}
+candidates <- candidates %>%
+  mutate(cand_office_district = as.factor(cand_office_district),
+                     cand_zip = as.factor(cand_zip))
+```
+
+Let's take a look at the summaries of our new factor to ensure that things worked
+
+```{r}
+candidates %>%
+  count(cand_office_district)
+```
+
+```{r}
+candidates %>%
+  count(cand_zip) %>%
+  arrange(desc(n))
+```
+
+Why do we have a `0` in district? Why do we have two impossible zip codes (`0` and `8388607`)?
+
+The data dictionary tells us that `0` is the district used for "at large" congressional candidates as well as candidates for Senate and Presidential candidates.
+
+A quick filter statement doesn't reveal what's going on with the zip. More research is needed!
+
+```{r}
+wierd_zip <- candidates %>%
+  filter(cand_zip == "8388607")
+head(wierd_zip)
+```
+
+
+## Recoding a factor
+
+Sometimes, the factor labels in the original data set are not quite what we want for our plots, etc. `fct_recode()` allows us to specify new labels for levels.
+
+For example, consider the `cand_ici` (Incumbent Challenger Status)
+```{r}
+candidates %>%
+  count(cand_ici)
+```
+
+One letter labels here are not informative enough, so we need to expand them. The data dictionary reveals that
+
+- C = Challenger
+- I = Incumbent
+- O = Open Seat is used to indicate an open seat.  Open seats are defined as seats where the incumbent never sought re-election.
+
+It's easy to recode this variable using `mutate` and `fct_recode`:
+
+```{r}
+candidates <- candidates %>%
+  mutate(cand_ici = fct_recode(cand_ici,
+                               "Challenger" = "C",
+                               "Incumbent" = "I",
+                               "Open seat" = "O"
+  ))
+
+candidates %>%
+  count(cand_ici)
+```
+
+A nice feature of `fct_recode` is that you do not need to specify all of the levels, just the levels you wish to recode. For example, some candidates do not have complete mailing address, so we might want to introduce `missing` labels:
+
+```{r}
+candidates <- candidates %>%
+  mutate(cand_state = fct_recode(cand_state, "missing" = ""))
+```
+
+
+## Reordering a factor
+
+Suppose we wish to create a bar chart of `cand_ici` (Incumbent Challenger Status)
+
+```{r}
+ggplot(candidates, aes(x = cand_ici)) +
+  geom_bar() +
+  labs(x = "Incumbent Challenger Status")
+```
+
+
+How can we reorder the bars? We have used the `reorder` function before, but there are easier functions to use in the `forcats` package.
+
+For example, to reorder the bar chart, we simply use the `fct_infreq()` function.
+
+```{r}
+ggplot(candidates, aes(x = fct_infreq(cand_ici))) +
+  geom_bar() +
+  labs(x = "Incumbent Challenger Status")
+```
+
+
+If we want to reverse the order, then we can add the `fct_rev()` function to the call.
+
+```{r}
+ggplot(candidates, aes(x = fct_infreq(cand_ici) %>% fct_rev())) +
+  geom_bar() +
+  labs(x = "Incumbent Challenger Status")
+```
+
+
+Alternatively, we may only need to pull one factor level to the "front", in order to do this, we use `fct_relevel()`:
+
+```{r}
+ggplot(candidates, aes(x = fct_relevel(cand_ici, "Open seat"))) +
+  geom_bar() +
+  labs(x = "Incumbent Challenger Status")
+```
+
+
+Finally, we can use `fct_reorder()` to reorder a factor based on a numeric variable/summary:
+
+```{r}
+house_cand <- candidates %>%
+  filter(cand_office == "H") %>%
+  count(cand_office_state) 
+
+## The original plot
+house_cand %>%
+  ggplot(aes(x = cand_office_state, y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "State",  y = "count", title = "House Candidates by State")
+```
+
+
+```{r}
+## The ordered plot
+house_cand %>%
+  ggplot(aes(x = reorder(cand_office_state, n), y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(x = "State", y = "count", title = "House Candidates by State")
+```
+
+
+
+## Collapsing factor levels
+
+We can use `fct_collapse` to combine levels of factors, such as combining house and senate candidates to form a "Congressional" label.
+
+```{r}
+candidates <- candidates %>%
+  mutate(cand_type = fct_collapse(cand_office, 
+                                  presidential = "P",
+                                  congressional = c("H", "S")
+  ))
+
+candidates %>%
+  count(cand_type)
+```
+
+
+## 
+
+
+## Lumping small factors together
+
+Taking a look at the `cand_party_affiliation` variable reveals 38 unique political parties! 
+
+```{r}
+candidates %>%
+  count(cand_party_affiliation) %>%
+  arrange(desc(n))
+```
+
+Using `fct_lump` we can lump together many small factor levels.
+
+```{r}
+candidates <- candidates %>%
+  mutate(cand_party_affiliation = fct_lump(cand_party_affiliation, n = 4))
+
+candidates %>%
+  count(cand_party_affiliation) 
+```
