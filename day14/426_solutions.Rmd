@@ -1,10 +1,9 @@
 ---
 title: "4/26 Solutions"
 author: "CMSC 205, Spring 2017"
-date: "April 26, 2017"
-output: html_document
+output: html_notebook
 ---
-]
+
 ## Tidying french fries
 
 ```{r Loading ff}
@@ -60,12 +59,51 @@ table3 %>%
 polls <- read.csv("https://github.com/cmsc205/notes/raw/master/day13/polls.csv")
 ```
 
+We discussed this solution in class, so I will omit the explanation of why the data are not tidy.
+
 ```{r tidying}
 polls %>%
   separate(Date, into = c("start", "end"), "-") %>%
   separate(Sample, into = c("size", "population")) %>%
   gather(key = "candidate", value = "percent", Clinton..D.:Stein..G.) %>%
-  separate(candidate, into = c("candidate", "party"), sep = "[..]")
+  separate(candidate, into = c("candidate", "party"), sep = "[..]") %>%
+  mutate(MoE = ifelse(MoE == "--", NA, MoE))
 ```
 
+
+## Tidying the under5mortality.csv data set
+
+```{r}
+u5_mort <- read.csv("https://github.com/cmsc205/notes/raw/master/day13/under5mortality.csv")
+glimpse(u5_mort)
+```
+
+Notice that years are specified in the column names, but the year is a variable and should have it's own column. Also, remember that rows should correspond to the observational unit. Countries in a specific year are observed, so each country in each year should have a separate row.
+
+```{r}
+u5_mort %>%
+  rename(country = Under.five.mortality) %>%
+  gather(key = "year", value = "u5_mortality", -country) %>%
+  mutate(year = parse_number(year))
+```
+
+
+## Tidying the mlb2016.csv data set
+
+```{r}
+mlb2016 <- read.csv("https://github.com/cmsc205/notes/raw/master/day13/mlb2016.csv")
+glimpse(mlb2016)
+```
+
+In this data set the `Years` column contains three variables: the length of a players contract, and the start and end dates. Additionally, the salary columns contain units (`$`) and commas, forcing them to be factors.
+
+```{r}
+mlb2016 %>%
+  separate(Years, into = c("contract_length", "start_year", "end_year")) %>%
+  mutate(contract_length = as.integer(contract_length),
+         end_year = paste(20, end_year, sep = ""),
+         Salary = parse_number(Salary),
+         Total.Value = parse_number(Total.Value),
+         Avg.Annual = parse_number(Avg.Annual))
+```
 
