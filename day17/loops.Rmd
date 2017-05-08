@@ -1,0 +1,219 @@
+---
+title: "R Programming Structures: Loops and if-else statements"
+output: html_document
+---
+
+## Setup 
+
+First, we need to load the necessary packages.
+
+```{r message=FALSE}
+library(stringr)
+library(rvest)
+```
+
+# Motivating Example: Web Scraping
+
+## Quick note on HTML
+
+Web pages are written in HTML (Hyper Text Markup Language) which uses **tags** to describe different aspects of document content. 
+
+* a heading in a document is indicated by `<h1>My Title</h1>` 
+* a paragraph is indicated by  `<p>A paragraph of content...</p>`
+* a table is indicated by `<table> ... </table>`
+
+## Example
+
+* [Box Office Mojo](http://www.boxofficemojo.com) gives statistics on box office earnings of movies. 
+
+* Web site also maintains lists of yearly and all time record holders.
+
+* We will look at the movies in the top 100 in all time movie worldwide grosses in box office receipts. 
+
+* In particular, we will scrape the data from [Box Office Mojo: All Time Box Office](http://www.boxofficemojo.com/alltime/world/?pagenum=1). 
+
+* The dollar amounts are in millions of dollars and the years marked with "^" indicate that the movie had multiple releases.
+
+
+First, use `read_html` to read in the webpage
+
+```{r}
+movie_parse <- read_html("http://www.boxofficemojo.com/alltime/world/?pagenum=1")
+```
+
+Then, use `html_nodes` to grab the tables
+
+```{r}
+movie_tables <- html_nodes(movie_parse, "table")
+movie_tables
+```
+
+Next, extract the desired table
+
+```{r}
+movies <- html_table(movie_tables[[3]], header = TRUE, fill = TRUE)
+head(movies)
+```
+
+
+#### Question: Is the data set clean?
+
+* * *
+
+## Loops
+
+We can use loops to handle this type of repetitive task. There are three types of loops:
+
+1. `for` loop
+2. `while` loop
+3. `repeat` loop
+
+
+### `for` loop
+
+The `for()` statement allows one to specify that a certain operation should be repeated a fixed number of times.
+
+
+##### Syntax
+
+```{r eval=FALSE}
+for(name in vector) {
+  Commands
+}
+```
+
+
+A *very* basic example
+
+```{r}
+for(i in 1:5) {
+  print(i)
+}
+```
+
+
+A second *very* basic example
+
+```{r}
+x <- c(5, 12, 13)
+for(n in x) {
+  print(n^2)
+}
+```
+
+
+Now, let's use a `for` loop to clean our data set.
+
+```{r}
+problem_cols <- 4:9
+for(col in problem_cols) {
+  movies[,col] <- str_replace_all(movies[,col], pattern = "[^0-9.]", 
+                                  replacement = "") %>%
+    as.numeric()
+}
+```
+
+
+<!-- We could also use a `for` loop to implement the sieve of Eratosthenes, the oldest known systematic method for listing prime numbers up to a given value n. -->
+
+<!-- Idea:  -->
+
+<!-- - Begin with a vector of numbers from 2 to n -->
+<!-- - Beginning with 2, eliminate all multiples of 2 which are larger than 2 -->
+<!-- - Move to the next number remaining in the vector, in this case, 3. Now, remove all multiples of 3 which are larger than 3.  -->
+<!-- - Proceed through all remaining entries of the vector in this way. -->
+
+
+<!-- ```{r} -->
+<!-- n <- 50 -->
+<!-- sieve <- seq(2, n) -->
+<!-- primes <- c() -->
+<!-- for(i in sieve) { -->
+<!--   if(any(sieve == i)) { -->
+<!--     primes <- c(primes, i) -->
+<!--     sieve <- c(sieve[(sieve %% i) != 0], i) -->
+<!--   } -->
+<!-- } -->
+
+<!-- primes -->
+<!-- ``` -->
+
+
+
+## `if` statement
+
+The `if()` statement allows us to control which statements are executed.
+
+
+##### Syntax
+
+```{r eval=FALSE}
+if(condition) {
+  commands when TRUE
+}
+```
+
+
+```{r eval=FALSE}
+if(condition) {
+  commands when TRUE
+} else {
+  commands when FALSE
+}
+```
+
+
+A very basic example
+
+```{r}
+x <- 5
+if (x > 5) {x <- x + 1}
+
+x <- 6
+if (x > 5) {x <- x + 1}
+```
+
+
+```{r}
+x <- 5
+if (x > 5) {
+  x <- x + 1
+} else {
+  x <- x - 1
+}
+```
+
+
+
+### `while` loop
+
+The `while()` statement allows us to repeat a process as long as a condition holds.
+
+##### Syntax
+
+```{r eval=FALSE}
+while (condition) {
+  Commands
+}
+```
+
+A very basic example
+
+```{r}
+x <- 0
+while(x <= 5) {
+  print(x)
+  x <- x + 1
+}
+```
+
+
+`while` loops are also very useful for simulation when you don't know how many trials you will need.
+
+
+#### Example: Gambler's ruin
+
+Two gamblers, A and B, make a sequence of $1 bets. In each bet, gambler A has probability p of winning, and gambler B has probability q = 1 − p of winning. Gambler A starts with i dollars and gambler B starts with N − i dollars; the total wealth between the two remains constant since every time A loses a dollar, the dollar goes to B, and vice versa. The game ends when either A or B is ruined, i.e., when the random walk reaches 0 or N. What is the probability that A wins the game (walking away with all the money)?
+
+Note: `rbinom(1, n = 1, p = 0.5)` will simulate a coin flip where `1` denotes heads and `p` is the probability of heads.
+
