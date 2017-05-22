@@ -63,11 +63,11 @@
 
 ---
 
-# DataCamp Tutorials
+# Upcoming assigments
 
 ---
 
-# Upcoming assigments
+# DataCamp Tutorials
 
 
 **Friday 5/12 by 11:59 p.m.**

@@ -1,15 +1,17 @@
 ---
 title: "Understanding Samples"
-output: html_document
+output: html_notebook
 ---
 
 ## From last time...
 
 **Example:** Gambler's ruin
 
-Two gamblers, A and B, make a sequence of $1 bets. In each bet, gambler A has probability p of winning, and gambler B has probability q = 1 − p of winning. Gambler A starts with i dollars and gambler B starts with N − i dollars; the total wealth between the two remains constant since every time A loses a dollar, the dollar goes to B, and vice versa. The game ends when either A or B is ruined, i.e., when the random walk reaches 0 or N. What is the probability that A wins the game (walking away with all the money)?
+Two gamblers, A and B, make a sequence of $1 bets. In each bet, gambler A has probability p of winning, and gambler B has probability q = 1 − p of winning. Gambler A starts with i dollars and gambler B starts with N − i dollars; the total wealth between the two remains constant since every time A loses a dollar, the dollar goes to B, and vice versa. The game ends when either A or B is ruined, i.e., when the random walk reaches 0 or N. 
 
 Note: `rbinom(1, n = 1, p = 0.5)` will simulate a coin flip where `1` denotes heads and `p` is the probability of heads.
+
+First, let's simulate a single run of this game.
 
 ```{r}
 N <- 20   # set total wealth
@@ -28,8 +30,58 @@ while(i > 0 & (N - i) > 0) {
   }
 }
 
-bets
+i    # A's wealth
+bets # No. of bets made
 ```
+
+Next, we can run this a large number of times to see how many times A wins. The proportion estimates the probability that A wins.
+
+
+```{r}
+N <- 20   # set total wealth
+p <- 0.5  # set prob. A wins a bet
+
+ntrial <- 10000 # number of simulations
+
+a_wins <- numeric(ntrial)
+n_bets <- numeric(ntrial)
+
+for(j in 1:ntrial) {
+  bets <- 0 # initializing no. of bets
+  i <- 10   # A's initial wealth
+
+  while(i > 0 & (N - i) > 0) {
+    bets <- bets + 1
+    outcome <- rbinom(1, n = 1, p = p)
+    if (outcome == 1) {
+      i <- i + 1
+    } else {
+      i <- i - 1
+    }
+  }
+  
+  a_wins[j] <- i == N    # A's wealth
+  n_bets[j] <- bets # No. of bets made
+
+}
+
+mean(a_wins)
+```
+
+
+
+Finally, we can see how long we would expect the game to run by storing the number of bets for each trial, and looking at it's distribution.
+
+
+```{r message = FALSE}
+library(tidyverse)
+ggplot(data.frame(bets = n_bets), aes(x = bets)) +
+  geom_histogram()
+
+mean(n_bets)
+```
+
+
 
 
 ## Set up
@@ -45,7 +97,7 @@ library(readr)
 [SF OpenData](https://data.sfgov.org/) is a website where the City and County of San Francisco make some of their data publicly available. One of the data sets contains compensation data for employees of the City. These include medical professionals at City-run hospitals, police officers, fire fighters, transportation workers, elected officials, and all other employees of the City.
 
 ```{r}
-sf2016 <- read_csv("https://github.com/cmsc205/notes/raw/master/day17/sf2016.csv")
+sf2016 <- read_csv("https://github.com/cmsc205/notes/raw/master/day18/sf2016.csv")
 glimpse(sf2016)
 ```
 
@@ -126,23 +178,13 @@ Idea:
 
 ![](https://www.inferentialthinking.com/notebooks-images/Bootstrap_25_0.png)
 
+* * * 
 
 #### Your task:
 Using a `for` loop, take 5,000 bootstrap resamples from `our_sample`, calculate the median total compensation, and store is in vector `medians`. Note, the `sample` function allows you to take a sample from a vector of a given `size`, and `replace = TRUE` makes it with replacement.
 
 ```{r}
-B <- 5000 # No. of bootstrap statsistics desired
-n <- nrow(our_sample)
-medians <- numeric(length = B) # Place to store the stats
-for(b in 1:B) {
-  boot_sample <- sample(our_sample$TotalCompensation, 
-                        size = n, 
-                        replace = TRUE)
-  medians[b] <- median(boot_sample)
-}
-head(medians)
-length(medians)
-summary(medians)
+# Place your solution here
 ```
 
 Let's examine the bootstrap distribution

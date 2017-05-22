@@ -1,0 +1,39 @@
+---
+title: "Shiny Reports"
+author: "CMSC 205, Spring 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Your turn
+
+Using the `babynames` data set in the `babynames` package, modify Testing.Rmd so that we can
+
+- type in a name
+- specify a range of years
+
+and get a time series plot of the proportions of babies with the specified name for both sexes for the specified range of years.
+
+## Advice
+
+This is a <font color="dodgerblue">software engineering</font> project. There are best practices for such things:
+
+- <font color="dodgerblue">Start simple</font>: get the simplest possible version of your project working
+- <font color="dodgerblue">Then Iterate</font>: then slowly start adding components, testing often, until you can what you want.
+- Don't try to get it perfect from the beginning!
+
+(Source: Albert Kim)
+
+
+## Your turn
+
+Using the `sf2016` data set from 2/6, create a shiny app to run a one-sample bootstrap. Specifically, we should be able to
+
+- specify a sample size with a slider
+- select `Salaries` or `TotalCompensation` from a drop-down menu
+
+and get a histogram of the bootstrap distribution for the mean.
+

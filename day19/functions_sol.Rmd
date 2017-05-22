@@ -8,7 +8,7 @@ output: html_notebook
 ### Basic anatomy of a function
 
 ```{r eval=FALSE}
-￼my_fun <- function(arg1, arg2) {
+my_fun <- function(arg1, arg2) {
   body 
 }
 ```
@@ -22,7 +22,7 @@ The circumference of a circle is $2\pi r$ for a given radius, r. Let's write a f
 circumference <- function(r) {
   2 * pi * r
 }
-circumference(2)
+circumference(3)
 ```
 
 
@@ -77,23 +77,23 @@ Below is the code we wrote to simulate one trial in the gambler's ruin problem. 
 
 ```{r}
 # Functionalize the below code
-N <- 20   # set total wealth
-p <- 0.5  # set prob. A wins a bet
-i <- 10   # A's initial wealth
+gamblers_ruin <- function(N, p, i) {
 
-bets <- 0 # initializing no. of bets
-
-while(i > 0 & (N - i) > 0) {
-  bets <- bets + 1
-  outcome <- rbinom(1, n = 1, p = p)
-  if (outcome == 1) {
-    i <- i + 1
-  } else {
-    i <- i - 1
+  bets <- 0 # initializing no. of bets
+  
+  while(i > 0 & (N - i) > 0) {
+    bets <- bets + 1
+    outcome <- rbinom(1, n = 1, p = p)
+    if (outcome == 1) {
+      i <- i + 1
+    } else {
+      i <- i - 1
+    }
   }
-}
+  
+  return(bets)
 
-bets
+}
 ```
 
 ```{r}
@@ -102,7 +102,7 @@ N <- 20   # set total wealth
 p <- 0.5  # set prob. A wins a bet
 i <- 10   # A's initial wealth
 
-gamblers_ruin(N = 100, p= 0.8, i = 10)
+gamblers_ruin(N = 100, p= 0.5, i = 10)
 ```
 
 Writing a function to perform the simulation allows us to easily replicate it's output many times. In this situation, we can use the `replicate` function to quickly run our function 1,000 times.
@@ -159,11 +159,29 @@ for(b in 1:B) {
 
 ```{r}
 # Define bootstrap_median() here
+bootstrap_median <- function(x, B){
+  n <- length(x)
+  medians <- numeric(length = B) 
+  for(b in 1:B) {
+    boot_sample <- sample(x, 
+                          size = n, 
+                          replace = TRUE)
+    medians[b] <- median(boot_sample)
+  }
+  medians
+}
 ```
 
 ```{r}
 # Let's test the function
-med1 <- bootstrap_median(our_sample$TotalCompensation)
+med1 <- bootstrap_median(our_sample$TotalCompensation, B = 5000)
+
+str(med1)
+summary(med1)
+
+ggplot(data = data.frame(medians = med1),
+       aes(x = medians)) +
+  geom_histogram()
 ```
 
 
@@ -177,6 +195,25 @@ Write a function called `bootstrap_mean` that performs this bootstrap and return
 
 ```{r}
 # Define bootstrap_mean() here
+bootstrap_mean <- function(x, B){
+  n <- length(x)
+  means <- numeric(length = B) 
+  for(b in 1:B) {
+    boot_sample <- sample(x, 
+                          size = n, 
+                          replace = TRUE)
+    means[b] <- mean(boot_sample)
+  }
+  means
+}
+
+mean1 <- bootstrap_mean(our_sample$TotalCompensation, B = 10000)
+
+summary(mean1)
+
+ggplot(data = data.frame(means = mean1),
+       aes(x = means)) +
+  geom_density()
 ```
 
 Now that you have written two one-sample bootstrap functions, compare your code. How many of the commands are the same? Did it feel like you were simply copying and pasting?
@@ -192,6 +229,17 @@ Let's write a single `bootstrap1` function that conducts a one-sample bootstrap 
 
 ```{r}
 # Define the bootstrap1() function here
+bootstrap1 <- function(x, B, stat){
+  n <- length(x)
+  stats <- numeric(length = B) 
+  for(b in 1:B) {
+    boot_sample <- sample(x, 
+                          size = n, 
+                          replace = TRUE)
+    stats[b] <- stat(boot_sample)
+  }
+  stats
+}
 ```
 
 
@@ -200,6 +248,9 @@ Let's see how it works on the `our_sample` data.
 ```{r}
 boot_medians <- bootstrap1(our_sample$TotalCompensation, 
                            stat = median, B = 5000)
+
+head(boot_medians)
+summary(boot_medians)
 
 boot_means <- bootstrap1(our_sample$TotalCompensation, 
                          stat = mean, B = 5000)
